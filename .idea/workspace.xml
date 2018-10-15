@@ -20,8 +20,8 @@
       <file leaf-file-name="你不知道的JavaScript(上)" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="498">
-              <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="2" />
+            <state relative-caret-position="555">
+              <caret line="43" column="50" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -84,6 +84,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -95,7 +96,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -143,12 +143,13 @@
       <workItem from="1539266436366" duration="375000" />
       <workItem from="1539401506667" duration="600000" />
       <workItem from="1539440739258" duration="778000" />
-      <workItem from="1539525375763" duration="33000" />
+      <workItem from="1539525375763" duration="675000" />
+      <workItem from="1539611448301" duration="54000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1786000" />
+    <option name="totallyTimeSpent" value="2482000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -182,6 +183,13 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="589">
           <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
         </state>
@@ -206,8 +214,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="498">
-          <caret line="32" column="2" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="2" />
+        <state relative-caret-position="555">
+          <caret line="43" column="50" selection-start-line="43" selection-start-column="50" selection-end-line="43" selection-end-column="50" />
         </state>
       </provider>
     </entry>
