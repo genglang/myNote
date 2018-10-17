@@ -49,11 +49,11 @@
   默认绑定：直接使用不带修饰的函数调用
   隐式绑定：调用时有上下文对象或者被某个对象拥有或包含
   显式绑定：call apply bind 第一个参数如果传入了原始值，那么会被转换成对象形式（new String（））
-  function bind(fn,obj){
-    return function(){
-      return fn.apply(obj,arguments)
-    }
-  }
+        function bind(fn,obj){
+          return function(){
+            return fn.apply(obj,arguments)
+          }
+        }
     API调用的上下文：api通过传入参数实现回调函数指定this
   new绑定：JS特殊的构造函数只是一些使用new操作符时调用的函数，不属于某个类，也不会实例化一个类，实际上甚至不能说是一种特殊的函数类型，只是被new调用的普通函数。被称为构造函数调用（不存在构造函数 只有构造调用）
   new调用函数的步骤：
@@ -62,3 +62,13 @@
     3、绑定this
     4、如果没有返回其他对象，那么new会自动返回这个对象
   优先级：默认绑定<隐式绑定<显式绑定<new
+  polyfill处理旧浏览器的兼容问题，比如bind，但是因为不是内置函数无法创建不含.prototype的函数，会有一些副作用
+
+          this.instanceof FNOP&&
+          oThis?this:oThis
+          //以及
+          FNOP.prototype = this.prototype
+          fBound.prototype = new FNOP
+  这段代码会判断函数是否被new调用，如果是就会用新创建的this替代已有的this
+  使用new的原因：主要目的是预先设置函数的一些参数，这样使用new进行初始化就可以只传入剩余参数
+  bind的功能之一就是把第一个参数this外的其他参数都传给下层函数（柯里化的一种）
