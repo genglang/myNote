@@ -57,10 +57,10 @@
     API调用的上下文：api通过传入参数实现回调函数指定this
   new绑定：JS特殊的构造函数只是一些使用new操作符时调用的函数，不属于某个类，也不会实例化一个类，实际上甚至不能说是一种特殊的函数类型，只是被new调用的普通函数。被称为构造函数调用（不存在构造函数 只有构造调用）
   new调用函数的步骤：
-    1、创建一个全新的对象
-    2、绑定原型给这个对象
-    3、绑定this
-    4、如果没有返回其他对象，那么new会自动返回这个对象
+    1.创建一个全新的对象
+    2.绑定原型给这个对象
+    3.绑定this
+    4.如果没有返回其他对象，那么new会自动返回这个对象
   优先级：默认绑定<隐式绑定<显式绑定<new
   polyfill处理旧浏览器的兼容问题，比如bind，但是因为不是内置函数无法创建不含.prototype的函数，会有一些副作用
 
@@ -72,3 +72,41 @@
   这段代码会判断函数是否被new调用，如果是就会用新创建的this替代已有的this
   使用new的原因：主要目的是预先设置函数的一些参数，这样使用new进行初始化就可以只传入剩余参数
   bind的功能之一就是把第一个参数this外的其他参数都传给下层函数（柯里化的一种）
+  判断this
+  可以通过优先级来判断函数在某个调用位置应用的是哪条规则,按照下面的顺序进行判断
+     1.函数是否在new中调用(new绑定)?如果是的话this绑定的是新创建的对象
+     2.函数是否通过apply/call(显式绑定)或者硬绑定调用?如果是的话,this绑定的是指定的对象
+     3.函数是否在某个上下文对象中调用(隐式绑定)?如果是的话,this绑定的是那个上下文对象
+     4.如果都不是的话,使用默认绑定,如果在严格模式下,就绑定undefined,否则绑定全局对象
+  例外:
+     如果把null或者undefined传入call,会被忽略,并把this默认绑定(用apply展开数组用...替代)
+  更安全的this:
+     Object.create(null)创建一个空对象(不会创建prototype)然后作为this传入call/apply/bind
+  间接引用
+      function foo(){
+        console.log(this.a)
+      }
+      var a = 2
+      var o = { a: 3, foo: foo }
+      var p = { a: 4 }
+      o.foo() // 3
+      (p.foo = o.foo)() // 2
+  软绑定:
+      if(!Function.prototype.softBind){
+        Function.prototype.softBind = function( obj ) {
+          var fn = this
+          // 捕获所有 curried参数
+          var curried = [].slice.call(arguments, 1)
+          var bound = function() {
+            return fn.apply(
+              (!this||this === (windows || global)) ? obj : this ,
+              curried.concat.apply( curried, argument)
+            )
+          }
+          bound.prototype = Object.create( fn.prototype )
+          return bound
+        }
+      }
+  对指定函数进行封装,首先检查调用时的this,如果this绑定全局变量或者undefined,就把指定的默认对象obj绑定到this,否则不会修改this,此外,这段代码还支持柯里化
+  this词法:
+      箭头函数不适用this的四种标准规则,而是根据外层(函数或者全局)作用域决定
