@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1232a4d6-64ce-4efe-90b1-a7d206078b81" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/你不知道的JavaScript(上)" beforeDir="false" afterPath="$PROJECT_DIR$/你不知道的JavaScript(上)" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,7 +19,7 @@
       <file leaf-file-name="你不知道的JavaScript(上)" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
+            <state relative-caret-position="2109">
               <caret line="111" column="44" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
             </state>
           </provider>
@@ -84,7 +83,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -96,6 +94,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -111,7 +110,7 @@
     <property name="options.lastSelected" value="configurable.group.appearance" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -147,16 +146,17 @@
       <workItem from="1539611448301" duration="84000" />
       <workItem from="1539700523470" duration="391000" />
       <workItem from="1539791161885" duration="295000" />
-      <workItem from="1539874514904" duration="1140000" />
+      <workItem from="1539874514904" duration="1178000" />
+      <workItem from="1540048567454" duration="4000" />
+      <workItem from="1540133278462" duration="921000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4338000" />
+    <option name="totallyTimeSpent" value="5301000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14007372" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -184,6 +184,20 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2109">
+          <caret line="111" column="44" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2109">
+          <caret line="111" column="44" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1330">
@@ -238,7 +252,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
+        <state relative-caret-position="2109">
           <caret line="111" column="44" selection-start-line="111" selection-start-column="44" selection-end-line="111" selection-end-column="44" />
         </state>
       </provider>
