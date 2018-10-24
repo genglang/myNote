@@ -32,8 +32,8 @@
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="285">
-                <caret line="101" column="3" selection-start-line="101" selection-start-column="3" selection-end-line="101" selection-end-column="3" />
+              <first_editor relative-caret-position="304">
+                <caret line="102" column="3" selection-start-line="102" selection-start-column="3" selection-end-line="102" selection-end-column="3" />
               </first_editor>
               <second_editor />
             </state>
@@ -70,10 +70,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="227" />
+    <option name="x" value="156" />
+    <option name="y" value="-8" />
     <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="height" value="1017" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -169,25 +169,25 @@
       <workItem from="1540134461537" duration="3585000" />
       <workItem from="1540219041676" duration="3317000" />
       <workItem from="1540309617165" duration="3730000" />
-      <workItem from="1540393555320" duration="1301000" />
+      <workItem from="1540393555320" duration="1999000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17234000" />
+    <option name="totallyTimeSpent" value="17932000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="227" width="1696" height="1026" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16033755" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14007372" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.33033708" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.3195652" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -340,8 +340,8 @@
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="285">
-            <caret line="101" column="3" selection-start-line="101" selection-start-column="3" selection-end-line="101" selection-end-column="3" />
+          <first_editor relative-caret-position="304">
+            <caret line="102" column="3" selection-start-line="102" selection-start-column="3" selection-end-line="102" selection-end-column="3" />
           </first_editor>
           <second_editor />
         </state>
