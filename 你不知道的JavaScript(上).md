@@ -154,3 +154,19 @@
   2. 这个对象会被进行原型链接
   3. 这个新对象会绑定到函数调用this
   4. 如果函数没有返回其他对象,那么new表达式中的函数调用会自动返回这个新对象
+  
+  #### this绑定优先级
+    new > 硬绑定(显式绑定) > 隐式绑定 > 默认绑定
+  #### Polyfill
+  - 处理旧浏览器的兼容问题,比如bind
+  - 但是因为不是内置函数无法创建不含.prototype的函数,会有一些副作用
+   ```
+      this.instanceof FNOP&&
+              oThis?this:oThis
+              //以及
+              FNOP.prototype = this.prototype
+              fBound.prototype = new FNOP
+   ```
+   这段代码会判断函数是否被new调用,如果是就会用新创建的this替代已有的this
+    使用new的原因：主要目的是预先设置函数的一些参数，这样使用new进行初始化就可以只传入剩余参数
+    bind的功能之一就是把第一个参数this外的其他参数都传给下层函数（柯里化的一种）

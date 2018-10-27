@@ -66,7 +66,7 @@
 
           this.instanceof FNOP&&
           oThis?this:oThis
-          //以及
+          // 以及
           FNOP.prototype = this.prototype
           fBound.prototype = new FNOP
   这段代码会判断函数是否被new调用，如果是就会用新创建的this替代已有的this
