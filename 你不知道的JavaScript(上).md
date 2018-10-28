@@ -200,3 +200,41 @@
 
 ### 例外
   - 如果把null或者undefined传入call,会被忽略,并把this默认绑定(用apply展开数组用...替代)
+### 更安全的this
+  - Object.create(null)创建一个空对象(不会创建prototype)然后作为this传入call/apply/bind
+### 间接引用
+  - 在某些情况下,间接引用一个函数,触发的默认绑定可能会影响结果
+  ```
+     function foo(){
+       console.log(this.a)
+     }
+     var a = 2
+     var o = { a: 3, foo: foo }
+     var p = { a: 4 }
+     o.foo() // 3
+     (p.foo = o.foo)() // 2
+  ```
+### 软绑定
+  ```
+      if(!Function.prototype.softBind){
+        Function.prototype.softBind = function( obj ) {
+          var fn = this
+          // 捕获所有 curried参数
+          var curried = [].slice.call(arguments, 1)
+          var bound = function() {
+            return fn.apply(
+              (!this||this === (windows || global)) ? obj : this ,
+              curried.concat.apply( curried, argument)
+            )
+          }
+          bound.prototype = Object.create( fn.prototype )
+          return bound
+        }
+      }
+  ```
+  - 对指定函数进行封装,首先检查调用时的this
+  - 如果this绑定全局变量或者undefined,就把指定的默认对象obj绑定到this
+  - 否则不会修改this
+  - 此外,这段代码还支持柯里化
+### this词法
+  - 箭头函数不适用this的四种标准规则,而是根据外层(函数或者全局)作用域决定
