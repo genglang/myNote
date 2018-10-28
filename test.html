@@ -6,27 +6,18 @@
 </head>
 <body>
 <script>
-	function foo () {
-		console.log(this.a)
+	function foo (sth) {
+		this.a = sth
 	}
 
-	var obj1 = {
-		a: 2,
-		foo: foo
-	}
+	let obj1 = {}
+	let bar = foo.bind(obj1)
+	bar(2)
+	console.log('obj', obj1.a)
 
-	var obj2 = {
-		a: 3,
-		foo: foo
-	}
-	console.log('obj1')
-	obj1.foo()
-	console.log('obj2')
-	obj2.foo()
-	console.log('obj1 call 2')
-	obj1.foo.call(obj2)
-	console.log('obj2 call 1')
-	obj2.foo.call(obj1)
+	let baz = new bar(3)
+	console.log('obj', obj1.a)
+	console.log('baz', baz.a)
 </script>
 </body>
 </html>
