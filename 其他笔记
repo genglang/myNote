@@ -2,24 +2,41 @@ Number:当Number在new表达式中被调用,他是一个构造函数:会初始�
 
 ES5 bind实现:
 if (!Function.prototype.bind) {
-		Function.prototype.bind = function (oThis) {
-			if (typeof this !== 'function') {
-				throw new TypeError('bind尝试绑定this但是this类型不符')
-			}
-			var aArgs = Array.prototype.slice.call(arguments, 1),
-				fToBind = this,
-				fNOP = function(){},
-				fBound = function() {
-					return fToBind.apply(
-						(
-							this instanceof fNOP &&
-							oThis ? this : oThis
-						),
-						aArgs.concat(Array.prototype.slice.call(arguments))
-					)
-				}
-			fNOP.prototype=this.prototype
-			fBound.prototype = new fNOP()
-			return fBound
+	Function.prototype.bind = function (oThis) {
+		if (typeof this !== 'function') {
+			throw new TypeError('bind尝试绑定this但是this类型不符')
 		}
+		var aArgs = Array.prototype.slice.call(arguments, 1),
+			fToBind = this,
+			fNOP = function(){},
+			fBound = function() {
+				return fToBind.apply(
+					(
+						this instanceof fNOP &&
+						oThis ? this : oThis
+					),
+					aArgs.concat(Array.prototype.slice.call(arguments))
+				)
+			}
+		fNOP.prototype=this.prototype
+		fBound.prototype = new fNOP()
+		return fBound
 	}
+}
+
+软绑定
+if(!Function.prototype.softBind){
+  Function.prototype.softBind = function( obj ) {
+    var fn = this
+    // 捕获所有 curried参数
+    var curried = [].slice.call(arguments, 1)
+    var bound = function() {
+      return fn.apply(
+        (!this||this === (windows || global)) ? obj : this ,
+        curried.concat.apply( curried, argument)
+      )
+    }
+    bound.prototype = Object.create( fn.prototype )
+    return bound
+  }
+}
