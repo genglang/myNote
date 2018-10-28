@@ -6,18 +6,28 @@
 </head>
 <body>
 <script>
-	function foo (sth) {
-		this.a = sth
+	if (!Function.prototype.bind) {
+		Function.prototype.bind = function (oThis) {
+			if (typeof this !== 'function') {
+				throw new TypeError('bind尝试绑定this但是this类型不符')
+			}
+			var aArgs = Array.prototype.slice.call(arguments, 1),
+				fToBind = this,
+				fNOP = function(){},
+				fBound = function() {
+					return fToBind.apply(
+						(
+							this instanceof fNOP &&
+							oThis ? this : oThis
+						),
+						aArgs.concat(Array.prototype.slice.call(arguments))
+					)
+				}
+			fNOP.prototype=this.prototype
+			fBound.prototype = new fNOP()
+			return fBound
+		}
 	}
-
-	let obj1 = {}
-	let bar = foo.bind(obj1)
-	bar(2)
-	console.log('obj', obj1.a)
-
-	let baz = new bar(3)
-	console.log('obj', obj1.a)
-	console.log('baz', baz.a)
 </script>
 </body>
 </html>

@@ -161,12 +161,29 @@
   - 处理旧浏览器的兼容问题,比如bind
   - 但是因为不是内置函数无法创建不含.prototype的函数,会有一些副作用
    ```
-      this.instanceof FNOP&&
-              oThis?this:oThis
-              //以及
-              FNOP.prototype = this.prototype
-              fBound.prototype = new FNOP
+      if (!Function.prototype.bind) {
+      		Function.prototype.bind = function (oThis) {
+      			if (typeof this !== 'function') {
+      				throw new TypeError('bind尝试绑定this但是this类型不符')
+      			}
+      			var aArgs = Array.prototype.slice.call(arguments, 1),
+      				fToBind = this,
+      				fNOP = function(){},
+      				fBound = function() {
+      					return fToBind.apply(
+      						(
+      							this instanceof fNOP &&
+      							oThis ? this : oThis
+      						),
+      						aArgs.concat(Array.prototype.slice.call(arguments))
+      					)
+      				}
+      			fNOP.prototype=this.prototype
+      			fBound.prototype = new fNOP()
+      			return fBound
+      		}
+      	}
    ```
-   这段代码会判断函数是否被new调用,如果是就会用新创建的this替代已有的this
-    使用new的原因：主要目的是预先设置函数的一些参数，这样使用new进行初始化就可以只传入剩余参数
-    bind的功能之一就是把第一个参数this外的其他参数都传给下层函数（柯里化的一种）
+  - 这段代码会判断函数是否被new调用,如果是就会用新创建的this替代已有的this
+  - 使用new的原因:主要目的是预先设置函数的一些参数，这样使用new进行初始化就可以只传入剩余参数
+  - bind的功能之一就是把第一个参数this外的其他参数都传给下层函数（柯里化的一种）
