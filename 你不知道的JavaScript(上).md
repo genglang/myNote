@@ -265,7 +265,28 @@
   8. RegExp
   9. Error
   - 可以当作构造函数来使用,从而可以构造一个对应子类型的新对象
-  - 字符串调用字符串对象方法时引擎会自动把字符串字面量转换为String对象（尽量不要用构造方法）
-  - null,undefined没有构造形式,Date只有构造形式
+  ```
+    let str1 = 'Hello'
+    console.log(typeof str1) // 'string'
+    console.log(str1 instanceof String) // false
+   
+    let str2 = new String('hello')
+    console.log(typeof str2) // 'object'
+    console.log(str2 instanceof String) // true
+  ```
+  - 字符串调用字符串对象方法时引擎会自动把字符串字面量转换为String对象(尽量不要用构造方法)
+  - null,undefined没有构造形式
+  - Date只有构造形式
   - Object,Array,Function,RegExp来说,无论字面量还是构造函数都是对象
   - Error很少在代码中显式创建,一般是抛出异常时自动创建
+
+###  内容
+  - 对象的内容是一些存储在特定命名位置(任意类型)值组成的,我们称之为属性
+  - 语言上内容暗指这些值被存储在对象内部,但这只是表现形式,实际在引擎内部,存储方式多种多样
+  - 一般不会存在对象内部,而是通过名称引用指针指向真正的存储位置
+
+### .和[]访问对象值的区别
+  - 属性访问和键访问,访问同一个位置,主要区别在于
+  - .操作符要求属性名满足标识符命名规范
+  - []则接受所有UTF8/Unicode字符串作为属性名,比如说Super-Fun!只能通过[]访问(赋值时无论属性名是啥都会转成字符串)
+  - 可以在声明时通过[a+b计算属性名]

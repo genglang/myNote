@@ -6,23 +6,13 @@
 </head>
 <body>
 <script>
-	function fn (a) {
-		console.log(this.a)
-		console.log(a)
-	}
+	let str1 = 'Hello'
+	console.log(typeof str1) // 'string'
+	console.log(str1 instanceof String) // false
 
-	let obj = {
-		a: 1
-	}
-
-	function bind (fn, obj) {
-		return function () {
-			fn.apply(obj, arguments)
-		}
-	}
-
-	let b = bind(fn, obj)
-	b(3)
+	let str2 = new String('hello')
+	console.log(typeof str2) // 'object'
+	console.log(str2 instanceof String) // true
 </script>
 </body>
 </html>
