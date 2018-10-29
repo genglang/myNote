@@ -292,4 +292,14 @@
   - 可以在声明时通过[a+b计算属性名]
   - 给数组通过[]添加属性不会改变length值
   - 数组会自动把key的数字字符串转化为数字
+
+### 复制对象
+  - 旧方法
+  ```
+    var newObject = JSON.parse(JSON.stringify(someObj))
+  ```
+  - 新方法
+  ```
+    let obj1 = Object.assign({},obj2)
+  ```
  
