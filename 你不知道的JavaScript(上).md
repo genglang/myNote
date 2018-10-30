@@ -303,3 +303,12 @@
     let obj1 = Object.assign({},obj2)
   ```
  
+### 属性描述符
+  ES5后可以直接通过getOwnPropertyDescriptor检测对象属性特征
+  - writable 可修改
+    - 如果修改,非严格模式下会出现静默失败,严格模式会报错
+  - enumerable 可枚举
+    - 是否出现在属性枚举中(for...in)
+  - configurable 可配置
+    - 不管是否是严格模式,只要修改一个不可配置的属性都会报错
+    - 不可配置属性不可删除
