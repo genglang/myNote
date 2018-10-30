@@ -312,3 +312,9 @@
   - configurable 可配置
     - 不管是否是严格模式,只要修改一个不可配置的属性都会报错
     - 不可配置属性不可删除
+
+### 不变性
+  所有的方法创建的都是浅不变形,只会影响目标对象和直接属性,对引用对象属性无效
+  - Object.praventExtensions(obj)禁止添加属性
+  - Object.seal()会创建一个密封对象,相当于调用praventExtensions,并把configurable设置为false
+  - Object.freeze()创建一个冻结对象,相当于对现有对象调用seal并把writable设置为false（引用对象不受影响）
