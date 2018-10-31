@@ -314,8 +314,17 @@
     - 不可配置属性不可删除
 
 ### 不变性
-  所有的方法创建的都是浅不变形,只会影响目标对象和直接属性,对引用对象属性无效
-  如果需要对对象的对象进行不可变操作
-  - Object.praventExtensions(obj)禁止添加属性
-  - Object.seal()会创建一个密封对象,相当于调用praventExtensions,并把configurable设置为false
-  - Object.freeze()创建一个冻结对象,相当于对现有对象调用seal并把writable设置为false（引用对象不受影响）
+  - 所有的方法创建的都是浅不变形,只会影响目标对象和直接属性,对引用对象属性无效,需要对引用再次进行不可变操作
+  - JS很少需要深不可变性,建议重新思考程序设计,慎用
+
+### 不可变性操作
+  1. 对象常量
+    - 结合writable和configurable就可以创建一个真正的常量属性(不可修改、重定义和删除)
+  2. 禁止拓展
+    - 通过Object.praventExtensions(obj)禁止添加属性
+  3. 密封
+    - Object.seal()会创建一个密封对象
+    - 相当于调用Object.praventExtensions(),并把configurable设置为false
+  4. 冻结
+    - Object.freeze()创建一个冻结对象
+    - 相当于对现有对象调用Object.seal()并把writable设置为false(引用对象不受影响)
