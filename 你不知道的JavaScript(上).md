@@ -305,6 +305,7 @@
  
 ### 属性描述符
   ES5后可以直接通过getOwnPropertyDescriptor检测对象属性特征
+  通过Object.defineProperty(obj,prop,descriptor)定义属性描述符
   - writable 可修改
     - 如果修改,非严格模式下会出现静默失败,严格模式会报错
   - enumerable 可枚举
@@ -342,4 +343,19 @@
     3. 如果都不是,将该值设置为属性的值
 
 ### Getter和Setter
+  - ES5中可以使用getter和setter部分改写默认操作,但是只能应用在单个属性上
+  - 只能应用在单个属性上,无法应用在整个对象上
+  - 分别在获取和设置的时候调用
+  - 二者都会在对象中创建一个不包含值的属性,这个属性会自动调用一个隐藏函数,返回值会被当成当前属性的返回值
+  - 当getter和setter两者都有时,这个属性会被定义为"访问描述符"
+  - JS会忽略访问描述符的value和writable特性,取而代之的是get和set(和configurable和enumerable)特性
+  
+### 存在性
+  判断对象是否有某属性
+  1. (prop in obj)
+  2. obj.hasOwnProperty('prop')
+  
+  区别
+  - in 会检测prototype原型链
+  - hasOwnProperty 只检测当前对象
   
