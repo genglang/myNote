@@ -164,7 +164,7 @@ let obj1=Object.assign（{},obj2）
     obj.propertyIsEnumerable:会检查给定的属性名是否直接存在于对象中（而不是在原型链上）并且满足enumerable:true
     Object.keys:会返回一个数组，包含所有可枚举属性
     Object.getOwnPropertyNames:会返回一个数组，包含所有属性，无论它们是否可枚举
-  普通for循环并不是遍历值 二手遍历下标来指向值
+  普通for循环并不是遍历值,而是遍历下标来指向值
   ES5中增加了一些数组的辅助迭代器 包括forEach/every/some,每种辅助迭代器都能接受一个回调函数并把它应用到数组的每个元素上，唯一区别就是它们对于回调函数的返回值处理方式不同
     forEach 忽略返回值
     some 一直运行到true
