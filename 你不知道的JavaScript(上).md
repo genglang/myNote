@@ -354,8 +354,23 @@
   判断对象是否有某属性
   1. (prop in obj)
   2. obj.hasOwnProperty('prop')
+  3. obj.propertyIsEnumerable('prop'')
   
   区别
   - in 会检测prototype原型链
-  - hasOwnProperty 只检测当前对象
+  - hasOwnProperty 只检测当前对象(排除原型链)
+  - propertyIsEnumerable 遍历满足hasOwnProperty的可枚举元素
+
+### 枚举
+  - enumerable设置为false之后,属性就不会出现在for-in循环中
+  - 在数组上应用for..in循环有时会产生出人意料的结果,因为这种枚举不仅会包含所有数值索引,还会包含所有可枚举属性
+  - 最好只在对象上应用for..in 循环,如果要遍历数组就使用传统的for循环来遍历数值索引
   
+#### 判断属性是否可以被枚举的方法
+  1. obj.propertyIsEnumerable
+      - 会检查给定的属性名是否直接存在于对象中(而不是在原型链上)并且满足enumerable:true
+  2. Object.keys
+      - 会返回一个数组，包含所有可枚举属性
+  3. Object.getOwnPropertyNames
+      - 会返回一个数组,包含所有属性,无论它们是否可枚举
+      
