@@ -42,8 +42,8 @@
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="613">
-                <caret line="397" lean-forward="true" selection-start-line="397" selection-end-line="397" />
+              <first_editor relative-caret-position="575">
+                <caret line="395" column="4" selection-start-line="395" selection-start-column="4" selection-end-line="395" selection-end-column="4" />
               </first_editor>
               <second_editor />
             </state>
@@ -214,12 +214,12 @@
       <workItem from="1540904751246" duration="4912000" />
       <workItem from="1540995862808" duration="4212000" />
       <workItem from="1541079829667" duration="5152000" />
-      <workItem from="1541242248025" duration="7615000" />
+      <workItem from="1541242248025" duration="7634000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64562000" />
+    <option name="totallyTimeSpent" value="64581000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -627,8 +627,8 @@
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="613">
-            <caret line="397" lean-forward="true" selection-start-line="397" selection-end-line="397" />
+          <first_editor relative-caret-position="575">
+            <caret line="395" column="4" selection-start-line="395" selection-start-column="4" selection-end-line="395" selection-end-column="4" />
           </first_editor>
           <second_editor />
         </state>
