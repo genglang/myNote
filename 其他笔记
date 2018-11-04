@@ -1,4 +1,5 @@
 Number:当Number在new表达式中被调用,他是一个构造函数:会初始化新创建的对象
+所有字符串都是String类的一个实例
 
 ES5 bind实现:
 if (!Function.prototype.bind) {
