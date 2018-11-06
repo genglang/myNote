@@ -6,15 +6,17 @@
 </head>
 <body>
 <script>
-	let a = {
-		b: 3
+	let anotherObject = {
+		a: 2
 	}
-	console.log(a)
-	a.__proto__.c = 4
-	console.log(a.c)
-	a.c = 5
-	console.log(a.c)
-	console.log(a)
+	let myObject = Object.create(anotherObject)
+	console.log(anotherObject.a) // 2
+	console.log(myObject.a) // 2
+	anotherObject.hasOwnProperty('a') // true
+	myObject.hasOwnProperty('a') // false
+	myObject.a++ // 隐式屏蔽
+	console.log(anotherObject.a) // 2
+	console.log(myObject.a) // 3
 </script>
 </body>
 </html>
