@@ -2,13 +2,12 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="11" />
-    <bookmark url="file://$PROJECT_DIR$/test.html" line="21" />
+    <bookmark url="file://$PROJECT_DIR$/test.html" line="17" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1232a4d6-64ce-4efe-90b1-a7d206078b81" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/你不知道的JavaScript(上).md" beforeDir="false" afterPath="$PROJECT_DIR$/你不知道的JavaScript(上).md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/其他笔记" beforeDir="false" afterPath="$PROJECT_DIR$/其他笔记" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -34,8 +33,8 @@
       <file leaf-file-name="你不知道的JavaScript(上)" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3553">
-              <caret line="187" column="21" selection-start-line="187" selection-start-column="2" selection-end-line="187" selection-end-column="21" />
+            <state relative-caret-position="622">
+              <caret line="195" column="66" lean-forward="true" selection-start-line="193" selection-start-column="4" selection-end-line="195" selection-end-column="66" />
             </state>
           </provider>
         </entry>
@@ -44,8 +43,8 @@
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="582">
-                <caret line="418" column="14" selection-start-line="418" selection-start-column="14" selection-end-line="418" selection-end-column="14" />
+              <first_editor relative-caret-position="447">
+                <caret line="439" column="58" selection-start-line="439" selection-start-column="58" selection-end-line="439" selection-end-column="58" />
               </first_editor>
               <second_editor />
             </state>
@@ -55,8 +54,8 @@
       <file leaf-file-name="test.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="19" column="42" selection-start-line="19" selection-start-column="42" selection-end-line="19" selection-end-column="42" />
+            <state relative-caret-position="304">
+              <caret line="16" column="16" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -72,8 +71,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>，</find>
       <find>万物</find>
+      <find>，</find>
     </findStrings>
     <replaceStrings>
       <replace>,</replace>
@@ -86,9 +85,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/test.html" />
-        <option value="$PROJECT_DIR$/你不知道的JavaScript(上)" />
         <option value="$PROJECT_DIR$/其他笔记" />
+        <option value="$PROJECT_DIR$/你不知道的JavaScript(上)" />
+        <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/你不知道的JavaScript(上).md" />
       </list>
     </option>
@@ -139,7 +138,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -151,6 +149,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -219,12 +218,13 @@
       <workItem from="1541079829667" duration="5152000" />
       <workItem from="1541242248025" duration="8196000" />
       <workItem from="1541315486224" duration="9869000" />
-      <workItem from="1541348003339" duration="379000" />
+      <workItem from="1541348003339" duration="412000" />
+      <workItem from="1541425536043" duration="5964000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75391000" />
+    <option name="totallyTimeSpent" value="81388000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -618,20 +618,6 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="19" column="42" selection-start-line="19" selection-start-column="42" selection-end-line="19" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3553">
-          <caret line="187" column="21" selection-start-line="187" selection-start-column="2" selection-end-line="187" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/其他笔记">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
@@ -639,11 +625,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="622">
+          <caret line="195" column="66" lean-forward="true" selection-start-line="193" selection-start-column="4" selection-end-line="195" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" column="16" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="582">
-            <caret line="418" column="14" selection-start-line="418" selection-start-column="14" selection-end-line="418" selection-end-column="14" />
+          <first_editor relative-caret-position="447">
+            <caret line="439" column="58" selection-start-line="439" selection-start-column="58" selection-end-line="439" selection-end-column="58" />
           </first_editor>
           <second_editor />
         </state>

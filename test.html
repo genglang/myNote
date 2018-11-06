@@ -7,18 +7,14 @@
 <body>
 <script>
 	let a = {
-		b: 1,
-		c: 'nicai'
+		b: 3
 	}
-	Object.defineProperty(a, 'e', {
-		value: '123',
-		enumerable: false
-	})
 	console.log(a)
-	console.log(a.propertyIsEnumerable('b'))
-	console.log(a.hasOwnProperty('b'))
-	console.log(a.propertyIsEnumerable('e'))
-	console.log(a.hasOwnProperty('e'))
+	a.__proto__.c = 4
+	console.log(a.c)
+	a.c = 5
+	console.log(a.c)
+	console.log(a)
 </script>
 </body>
 </html>
