@@ -708,3 +708,17 @@
           代码中语句的顺序和JavaScript 引擎执行语句的顺序并不一定要一致
           JS引擎对代码编译后的代码或许会面目全非
   2.回调
+    嵌套回调与链式回调
+          回调地狱=>回调锁=>Promise
+          对于参数的输入信任但要核实
+    分离回调
+          一个回调用于成功一个用于出错
+          error-first风格:又称为Node风格,几乎所有Node的Api都是用这种风格,错误的回调作为第一个参数传入
+3.Promise
+    new Promise( function(..){ .. } ) 模式通常称为revealing constructor
+    传入的函数会立即执行（不会像then(..) 中的回调一样异步延迟）
+    它有两个参数,称为resolve 和reject,这些是promise的决议函数,resolve(..)通常标识完成，而reject(..)则标识拒绝
+    具有then 方法的鸭子类型
+          instanceof不足以检测是否是Promise
+          Promise 值可能是从其他浏览器窗口(iframe等)接收到的,这个浏览器窗口自己的Promise可能和当前窗口的的不同
+          库或框架可能会选择实现自己的Promise,而不是使用原生ES6 Promise 实现
