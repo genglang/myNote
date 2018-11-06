@@ -439,15 +439,21 @@
       3. 如果原型链存在属性,并且是个setter,那么就一定会调用这个setter,属性不会被添加到对象,也不会这个setter
       - 如果第二第三种情况想要给对象添加属性而非原型链,需要用Object.defineProperty()
   ```
-    	let anotherObject = {
-    		a: 2
-    	}
-    	let myObject = Object.create(anotherObject)
-    	console.log(anotherObject.a) // 2
-    	console.log(myObject.a) // 2
-    	anotherObject.hasOwnProperty('a') // true
-    	myObject.hasOwnProperty('a') // false
-    	myObject.a++ // 隐式屏蔽
-    	console.log(anotherObject.a) // 2
-    	console.log(myObject.a) // 3
+     let anotherObject = {
+     	a: 2
+     }
+     let myObject = Object.create(anotherObject)
+     console.log(anotherObject.a) // 2
+     console.log(myObject.a) // 2
+     console.log(anotherObject.hasOwnProperty('a')) // true
+     console.log(myObject.hasOwnProperty('a')) // false
+     myObject.a++ // 隐式屏蔽
+     console.log(anotherObject.a) // 2
+     console.log(myObject.a) // 3
   ```
+
+### 类
+   - new操作并没有直接创建关联,这个关联只是一点意外的副作用
+   - JS中并不会将一个对象复制到另一个对象,只是将他们关联起来
+   - 类继承和原型继承完全相反,JS默认不会复制对象属性,而是会在对象之间创建一个关联,这样一个对象可以通过委托访问另一个对象的属性和方法
+   - 函数不是构造函数,当且仅有当使用new时,函数调用会变成"构造函数调用"

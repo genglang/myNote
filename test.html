@@ -6,17 +6,13 @@
 </head>
 <body>
 <script>
-	let anotherObject = {
-		a: 2
+	function foo () {
+		this.a = '100'
+		this.__proto__.b = 2
 	}
-	let myObject = Object.create(anotherObject)
-	console.log(anotherObject.a) // 2
-	console.log(myObject.a) // 2
-	anotherObject.hasOwnProperty('a') // true
-	myObject.hasOwnProperty('a') // false
-	myObject.a++ // 隐式屏蔽
-	console.log(anotherObject.a) // 2
-	console.log(myObject.a) // 3
+
+	let b = new foo()
+	console.log(b)
 </script>
 </body>
 </html>
