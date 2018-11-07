@@ -457,3 +457,18 @@
    - JS中并不会将一个对象复制到另一个对象,只是将他们关联起来
    - 类继承和原型继承完全相反,JS默认不会复制对象属性,而是会在对象之间创建一个关联,这样一个对象可以通过委托访问另一个对象的属性和方法
    - 函数不是构造函数,当且仅有当使用new时,函数调用会变成"构造函数调用"
+   
+### 构造函数
+   - Foo.prototype默认有一个公有且不可枚举的属性constructor
+   ```
+    function foo () {
+    	console.log('1')
+    }
+    console.log(foo.prototype.constructor === foo) // true
+    let a = new foo()
+    console.log(a.constructor === foo) // true
+   ```
+   - 可以看到通过构造函数调用new foo创建的对象也有一个constructor属性,指向创建这个对象的函数
+   
+   - **实际上a本身并没有.constructor属性**
+   
