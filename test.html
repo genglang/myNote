@@ -6,13 +6,15 @@
 </head>
 <body>
 <script>
-	function foo () {
-		this.a = '100'
-		this.__proto__.b = 2
-	}
-
-	let b = new foo()
-	console.log(b)
+	let p1 = new Promise(resolve=>{
+		console.log(0)
+			setTimeout(()=>{
+				console.log(2);
+				resolve()
+			},2000)
+	}).then(()=>{
+		console.log(4);
+	})
 </script>
 </body>
 </html>

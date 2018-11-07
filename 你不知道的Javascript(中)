@@ -725,3 +725,99 @@
           ES6前的Promise库也有.then方法,所以无法用其来判断
     Promise信任问题
           即使是立即完成的Promise,也无法被同步观察到
+          对一个Promise调用then(..)的时候,即使这个Promise已经决议,提供给then(..)的回调也总会被异步调用
+          一个Promise 决议后，这个Promise 上所有的通过then(..) 注册的回调都会在下一个异步时机点上依次被立即调用
+          两个独立Promise上链接的回调的相对顺序无法可靠预测
+          Promise提供了一种称为竞态的高级抽象机制
+                    // 用于超时一个Promise的工具
+                    function timeoutPromise(delay) {
+                      return new Promise( function(resolve,reject){
+                        setTimeout( function(){
+                          reject( "Timeout!" );
+                        }, delay );
+                      } );
+                    }
+                    // 设置foo()超时
+                    Promise.race( [
+                      foo(), // 试着开始foo()
+                      timeoutPromise( 3000 ) // 给它3秒钟
+                    ] )
+                    .then(
+                      function(){
+                        // foo(..)及时完成！
+                      },
+                      function(err){
+                        // 或者foo()被拒绝，或者只是没能按时完成
+                        // 查看err来了解是哪种情况
+                      }
+                    );
+          Promise 的定义方式使得它只能被决议一次,如果出于某种原因，Promise 创建代码试图调用resolve(..) 或reject(..) 多次,Promise 将只会接受第一次决议,并忽略任何后续调用
+          Promise 至多只能有一个决议值()完成或拒绝),如果你没有用任何值显式决议，那么这个值就是undefined
+    吞掉错误或异常
+          如果在Promise 的创建过程中或在查看其决议结果过程中的任何时间点上出现了一个JavaScript 异常错误，比如一个TypeError 或ReferenceError，那这个异常就会被捕捉，并且会使这个Promise 被拒绝
+          then调用本身返回了另一个Promise,因此这个Promise会因异常而拒绝
+    是可信任的Promise吗
+          下面两种Promise行为结果一模一样
+                    var p1 = new Promise( function(resolve,reject){
+                      resolve( 42 );
+                    } );
+                    var p2 = Promise.resolve( 42 );
+          如果向Promise.resolve(..) 传递一个真正的Promise，就只会返回同一个promise
+                    var p1 = Promise.resolve( 42 );
+                    var p2 = Promise.resolve( p1 );
+                    p1 === p2; // true
+
+     链式流
+          Promise 固有行为特性
+                    每次你对Promise 调用then(..)，它都会创建并返回一个新的Promise，我们可以将其链接起来
+                    不管从then(..) 调用的完成回调（第一个参数）返回的值是什么，它都会被自动设置为被链接Promise（第一点中的）的完成
+          可以通过定时器调用resolve延迟then的执行
+     错误处理
+          try-catch无法处理异步错误
+     成功的坑
+          默认情况下，Promsie在下一个任务或时间循环tick 上（向开发者终端）报告所有拒绝，如果在这个时间点上该Promise 上还没有注册错误处理函
+          如果想要一个被拒绝的Promise 在查看之前的某个时间段内保持被拒绝状态，可以调用defer()，这个函数优先级高于该Promise 的自动错误报告。
+     Promise模式
+          Promise.all([ .. ])
+          Promise.race([ .. ])
+                    // foo()是一个支持Promise的函数
+                    // 前面定义的timeoutPromise(..)返回一个promise，
+                    // 这个promise会在指定延时之后拒绝
+                    // 为foo()设定超时
+                    Promise.race( [
+                      foo(), // 启动foo()
+                      timeoutPromise( 3000 ) // 给它3秒钟
+                    ] )
+                    .then(
+                      function(){
+                        // foo(..)按时完成！
+                      },
+                      function(err){
+                        // 要么foo()被拒绝，要么只是没能够按时完成，
+                        // 因此要查看err了解具体原因
+                      }
+                    );
+          Promise.finally(..)
+                    兼容性糟糕
+          变体
+          none([ .. ])
+                    所有都要被拒绝
+          any([ .. ])
+                    只需要有一个完成
+          first([ .. ])
+                    只需要第一个Promise完成就会忽略后续任何拒绝和完成
+          last([ .. ])
+                    只需要最后一个Promise完成
+          以上Promise抽象库已经提供了支持,也可以用race和all实现
+     并发迭代
+     Promise API 概述
+     Promise 局限性
+          顺序错误处理
+                    即Promise 链中的错误很容易被无意中默默忽略掉
+                    如果构建了一个没有错误处理函数的Promise 链，链中任何地方的任何错误都会在链中一直传播下去，直到被查看
+          单一值
+                    Promise 只能有一个完成值或一个拒绝理由
+                    分裂值:有时候你可以把这一点当作提示你可以/ 应该把问题分解为两个或更多Promise 的信号
+                    展开/ 传递参数
+          单决议
+                    
