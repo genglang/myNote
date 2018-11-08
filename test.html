@@ -6,17 +6,14 @@
 </head>
 <body>
 <script>
-	function foo (name) {
-		this.name = name
-	}
-
-	foo.prototype.myName = function () {
-		return this.name
-	}
-	let a = new foo('a')
-	let b = new foo('b')
-	console.log(a.myName()) // a
-	console.log(b.myName()) // b
+	function foo () {}
+	foo.prototype={}
+	Object.defineProperty(foo.prototype,'constructor',{
+		enumerable:false,
+		writable:true,
+		configurable: true,
+		value: foo // 让.constructor指向foo
+	})
 </script>
 </body>
 </html>

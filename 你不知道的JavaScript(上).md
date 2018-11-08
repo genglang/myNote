@@ -487,3 +487,17 @@
     console.log(a.myName()) // a
     console.log(b.myName()) // b
    ```   
+   - 因为foo.prototype.constructor默认指向foo,所以foo构造的对象的.constructor也指向foo
+   - 如果一个新的对象替代了函数默认的.prototype引用,那么新对象并不会自动获得.constructor属性
+   - 构造的对象会委托[[Prototype]]上的.constructor,如果没有继续向上访问直到Object.prototype
+   - 可以通过手动添加一个不可枚举的.constructor属性
+   ```
+    function foo () {}
+    foo.prototype={}
+    Object.defineProperty(foo.prototype,'constructor',{
+    	enumerable:false,
+    	writable:true,
+    	configurable: true,
+    	value: foo // 让.constructor指向foo
+    })
+   ```
