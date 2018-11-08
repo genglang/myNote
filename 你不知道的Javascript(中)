@@ -820,4 +820,72 @@
                     分裂值:有时候你可以把这一点当作提示你可以/ 应该把问题分解为两个或更多Promise 的信号
                     展开/ 传递参数
           单决议
-                    
+                    Promise 只能被决议一次(完成或拒绝)
+          无法取消的Promise
+                    一旦创建了一个Promise 并为其注册了完成和/ 或拒绝处理函数，如果出现某种情况使得
+                    这个任务悬而未决的话，你也没有办法从外部停止它的进程。
+          Promise 性能
+                    Promise比回调慢一些
+4.生成器
+     打破完整运行
+     运行过程
+          赋值运算并没有执行生成器*foo(),而只是构造了一个迭代器(iterator),这个迭代器会控制它的执行
+          .next() 启动了生成器*foo(),并运行了*foo()第一行的x++
+          在yield 语句处暂停,第一个.next()调用结束。此时*foo()仍在运行并且是活跃的,但处于暂停状态
+          .next() 调用从暂停处恢复了生成器*foo() 的执行
+
+          生成器就是一类特殊的函数,可以一次或多次启动和停止,并不一定非得要完成
+     输入和输出
+          生成器是一个特殊的函数,具有前面我们展示的新的执行模式
+                    function *foo(x,y) {
+                      return x * y;
+                    }
+                    var it = foo( 6, 7 );
+                    var res = it.next();
+                    console.log(res); // {value: 42, done: true}
+                    console.log(res.value) // 42
+          创建了一个迭代器对象赋值给it,用于控制生成器
+          可以通过yield进行分布赋值
+                    function *foo(x,y) {
+                      var y = x * (yield)
+                      return  y;
+                    }
+                    var it = foo(6);
+                    it.next();
+                    var res = it.next(7)
+                    console.log(res);
+                    console.log(res.value)
+          生成器可以让多个函数交替运行
+     生产者与迭代器
+          通过闭包实现一个迭代器接口
+                    var something = (function(){
+                      var nextVal;
+                        return {
+                        // for..of循环需要
+                          [Symbol.iterator]: function(){ return this; },
+                          // 标准迭代器接口方法
+                          next: function(){
+                            if (nextVal === undefined) {
+                              nextVal = 1;
+                            }
+                            else {
+                              nextVal = (3 * nextVal) + 6;
+                            }
+                            return { done:false, value:nextVal }; // 无限循环永远不会为true
+                          }
+                      };
+                    })();
+                    console.log(something.next().value); // 1
+                    console.log(something.next().value); // 9
+                    console.log(something.next().value); // 33
+                    console.log(something.next().value); // 105
+          for..of 循环在每次迭代中自动调用next(),它不会向next()传入任何值,并且会在接收到done:true之后自动停止
+          当然,也可以手工在迭代器上循环,调用next()并检查done:true条件来确定何时停止循环
+                    for (var ret;(ret = something.next()) && !ret.done;) {
+                      console.log( ret.value );
+                      // 不要死循环！
+                      if (ret.value > 500) {
+                        break;
+                      }
+                    }
+                    // 1 9 33 105 321 969
