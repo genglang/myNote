@@ -471,4 +471,19 @@
    - 可以看到通过构造函数调用new foo创建的对象也有一个constructor属性,指向创建这个对象的函数
    
    - **实际上a本身并没有.constructor属性**
+   - 函数本身不是构造函数,函数被new调用之后,new会劫持所有普通的函数并用构造函数的方式调用它
+   - new调用函数的时候会构造一个对象并赋值
+   - 用原型模仿类
+   ```
+    function foo (name) {
+    	this.name = name
+    }
    
+    foo.prototype.myName = function () {
+    	return this.name
+    }
+    let a = new foo('a')
+    let b = new foo('b')
+    console.log(a.myName()) // a
+    console.log(b.myName()) // b
+   ```   
