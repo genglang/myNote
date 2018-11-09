@@ -471,4 +471,33 @@
    - 可以看到通过构造函数调用new foo创建的对象也有一个constructor属性,指向创建这个对象的函数
    
    - **实际上a本身并没有.constructor属性**
+   - 函数本身不是构造函数,函数被new调用之后,new会劫持所有普通的函数并用构造函数的方式调用它
+   - new调用函数的时候会构造一个对象并赋值
+   - 用原型模仿类
+   ```
+    function foo (name) {
+    	this.name = name
+    }
    
+    foo.prototype.myName = function () {
+    	return this.name
+    }
+    let a = new foo('a')
+    let b = new foo('b')
+    console.log(a.myName()) // a
+    console.log(b.myName()) // b
+   ```   
+   - 因为foo.prototype.constructor默认指向foo,所以foo构造的对象的.constructor也指向foo
+   - 如果一个新的对象替代了函数默认的.prototype引用,那么新对象并不会自动获得.constructor属性
+   - 构造的对象会委托[[Prototype]]上的.constructor,如果没有继续向上访问直到Object.prototype
+   - 可以通过手动添加一个不可枚举的.constructor属性
+   ```
+    function foo () {}
+    foo.prototype={}
+    Object.defineProperty(foo.prototype,'constructor',{
+    	enumerable:false,
+    	writable:true,
+    	configurable: true,
+    	value: foo // 让.constructor指向foo
+    })
+   ```

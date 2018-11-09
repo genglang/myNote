@@ -6,27 +6,14 @@
 </head>
 <body>
 <script>
-		var something = (function(){
-		var nextVal;
-		return {
-		// for..of循环需要
-		[Symbol.iterator]: function(){ return this; },
-		// 标准迭代器接口方法
-		next: function(){
-		if (nextVal === undefined) {
-		nextVal = 1;
-		}
-		else {
-		nextVal = (3 * nextVal) + 6;
-		}
-		return { done:false, value:nextVal };
-		}
-		};
-		})();
-		console.log(something.next().value); // 1
-		console.log(something.next().value); // 9
-		console.log(something.next().value); // 33
-		console.log(something.next().value); // 105
+	function foo () {}
+	foo.prototype={}
+	Object.defineProperty(foo.prototype,'constructor',{
+		enumerable:false,
+		writable:true,
+		configurable: true,
+		value: foo // 让.constructor指向foo
+	})
 </script>
 </body>
 </html>
