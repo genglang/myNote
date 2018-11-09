@@ -542,4 +542,23 @@
     	}
     })
    ```
+   - 访问__proto__其实是访问了__proto__()(getter),getter位于Object.prototype对象中,但是this指向调用对象,所以结果和Object.getPrototype(调用对象)相同
+   - __proto__是可设置属性,可以用setPrototypeOf进行设置
+ 
+### 对象关联
+   - Object.create()会创建一个新对象并把它关联到指定对象,避免比如说new构造函数会生成.prototype和.constructor的问题
+   - Object.create()会创建一个拥有空(或者null)[[Prototype]]链接的对象,这个对象无法进行委托,由于这个对象没用原型链,所以无法用instanceof判断,因此总是返回false
+   - 这些特殊的对象被称为字典,它们完全不会受到原型链的影响,所以非常适合用来存储数据
+   
+   - Object.create的polyfill
+   ```
+    if(Object.create){
+      Object.create = function(o){
+        function F(){}
+        F.prototype = o
+        return new F()
+      }
+    }
+   ```
+   - Object.create第二个参数可以传属性描述符
    
