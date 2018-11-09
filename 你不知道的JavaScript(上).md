@@ -514,3 +514,32 @@
     // ES6可以直接修改现有的prototype
     Object.setPrototypeOf(Bar.prototype, Foo.prototype)
    ```
+   - 如果忽略掉Object.create带来的轻微性能损失(抛弃对象需要进行垃圾回收),其实际比ES6以及之后的方法更短可读性更高
+
+### 检查类关系
+   - instanceof操作符左边是一个普通的对象,右操作符是个函数
+   - instanceof回答的问题是在左边对象整条[[Prototype]]链中是否有指向右边函数的prototype的对象
+   - 无法判断两个对象是否通过原型链相连
+   
+   - 如果是通过.bind函数来生成一个硬绑定函数,函数是没有.prototype属性的,在这样函数上使用instanceof的话,目标函数的.prototype会替代硬绑定函数的.prototype
+   - 通常我们不会再构造函数调用中使用硬绑定函数,不过如果这么做的话,实际相当于直接调用目标函数
+   
+### 判断原型链
+   1. foo.isPrototypeOf(a) 在a整条原型链中是否出现过foo
+   2. Object.getPrototype(a) 获取整个a的原型链
+   3. 直接通过__proto__访问原型链在ES6前并不是标准,甚至可以用.__proto__.__proto__来遍历原型链
+   
+   - __proto__大致是这样的
+   ```
+    Object.defineProperty(Object.prototype,'__proto__',{
+    	get: function () {
+    		return Object.getPrototypeOf(this)
+    	},
+    	set: function (o) {
+    		// ES6 setPrototypeOf()
+    		Object.setPrototypeOf(this,o)
+    		return o
+    	}
+    })
+   ```
+   

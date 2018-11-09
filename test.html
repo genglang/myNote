@@ -6,13 +6,15 @@
 </head>
 <body>
 <script>
-	function foo () {}
-	foo.prototype={}
-	Object.defineProperty(foo.prototype,'constructor',{
-		enumerable:false,
-		writable:true,
-		configurable: true,
-		value: foo // 让.constructor指向foo
+	Object.defineProperty(Object.prototype,'__proto__',{
+		get: function () {
+			return Object.getPrototypeOf(this)
+		},
+		set: function (o) {
+			// ES6 setPrototypeOf()
+			Object.setPrototypeOf(this,o)
+			return o
+		}
 	})
 </script>
 </body>
