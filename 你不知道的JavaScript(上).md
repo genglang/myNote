@@ -501,3 +501,16 @@
     	value: foo // 让.constructor指向foo
     })
    ```
+   - 如果需要修改一个对象的原型绑定为另一个对象的原型
+   ```
+    // 并不会创建一个新的对象,而是直接引用,子元素可能会修改祖先元素
+    Bar.prototype = Foo.prototype
+    // 如果绑定的祖先元素有改动,会影响子元素
+    Bar.prototype = new Foo()
+    
+    // 所以需要用以下方法
+    // ES6之前需要抛弃默认的Bar.prototype
+    Bar.prototype = Object.create(Foo.prototype)
+    // ES6可以直接修改现有的prototype
+    Object.setPrototypeOf(Bar.prototype, Foo.prototype)
+   ```
