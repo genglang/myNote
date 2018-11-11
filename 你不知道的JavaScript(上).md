@@ -563,3 +563,29 @@
    - Object.create第二个参数可以传属性描述符
 
 ## 十、行为委托
+
+### 对象继承的行为委托
+  ```
+  let Task = {
+  	setId (id) {
+  		this.id = id
+  	},
+  	outputId () {
+  		console.log(this.id)
+  	}
+  }
+  XYZ = Object.create(Task)
+  XYZ.prepareTast = function (id, label) {
+  	this.setId(id)
+  	this.label = label
+  }
+  XYZ.outputTaskDetail = function () {
+  	this.outputId()
+  	console.log(this.label)
+  }
+  XYZ.prepareTast(1, '你猜')
+  XYZ.outputTaskDetail()
+  ```
+  - 这种编码风格被称为对象关联
+  - JS中没有类似类的抽象机制,传统类设计模式中,尽量让子类拥有跟父类拥有同名方法以发挥重写(多态)优势,JS中则相反
+  

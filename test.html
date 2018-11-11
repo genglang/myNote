@@ -6,16 +6,25 @@
 </head>
 <body>
 <script>
-	Object.defineProperty(Object.prototype,'__proto__',{
-		get: function () {
-			return Object.getPrototypeOf(this)
+	let Task = {
+		setId (id) {
+			this.id = id
 		},
-		set: function (o) {
-			// ES6 setPrototypeOf()
-			Object.setPrototypeOf(this,o)
-			return o
+		outputId () {
+			console.log(this.id)
 		}
-	})
+	}
+	XYZ = Object.create(Task)
+	XYZ.prepareTast = function (id, label) {
+		this.setId(id)
+		this.label = label
+	}
+	XYZ.outputTaskDetail = function () {
+		this.outputId()
+		console.log(this.label)
+	}
+	XYZ.prepareTast(1, '你猜')
+	XYZ.outputTaskDetail()
 </script>
 </body>
 </html>
