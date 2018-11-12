@@ -1,2 +1,8 @@
 图片路径正确地址报错
 图片是2x 3x图的时候只用写@前的路径
+
+props传入事件每次都会进行一次事件绑定
+通过把事件绑定到组件内减少事件绑定
+
+通过shouldComponentUpdate拦截更新
+或者使用PureComponent 默认对组件shouldComponentUpdate进行软相等判定
