@@ -395,7 +395,7 @@
   - 可以通过Object.defineProperty给对象定义迭代器属性
   - for-of循环每次调用myObject迭代器的next()方法时,内部的指针都会向前移动并返回对象列表的下一个值(提醒:需要注意遍历对象属性/值的顺序)
 
-## 类
+## 八、类
   - 类/继承描述了一种代码的组织结构形式,一种在软件中对真实世界问题领域的建模
   - 面向对象编程强调数据和操作数据本质上是互相关联的,好的设计就是把数据和它的相关行为打包(封装)起来,这被称作数据结构
   - 传统语言构造函数属于类,JS类属于构造函数
@@ -421,7 +421,7 @@
 ### 寄生混入
   - 新建一个父类实例然后改写方法
   
-## 原型
+## 九、原型
   - JS中的对象有一个特殊的[[Prototype]]内置属性
   - 是对于其他对象的引用
   - 所有[[Prototype]]的尽头都是Object.prototype
@@ -501,3 +501,91 @@
     	value: foo // 让.constructor指向foo
     })
    ```
+   - 如果需要修改一个对象的原型绑定为另一个对象的原型
+   ```
+    // 并不会创建一个新的对象,而是直接引用,子元素可能会修改祖先元素
+    Bar.prototype = Foo.prototype
+    // 如果绑定的祖先元素有改动,会影响子元素
+    Bar.prototype = new Foo()
+    
+    // 所以需要用以下方法
+    // ES6之前需要抛弃默认的Bar.prototype
+    Bar.prototype = Object.create(Foo.prototype)
+    // ES6可以直接修改现有的prototype
+    Object.setPrototypeOf(Bar.prototype, Foo.prototype)
+   ```
+   - 如果忽略掉Object.create带来的轻微性能损失(抛弃对象需要进行垃圾回收),其实际比ES6以及之后的方法更短可读性更高
+
+### 检查类关系
+   - instanceof操作符左边是一个普通的对象,右操作符是个函数
+   - instanceof回答的问题是在左边对象整条[[Prototype]]链中是否有指向右边函数的prototype的对象
+   - 无法判断两个对象是否通过原型链相连
+   
+   - 如果是通过.bind函数来生成一个硬绑定函数,函数是没有.prototype属性的,在这样函数上使用instanceof的话,目标函数的.prototype会替代硬绑定函数的.prototype
+   - 通常我们不会再构造函数调用中使用硬绑定函数,不过如果这么做的话,实际相当于直接调用目标函数
+   
+### 判断原型链
+   1. foo.isPrototypeOf(a) 在a整条原型链中是否出现过foo
+   2. Object.getPrototype(a) 获取整个a的原型链
+   3. 直接通过__proto__访问原型链在ES6前并不是标准,甚至可以用.__proto__.__proto__来遍历原型链
+   
+   - __proto__大致是这样的
+   ```
+    Object.defineProperty(Object.prototype,'__proto__',{
+    	get: function () {
+    		return Object.getPrototypeOf(this)
+    	},
+    	set: function (o) {
+    		// ES6 setPrototypeOf()
+    		Object.setPrototypeOf(this,o)
+    		return o
+    	}
+    })
+   ```
+   - 访问__proto__其实是访问了__proto__()(getter),getter位于Object.prototype对象中,但是this指向调用对象,所以结果和Object.getPrototype(调用对象)相同
+   - __proto__是可设置属性,可以用setPrototypeOf进行设置
+ 
+### 对象关联
+   - Object.create()会创建一个新对象并把它关联到指定对象,避免比如说new构造函数会生成.prototype和.constructor的问题
+   - Object.create()会创建一个拥有空(或者null)[[Prototype]]链接的对象,这个对象无法进行委托,由于这个对象没用原型链,所以无法用instanceof判断,因此总是返回false
+   - 这些特殊的对象被称为字典,它们完全不会受到原型链的影响,所以非常适合用来存储数据
+   
+   - Object.create的polyfill
+   ```
+    if(Object.create){
+      Object.create = function(o){
+        function F(){}
+        F.prototype = o
+        return new F()
+      }
+    }
+   ```
+   - Object.create第二个参数可以传属性描述符
+
+## 十、行为委托
+
+### 对象继承的行为委托
+  ```
+  let Task = {
+  	setId (id) {
+  		this.id = id
+  	},
+  	outputId () {
+  		console.log(this.id)
+  	}
+  }
+  XYZ = Object.create(Task)
+  XYZ.prepareTast = function (id, label) {
+  	this.setId(id)
+  	this.label = label
+  }
+  XYZ.outputTaskDetail = function () {
+  	this.outputId()
+  	console.log(this.label)
+  }
+  XYZ.prepareTast(1, '你猜')
+  XYZ.outputTaskDetail()
+  ```
+  - 这种编码风格被称为对象关联
+  - JS中没有类似类的抽象机制,传统类设计模式中,尽量让子类拥有跟父类拥有同名方法以发挥重写(多态)优势,JS中则相反
+  

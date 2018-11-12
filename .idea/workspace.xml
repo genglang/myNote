@@ -3,10 +3,10 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="11" />
     <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="441" />
+    <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="514" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1232a4d6-64ce-4efe-90b1-a7d206078b81" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/你不知道的JavaScript(上).md" beforeDir="false" afterPath="$PROJECT_DIR$/你不知道的JavaScript(上).md" afterDir="false" />
     </list>
@@ -34,8 +34,8 @@
       <file leaf-file-name="你不知道的JavaScript(上)" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3724">
-              <caret line="196" column="1" selection-start-line="196" selection-start-column="1" selection-end-line="197" selection-end-column="38" />
+            <state relative-caret-position="3743">
+              <caret line="197" column="38" selection-start-line="197" selection-start-column="38" selection-end-line="197" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -44,8 +44,8 @@
         <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="503">
-                <caret line="500" column="21" selection-start-line="500" selection-start-column="21" selection-end-line="500" selection-end-column="21" />
+              <first_editor relative-caret-position="569">
+                <caret line="590" column="2" selection-start-line="590" selection-start-column="2" selection-end-line="590" selection-end-column="2" />
               </first_editor>
               <second_editor />
             </state>
@@ -55,8 +55,8 @@
       <file leaf-file-name="test.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="15" selection-end-column="4" />
+            <state relative-caret-position="494">
+              <caret line="26" column="24" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="26" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -74,6 +74,9 @@
     <findStrings>
       <find>万物</find>
       <find>，</find>
+      <find>类</find>
+      <find>##</find>
+      <find>原型</find>
     </findStrings>
     <replaceStrings>
       <replace>,</replace>
@@ -109,8 +112,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="281" />
-    <option name="y" value="-8" />
+    <option name="x" value="424" />
+    <option name="y" value="31" />
     <option name="width" value="974" />
     <option name="height" value="988" />
   </component>
@@ -223,16 +226,17 @@
       <workItem from="1541425536043" duration="6030000" />
       <workItem from="1541510625102" duration="6919000" />
       <workItem from="1541601588870" duration="2494000" />
-      <workItem from="1541678314561" duration="4414000" />
+      <workItem from="1541678314561" duration="4606000" />
+      <workItem from="1541774997484" duration="6020000" />
+      <workItem from="1541944456257" duration="4701000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95281000" />
+    <option name="totallyTimeSpent" value="106194000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14895834" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -636,23 +640,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上)">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3724">
-          <caret line="196" column="1" selection-start-line="196" selection-start-column="1" selection-end-line="197" selection-end-column="38" />
+        <state relative-caret-position="3743">
+          <caret line="197" column="38" selection-start-line="197" selection-start-column="38" selection-end-line="197" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="15" selection-end-column="4" />
+        <state relative-caret-position="494">
+          <caret line="26" column="24" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="26" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的JavaScript(上).md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="503">
-            <caret line="500" column="21" selection-start-line="500" selection-start-column="21" selection-end-line="500" selection-end-column="21" />
+          <first_editor relative-caret-position="569">
+            <caret line="590" column="2" selection-start-line="590" selection-start-column="2" selection-end-line="590" selection-end-column="2" />
           </first_editor>
           <second_editor />
         </state>
