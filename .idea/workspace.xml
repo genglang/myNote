@@ -4,6 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="11" />
     <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="441" />
     <bookmark url="file://$PROJECT_DIR$/你不知道的JavaScript(上).md" line="514" />
+    <bookmark url="file://$PROJECT_DIR$/你不知道的Javascript(中).md" line="121" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1232a4d6-64ce-4efe-90b1-a7d206078b81" name="Default" comment="">
@@ -33,8 +34,8 @@
       <file leaf-file-name="你不知道的Javascript(中)" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="71" column="62" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="62" />
+            <state relative-caret-position="76">
+              <caret line="130" column="8" selection-start-line="130" selection-start-column="4" selection-end-line="130" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -43,8 +44,8 @@
         <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="610">
-                <caret line="101" column="4" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
+              <first_editor relative-caret-position="572">
+                <caret line="175" column="2" selection-start-line="175" selection-start-column="2" selection-end-line="175" selection-end-column="2" />
               </first_editor>
               <second_editor />
             </state>
@@ -63,11 +64,11 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>万物</find>
-      <find>，</find>
       <find>类</find>
       <find>##</find>
       <find>原型</find>
       <find>hasOwnProperty</find>
+      <find>，</find>
     </findStrings>
     <replaceStrings>
       <replace>,</replace>
@@ -223,12 +224,12 @@
       <workItem from="1541774997484" duration="6020000" />
       <workItem from="1541944456257" duration="7165000" />
       <workItem from="1542029924351" duration="3295000" />
-      <workItem from="1542112684122" duration="3132000" />
+      <workItem from="1542112684122" duration="4415000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115085000" />
+    <option name="totallyTimeSpent" value="116368000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -517,16 +518,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="71" column="62" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="62" />
+        <state relative-caret-position="76">
+          <caret line="130" column="8" selection-start-line="130" selection-start-column="4" selection-end-line="130" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中).md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="610">
-            <caret line="101" column="4" selection-start-line="101" selection-start-column="4" selection-end-line="101" selection-end-column="4" />
+          <first_editor relative-caret-position="572">
+            <caret line="175" column="2" selection-start-line="175" selection-start-column="2" selection-end-line="175" selection-end-column="2" />
           </first_editor>
           <second_editor />
         </state>
