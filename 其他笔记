@@ -42,3 +42,9 @@ if(!Function.prototype.softBind){
     return bound
   }
 }
+
+立即执行函数的技巧
+void可以让JavaScript引擎把一个function关键字识别成函数表达式而不是函数声明(语句)
+void function a(){
+  console.log(1)
+}()
