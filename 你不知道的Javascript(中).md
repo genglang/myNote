@@ -247,7 +247,7 @@
   }
   ```
   - 因此封装基本类型值,用Object()函数(没有new)
-  ```ecmascript 6
+  ```
   var a = "abc";
   var b = new String( a );
   var c = Object( a );
@@ -261,3 +261,13 @@
   ```
   
 ### 拆封
+  - 需要拆封对象中的基本类型值,可以使用valueOf()函数
+  ```
+  var a = new String( "abc" );
+  var b = new Number( 42 );
+  var c = new Boolean( true );
+  a.valueOf(); // "abc"
+  b.valueOf(); // 42
+  c.valueOf(); // true
+  ```
+  - 在需要用到封装对象中的基本值的地方会发生隐式拆封

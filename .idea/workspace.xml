@@ -29,12 +29,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="md" value="104" />
+          <entry key="md" value="119" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Markdown" value="96" />
+          <entry key="Markdown" value="111" />
           <entry key="PLAIN_TEXT" value="8" />
         </counts>
       </usages-collector>
@@ -68,8 +68,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
-              <caret line="197" column="71" lean-forward="true" selection-start-line="188" selection-start-column="14" selection-end-line="197" selection-end-column="71" />
+            <state relative-caret-position="428">
+              <caret line="206" column="32" selection-start-line="206" selection-start-column="8" selection-end-line="206" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -78,8 +78,8 @@
         <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="525">
-                <caret line="262" column="6" selection-start-line="262" selection-start-column="6" selection-end-line="262" selection-end-column="6" />
+              <first_editor relative-caret-position="506">
+                <caret line="272" column="28" selection-start-line="272" selection-start-column="28" selection-end-line="272" selection-end-column="28" />
               </first_editor>
               <second_editor />
             </state>
@@ -267,18 +267,18 @@
       <workItem from="1542029924351" duration="3295000" />
       <workItem from="1542112684122" duration="5538000" />
       <workItem from="1542208018182" duration="490000" />
-      <workItem from="1542208634706" duration="2688000" />
+      <workItem from="1542208634706" duration="3176000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="120669000" />
+    <option name="totallyTimeSpent" value="121157000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1680" height="952" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1615431" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1615431" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -289,7 +289,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.24418604" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.24418604" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -332,8 +332,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="197" column="71" lean-forward="true" selection-start-line="188" selection-start-column="14" selection-end-line="197" selection-end-column="71" />
+        <state relative-caret-position="428">
+          <caret line="206" column="32" selection-start-line="206" selection-start-column="8" selection-end-line="206" selection-end-column="32" />
         </state>
       </provider>
     </entry>
@@ -345,8 +345,8 @@
       </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="525">
-            <caret line="262" column="6" selection-start-line="262" selection-start-column="6" selection-end-line="262" selection-end-column="6" />
+          <first_editor relative-caret-position="506">
+            <caret line="272" column="28" selection-start-line="272" selection-start-column="28" selection-end-line="272" selection-end-column="28" />
           </first_editor>
           <second_editor />
         </state>
