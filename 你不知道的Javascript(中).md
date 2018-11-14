@@ -218,3 +218,46 @@
    Object.prototype.toString.call(a); // "[object String]"
   ```
   通过构造函数创建出来的是封装的基本类型值的封装对象
+
+### 内部属性[[Class]]
+  所有typeof返回object的对象都包含一个内部属性[[Class]] (可以看做一个内部的分类)无法直接访问一般通过toString来查看
+  ```
+  Object.prototype.toString.call( [1,2,3] );
+  // "[object Array]"
+  Object.prototype.toString.call( /regex-literal/i );
+  // "[object RegExp]"
+  ```
+  - 多数情况下[[Class]]属性和创建该对象的内建原生构造函数相对应,但也有例外
+  ```
+  Object.prototype.toString.call( null );
+  // "[object Null]"
+  Object.prototype.toString.call( undefined );
+  // "[object Undefined]
+  ```
+
+### 封装对象包装
+  - 基本类型没有.length和.toString这样的属性和方法,需要通过封装对象才能访问,这个时候JS会自动为基本类型包装一个封装对象
+  - 如果需要经常用到这些字符串属性和方法,比如for循环中使用i<a.length,那么从一开始就创建一个封装对象也许更方便,这样JS引擎就不用每次都自动创建了
+  - 但是事实证明这是一个弱智方法,因为浏览器已经为.length这样的常见情况进行了性能优化,手动优化反而会降低效率
+  - 所以一般最好的办法是由JS殷勤决定什么时候使用封装对象(尽量少用原生函数构造函数)
+  ```
+  var a = new Boolean( false );
+  if (!a) {
+    console.log( "Oops" ); // 执行不到这里
+  }
+  ```
+  - 因此封装基本类型值,用Object()函数(没有new)
+  ```ecmascript 6
+  var a = "abc";
+  var b = new String( a );
+  var c = Object( a );
+  typeof a; // "string"
+  typeof b; // "object"
+  typeof c; // "object"
+  b instanceof String; // true
+  c instanceof String; // true
+  Object.prototype.toString.call( b ); // "[object String]"
+  Object.prototype.toString.call( c ); // "[object String]"
+  ```
+  
+### 拆封
