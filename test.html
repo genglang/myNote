@@ -1,29 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>用于测试的HTML页面</title>
+    <meta charset="UTF-8">
+    <title>用于测试的HTML页面</title>
 </head>
 <body>
 <script>
-	let a = {}
-	let c = {}
-	for (let i = 0; i < 10000; i++) {
-		a[i + 'a'] = i
-	}
-	for (let i = 0; i < 10000; i++) {
-		c[i + 'a'] = i
-	}
-	a.prototype = c
+    function getTimer(callBack) {
+        let t1 = new Date();
+        callBack();
+        let t2 = new Date();
+        console.log(t2 - t1);
+    }
 
-	let b = '1000a'
-	console.log(a)
-	console.time()
-	console.time(b in a)
-	console.timeEnd()
-	console.time()
-	console.time(a.hasOwnProperty(b))
-	console.timeEnd()
+    console.log('10000000的循环');
+    let arr = [];
+    getTimer(() => {
+        for (let i = 0; i < 10000000; i++) {
+            arr.push(i);
+        }
+    });
+
+    console.log('forEach');
+    getTimer(() => {
+        arr.forEach(item => item);
+    });
+    console.log('map');
+    getTimer(() => {
+        arr.map(item => item);
+    });
+    console.log('filter');
+    getTimer(() => {
+        arr.filter(item => item);
+    });
+    console.log('reduce');
+    getTimer(() => {
+        arr.reduce(item => item);
+    });
+    console.log('some');
+    getTimer(() => {
+        arr.some(item => item);
+    });
+    console.log('every');
+    getTimer(() => {
+        arr.every(item => item);
+    });
+
+    console.log('for');
+    getTimer(() => {
+        for (let i = 0; i < arr.lenth; i++) {
+
+        }
+    });
+    console.log('for let length');
+    getTimer(() => {
+        for (let i = 0, length = arr.length; i < length; i++) {
+
+        }
+    });
+    console.log('for let length out');
+    getTimer(() => {
+        let length = arr.length;
+        for (let i = 0; i < length; i++) {
+
+        }
+    });
+    console.log('for-in');
+    getTimer(() => {
+        for (let i in arr) {
+
+        }
+    });
+    console.log('for-of');
+    getTimer(() => {
+        for (let i of arr) {
+
+        }
+    });
 </script>
 </body>
 </html>

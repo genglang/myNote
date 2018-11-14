@@ -7,3 +7,6 @@ props传入事件每次都会进行一次事件绑定
 通过shouldComponentUpdate拦截更新
 或者使用PureComponent 默认对组件shouldComponentUpdate进行软相等判定
 嵌套对象中使用shouldComponentUpdate会导致nextProps和this.props相等
+
+react-native-vector-icons/Ionicons找不到
+删除./node_modules/react-native/local-cli/core/__fixtures__/files/package.json
