@@ -209,3 +209,12 @@
   - slice()不带参数会返回当前数组的一个浅复本,由于传递给函数的是指向 该副本的引用,所以不会影响传入的参数指向的数组
 
 ## 三、原生函数
+  - 原生函数是JS的内建函数
+  - 原生函数可以被当做构造函数使用,但是其构造出来的对象可能会和设想的有所出入
+  ```
+   var a = new String( "abc" );
+   typeof a; // 是"object"，不是"String
+   a instanceof String; // true
+   Object.prototype.toString.call(a); // "[object String]"
+  ```
+  通过构造函数创建出来的是封装的基本类型值的封装对象
