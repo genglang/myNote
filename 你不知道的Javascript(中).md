@@ -297,3 +297,8 @@
   var a = new Array( 3 );
   fakeJoin( a, "-" ); // "--"
   ```
+  - 可以通过下述方式来创建包含undefined 单元（而非“空单元”）的数组
+  ```
+  var a = Array.apply( null, { length: 3 } );
+  a; // [ undefined, undefined, undefined ]
+  ```
