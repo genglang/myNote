@@ -273,3 +273,27 @@
   - 在需要用到封装对象中的基本值的地方会发生隐式拆封
 
 ### 原生函数作为构造函数
+
+#### Array(..)
+  - 构造函数Array(..) 不要求必须带new 关键字。不带时，它会被自动补上。因此Array(1,2,3) 和new Array(1,2,3) 的效果是一样的
+  - Array构造函数只带一个数字参数时,参数会被作为数组的预设长度,而非只充当数组的一个元素
+  - 数组并没有预设长度这个概念。这样创建出来的只是一个空数组，只不过它的length 属性被设置成了指定的值
+  - 这会导致一些怪异的行为,这一切都是已经被废止的旧特性
+  - 并且不同浏览器显示的结果也不同
+  - 数组join的实现代码参考:
+  ```
+  function fakeJoin(arr,connector) {
+    var str = "";
+    for (var i = 0; i < arr.length; i++) {
+      if (i > 0) {
+        str += connector;
+      }
+      if (arr[i] !== undefined) {
+        str += arr[i];
+      }
+    }
+    return str;
+  }
+  var a = new Array( 3 );
+  fakeJoin( a, "-" ); // "--"
+  ```
