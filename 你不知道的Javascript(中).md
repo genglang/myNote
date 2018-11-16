@@ -302,3 +302,14 @@
   var a = Array.apply( null, { length: 3 } );
   a; // [ undefined, undefined, undefined ]
   ```
+#### Object(..)、Function(..) 和RegExp(..)
+  - 同样除非万不得已,否则尽量不要用Object/Function/RegExp
+  - 用字面量定义对象
+  - 构造函数Function只在极少数情况下很有用,比如说动态定义函数参数和函数体的时候,不要当作eval的替代品,基本上不会通过这种方式来定义函数
+  - 用常量形式定义正则表达式,不仅语法简单,执行效率也更高,因为JS引擎在代码执行前会预编译和缓存,与前面的构造函数不同RegExp有时挺有用的
+  - 比如说动态定义正则表达式
+  ```
+  var name = "Kyle";
+  var namePattern = new RegExp( "\\b(?:" + name + ")+\\b", "ig" );
+  var matches = someText.match( namePattern );
+  ```
