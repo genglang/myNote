@@ -313,3 +313,12 @@
   var namePattern = new RegExp( "\\b(?:" + name + ")+\\b", "ig" );
   var matches = someText.match( namePattern );
   ```
+  
+#### Date(..)和Error(..)
+  - ES5之后可以用Date.now()替代new Date().getTime()
+  - Error()可以不带new,创建错误对象主要是为了获得当前栈的上下文,大部分JS引擎通过只读属性.stack来访问
+  - 栈上下文信息包括函数调用栈信息和产生错误的代码行号
+  - 错误对象一般与throw一起使用
+  - 通常错误对象至少包含一个message属性,有时也有其他属性(必须作为只读属性访问),如type
+  - 除了Error()外还有一些针对指定错误类型的原生构造函数如EvalError(),RangeError()等 很少手动调用都是自动调用
+#### Symbol(..)
