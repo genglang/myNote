@@ -322,3 +322,21 @@
   - 通常错误对象至少包含一个message属性,有时也有其他属性(必须作为只读属性访问),如type
   - 除了Error()外还有一些针对指定错误类型的原生构造函数如EvalError(),RangeError()等 很少手动调用都是自动调用
 #### Symbol(..)
+  - 符号是具有唯一性的特殊值(并非绝对)用它来命名对象属性不容易导致重名,该类型引入主要源于ES6的一些特殊构造
+  - 符号可以用作属性名,但无论是在代码还是开发控制台中都无法查看和访问它的值
+  - ES6中有一些预定义符号,以Symbol的静态属性形式出现,如Symbol.create、Symbol.iterator等
+    ```
+    obj[Symbol.iterator] = function(){ /*..*/ };
+    ```     
+  - 可以使用Symbol(..) 原生构造函数来自定义符号。但它比较特殊，不能带new关键字否则会出错
+    ```
+    var mysym = Symbol( "my own symbol" );
+    mysym; // Symbol(my own symbol)
+    mysym.toString(); // "Symbol(my own symbol)"
+    typeof mysym; // "symbol"
+    var a = { };
+    a[mysym] = "foobar";
+    Object.getOwnPropertySymbols( a );
+    // [ Symbol(my own symbol) ]
+    ```
+  - 主要用于私有或特殊属性,可以用于替代有下划线(_)前缀的属性
