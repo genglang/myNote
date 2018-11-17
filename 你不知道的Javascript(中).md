@@ -373,3 +373,82 @@
   Array.prototype.length = 0;
   ```
   - Function.prototype 是一个空函数,RegExp.prototype是一个空正则表达式,而Array.prototype是一个空数组
+
+## 四、强制类型转换
+
+### 值类型转换
+   - 类型转换发生在静态类型语言编译时,强制类型转换发生在动态类型语言的运行时
+   - 强制类型转换分为"隐式强制类型转换"和"显式强制类型转换"
+   ```
+   var a = 42;
+   var b = a + ""; // 隐式强制类型转换
+   var c = String( a ); // 显式强制类型转换
+   ```
+   
+### ToString
+   - 基本类型值的字符串化规则为
+     - null 转换为"null"
+     - undefined 转换为"undefined"
+     - true转换为"true"
+   - 对普通对象来说,除非自行定义,否则toString返回内部属性的[[Class]]的值(如[Object,Object])
+   - 如果对象有自己的toString() 方法，字符串化时就会调用该方法并使用其返回值
+   - 数组的默认toString() 方法经过了重新定义，将所有单元字符串化以后再用"," 连接起来
+   ```
+   var a = [1,2,3];
+   a.toString(); // "1,2,3"
+   ```
+#### JSON.stringify()
+   - JSON.stringify(..)在序列化为字符串时也用到了ToString,
+   - 与toString()效果基本相同只不过序列化结果总是字符串
+   ```
+   JSON.stringify( 42 ); // "42"
+   JSON.stringify( "42" ); // ""42"" （含有双引号的字符串）
+   JSON.stringify( null ); // "null"
+   JSON.stringify( true ); // "true"
+   ```
+   - 不安全的JSON 值:undefined、function、symbol、循环引用都不符合JSON结构标准,支持JSON的语言无法处理
+   - JSON.stringify(..) 在对象中遇到undefined、function 和symbol 时会自动将其忽略，在数组中则会返回null（以保证单元位置不变）
+   - 如果对象中定义了toJSON方法,JSON字符串化时会首先调用该方法,然后用它的返回值来进行调用JSON.stringify(..)序列化
+   - JSON.stringify(..) 传递一个可选参数replacer，它可以是数组或者函数，用来指定对象序列化过程中哪些属性应该被处理，哪些应该被排除，和toJSON() 很像。
+   - 如果replacer 是一个数组，那么它必须是一个字符串数组，其中包含序列化要处理的对象的属性名称，除此之外其他的属性则被忽略。
+   - 如果replacer 是一个函数，它会对对象本身调用一次，然后对对象中的每个属性各调用一次，每次传递两个参数，键和值。如果要忽略某个键就返回undefined，否则返回指定的值。
+   ```
+   var a = {
+     b: 42,
+     c: "42",
+     d: [1,2,3]
+   };
+   JSON.stringify( a, ["b","c"] ); // "{"b":42,"c":"42"}"
+   JSON.stringify( a, function(k,v){
+     if (k !== "c") return v;
+   } ); // "{"b":42,"d":[1,2,3]}"
+   ```
+   - 如果replacer 是函数，它的参数k 在第一次调用时为undefined
+   - JSON.stringfy还有一个可选参数space，用来指定输出的缩进格式。space 为正整数时是指定每一级缩进的字符数，它还可以是字符串，此时最前面的十个字符被用于每一级的缩进
+   ```
+   var a = {
+     b: 42,
+     c: "42",
+     d: [1,2,3]
+   };
+   JSON.stringify( a, null, 3 );
+   //  "{
+   //    "b": 42,
+   //    "c": "42",
+   //    "d": [
+   //   1,
+   //  2,
+   //  3
+   //  ]
+   // }"
+   JSON.stringify( a, null, "-----" );
+   // "{
+   // -----"b": 42,
+   // -----"c": "42",
+   // -----"d": [
+   // ----------1,
+   // ----------2,
+   // ----------3
+   // -----]
+   // }"
+   ```
