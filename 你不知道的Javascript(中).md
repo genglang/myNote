@@ -114,9 +114,9 @@
   - 由于数字值可以使用Number对象进行封装,因此数字值可以调用Number.prototype的方法
   - 数字调用.运算符会优先识别为常量 容易报错
   ```
-  // 无效语法：
+  // 无效语法:
   42.toFixed( 3 ); // SyntaxError 42.被引擎识别为浮点数
-  // 下面的语法都有效：
+  // 下面的语法都有效:
   (42).toFixed( 3 ); // "42.000"
   0.42.toFixed( 3 ); // "0.420"
   42..toFixed( 3 ); // "42.000" 
@@ -127,7 +127,7 @@
   0.1 + 0.2 === 0.3; // false 并非正好等于0.3
   ```
   - 设置一个误差范围值,通常称为“机器精度”(machine epsilon), 对JavaScript的数字来说,这个值通常是2^-52 (2.220446049250313e-16)来处理精度问题
-  - 从ES6 开始,该值定义在Number.EPSILON 中,我们可以直接拿来用,也可以为ES6 之前的版本写polyfill：
+  - 从ES6 开始,该值定义在Number.EPSILON 中,我们可以直接拿来用,也可以为ES6 之前的版本写polyfill:
   ```
   if (!Number.EPSILON) {
     Number.EPSILON = Math.pow(2,-52);
@@ -145,7 +145,7 @@
   ```
   - 所能呈现的最大浮点数大约是1798e+308 被定义在Number.MAX_VALUE
   - 所能呈现的最小浮点数大约是5e-324 被定义在Number.MIN_VALUE
-  - 所能安全呈现的最大整数是2^53 - 1，即9007199254740991 被定义在Number.MAX_SAFE_INTEGER
+  - 所能安全呈现的最大整数是2^53 - 1,即9007199254740991 被定义在Number.MAX_SAFE_INTEGER
   - 所能安全呈现的最大整数是-9007199254740991 被定义在Number.MIN_SAFE_INTEGER
   
   - 检测一个值是否为整数
@@ -168,7 +168,7 @@
     };
   }
   ```
-  - 所能操作的最大数字为Math.pow(-2,31)（-2147483648,约－21 亿）到Math.pow(2,31) - 1（2147483647，约21 亿）
+  - 所能操作的最大数字为Math.pow(-2,31)（-2147483648,约－21 亿）到Math.pow(2,31) - 1（2147483647,约21 亿）
   ```
   a | 0 // 将a中变量转换为32位有符号证书
   ```
@@ -213,7 +213,7 @@
   - 原生函数可以被当做构造函数使用,但是其构造出来的对象可能会和设想的有所出入
   ```
    var a = new String( "abc" );
-   typeof a; // 是"object"，不是"String
+   typeof a; // 是"object",不是"String
    a instanceof String; // true
    Object.prototype.toString.call(a); // "[object String]"
   ```
@@ -275,9 +275,9 @@
 ### 原生函数作为构造函数
 
 #### Array(..)
-  - 构造函数Array(..) 不要求必须带new 关键字。不带时，它会被自动补上。因此Array(1,2,3) 和new Array(1,2,3) 的效果是一样的
+  - 构造函数Array(..) 不要求必须带new 关键字。不带时,它会被自动补上。因此Array(1,2,3) 和new Array(1,2,3) 的效果是一样的
   - Array构造函数只带一个数字参数时,参数会被作为数组的预设长度,而非只充当数组的一个元素
-  - 数组并没有预设长度这个概念。这样创建出来的只是一个空数组，只不过它的length 属性被设置成了指定的值
+  - 数组并没有预设长度这个概念。这样创建出来的只是一个空数组,只不过它的length 属性被设置成了指定的值
   - 这会导致一些怪异的行为,这一切都是已经被废止的旧特性
   - 并且不同浏览器显示的结果也不同
   - 数组join的实现代码参考:
@@ -328,7 +328,7 @@
     ```
     obj[Symbol.iterator] = function(){ /*..*/ };
     ```     
-  - 可以使用Symbol(..) 原生构造函数来自定义符号。但它比较特殊，不能带new关键字否则会出错
+  - 可以使用Symbol(..) 原生构造函数来自定义符号。但它比较特殊,不能带new关键字否则会出错
     ```
     var mysym = Symbol( "my own symbol" );
     mysym; // Symbol(my own symbol)
@@ -340,3 +340,36 @@
     // [ Symbol(my own symbol) ]
     ```
   - 主要用于私有或特殊属性,可以用于替代有下划线(_)前缀的属性
+
+#### 原生原型
+  - 原生构造函数有自己的.prototype 对象,如Array.prototype、String.prototype 等
+  - 这些对象包含其对应子类型所持有的行为特征
+  - 将字符串封装为字符串对象之后就能访问String.prototype中定义的方法
+  ```
+  String#indexOf(..)
+  String#charAt(..)
+  String#substr(..)
+  String#substring(..)
+  String#slice(..)
+  String#toUpperCase()
+  String#toLowerCase()
+  String#trim()
+  ```
+  - 以上方法并不改变原字符串的值,而是返回一个新字符串。
+  - 借助原型代理,所有字符串都可以访问这些方法
+  - 其他构造函数的原型包含它们各自类型所特有的行为特征比如Number#tofixed(..)（将数字转换为指定长度的整数字符串）和Array#concat(..)（合并数组）
+  - 所有的函数都可以调用Function.prototype中的apply/call/bind
+  
+  - 原生原型（native prototype）并非普通对象那么简单
+  ```
+  typeof Function.prototype; // "function"
+  Function.prototype(); // 空函数！
+  RegExp.prototype.toString(); // "/(?:)/"——空正则表达式
+  "abc".match( RegExp.prototype ); // [""]
+  Array.isArray( Array.prototype ); // true
+  Array.prototype.push( 1, 2, 3 ); // 3
+  Array.prototype; // [1,2,3]
+  // 需要将Array.prototype设置回空,否则会导致问题！
+  Array.prototype.length = 0;
+  ```
+  - Function.prototype 是一个空函数,RegExp.prototype是一个空正则表达式,而Array.prototype是一个空数组
