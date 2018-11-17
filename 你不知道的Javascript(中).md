@@ -471,3 +471,116 @@
         - false
         - +0、-0 和NaN
         - ""
+
+### 显式强制类型转换
+
+#### 字符串和数字之间的显式转换
+   ```
+   Number()
+   String()
+   '1'.toString()
+   +'1'(容易产生误会)
+   ```
+#### 日期显式转换为数字
+   ```
+   +new Date()
+   +new Date   // JS的奇特语法 构造函数没有参数的时候可以不带()
+   new Date().getTime()
+   Date.now()
+   ```
+#### ~运算符
+   ```
+   // |运算符的空操作可以执行ToInt32转换
+   0 | -0; // 0
+   0 | NaN; // 0
+   0 | Infinity; // 0
+   0 | -Infinity; // 0
+   // ~返回数字的补码
+   ~42; // -(42+1) ==> -43
+   // 用于处理indexOf返回-1时转换为0(假值)
+   Math.floor( -49.6 ); // -50
+   ~~-49.6; // -49      //两次转换
+   ```
+#### 显式解析数字字符串
+   - 解析允许字符串中含有非数字字符，解析按从左到右的顺序，如果遇到非数字字符就停止。而转换不允许出现非数字字符，否则会失败并返回NaN
+   ```
+   var a = "42";
+   var b = "42px";
+   Number( a ); // 42
+   parseInt( a ); // 42
+   Number( b ); // NaN
+   parseInt( b ); // 42
+   ```
+   - parseInt(..)最好添加第二个参数否则会出现bug 根据第一个字符决定基数
+   - ES5 开始parseInt(..) 默认转换为十进制数，除非另外指定
+#### 解析非字符串
+   ```
+   parseInt( 1/0, 19 ); // 18
+   ```
+   - 非字符串会被首先强制转换成能解析的字符串,然后转换成parseInt("Infinity", 19)
+   ```
+   parseInt( 0.000008 ); // 0 ("0" 来自于 "0.000008")
+   parseInt( 0.0000008 ); // 8 ("8" 来自于 "8e-7")
+   parseInt( false, 16 ); // 250 ("fa" 来自于 "false")
+   parseInt( parseInt, 16 ); // 15 ("f" 来自于 "function..")
+   parseInt( "0x10" ); // 16
+   parseInt( "103", 2 ); // 2
+   ```
+#### 显式转换为布尔值
+   ```
+   var a = "0";
+   var b = [];
+   var c = {};
+   var d = "";
+   var e = 0;
+   var f = null;
+   var g;
+   Boolean( a ); // true
+   Boolean( b ); // true
+   Boolean( c ); // true
+   Boolean( d ); // false
+   Boolean( e ); // false
+   Boolean( f ); // false
+   Boolean( g ); // false
+   以上用法不常用
+   var b = [];
+   var c = {};
+   var d = "";
+   var e = 0;
+   var f = null;
+   var g;
+   !!a; // true
+   !!b; // true
+   !!c; // true
+   !!d; // false
+   !!e; // false
+   !!f; // false
+   !!g; // false
+   ```
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
