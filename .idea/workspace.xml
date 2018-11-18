@@ -9,7 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1232a4d6-64ce-4efe-90b1-a7d206078b81" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/ES6笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/ES6笔记.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/你不知道的Javascript(中).md" beforeDir="false" afterPath="$PROJECT_DIR$/你不知道的Javascript(中).md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -36,30 +35,30 @@
       <file leaf-file-name="你不知道的Javascript(中)" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="530" column="4" selection-start-line="530" selection-start-column="2" selection-end-line="530" selection-end-column="4" />
+            <state relative-caret-position="430">
+              <caret line="544" column="66" lean-forward="true" selection-start-line="531" selection-start-column="4" selection-end-line="544" selection-end-column="66" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="你不知道的Javascript(中).md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="你不知道的Javascript(中).md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中).md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="537">
-                <caret line="669" column="5" selection-start-line="669" selection-start-column="5" selection-end-line="669" selection-end-column="5" />
+              <first_editor relative-caret-position="456">
+                <caret line="689" column="3" lean-forward="true" selection-start-line="689" selection-start-column="3" selection-end-line="689" selection-end-column="3" />
               </first_editor>
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ES6笔记.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ES6笔记.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ES6笔记.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="473">
-                <caret line="136" column="10" selection-start-line="136" selection-start-column="10" selection-end-line="136" selection-end-column="10" />
+              <first_editor relative-caret-position="478">
+                <caret line="143" column="12" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="12" />
               </first_editor>
               <second_editor />
             </state>
@@ -91,11 +90,11 @@
       <find>##</find>
       <find>原型</find>
       <find>hasOwnProperty</find>
-      <find>，</find>
       <find>：</find>
       <find>valueOf</find>
       <find>parseInt( b ); // 42</find>
       <find>比较双方先调用ToPrimitive</find>
+      <find>，</find>
     </findStrings>
     <replaceStrings>
       <replace>:</replace>
@@ -113,9 +112,9 @@
         <option value="$PROJECT_DIR$/你不知道的JavaScript(上).md" />
         <option value="$PROJECT_DIR$/React Native笔记" />
         <option value="$PROJECT_DIR$/其他笔记" />
-        <option value="$PROJECT_DIR$/你不知道的Javascript(中).md" />
         <option value="$PROJECT_DIR$/test.html" />
         <option value="$PROJECT_DIR$/ES6笔记.md" />
+        <option value="$PROJECT_DIR$/你不知道的Javascript(中).md" />
       </list>
     </option>
   </component>
@@ -256,25 +255,25 @@
       <workItem from="1542112684122" duration="6189000" />
       <workItem from="1542380120302" duration="1847000" />
       <workItem from="1542439866985" duration="17651000" />
-      <workItem from="1542519049356" duration="10046000" />
+      <workItem from="1542519049356" duration="10509000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="147686000" />
+    <option name="totallyTimeSpent" value="148149000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16979167" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16979167" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.24178155" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.24178155" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -534,23 +533,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="530" column="4" selection-start-line="530" selection-start-column="2" selection-end-line="530" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中).md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="537">
-            <caret line="669" column="5" selection-start-line="669" selection-start-column="5" selection-end-line="669" selection-end-column="5" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -561,8 +543,25 @@
     <entry file="file://$PROJECT_DIR$/ES6笔记.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="473">
-            <caret line="136" column="10" selection-start-line="136" selection-start-column="10" selection-end-line="136" selection-end-column="10" />
+          <first_editor relative-caret-position="478">
+            <caret line="143" column="12" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="12" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中)">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="430">
+          <caret line="544" column="66" lean-forward="true" selection-start-line="531" selection-start-column="4" selection-end-line="544" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/你不知道的Javascript(中).md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="456">
+            <caret line="689" column="3" lean-forward="true" selection-start-line="689" selection-start-column="3" selection-end-line="689" selection-end-column="3" />
           </first_editor>
           <second_editor />
         </state>
