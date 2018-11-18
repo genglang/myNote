@@ -142,3 +142,45 @@
   let [a, b, c] = [1, 2, 3]
   ```
   - 如果解构不成功,变量的值就等于undefined
+  - 左右数组不匹配时也能成功解构
+  - 如果等号的右边不是数组(或者严格地说,不是可遍历的结构,参见《Iterator》一章),那么将会报错
+  ```
+  let [foo] = 1;
+  let [foo] = false;
+  let [foo] = NaN;
+  let [foo] = undefined;
+  let [foo] = null;
+  let [foo] = {};
+  ```
+  - 上面的语句都会报错,因为等号右边的值,要么转为对象以后不具备Iterator 接口(前五个表达式),要么本身就不具备 Iterator 接口(最后一个表达式)
+  - 某种数据结构具有Iterator接口,都可以采用数组形式的解构赋值
+  ```
+  function* fibs() {
+    let a = 0;
+    let b = 1;
+    while (true) {
+      yield a;
+      [a, b] = [b, a + b];
+    }
+  }
+  
+  let [first, second, third, fourth, fifth, sixth] = fibs();
+  sixth // 5
+  ```
+  - 解构赋值允许指定默认值
+  ```
+  let [foo = true] = [];
+  foo // true
+  let [x, y = 'b'] = ['a']; // x='a', y='b'
+  let [x, y = 'b'] = ['a', undefined]; // x='a', y='b'
+  
+  let [x = 1] = [undefined];
+  x // 1
+  
+  let [x = 1] = [null];
+  x // null null不严格等于undefined
+  ```
+  - 如果默认值是表达式,那么这个表达式是惰性求值,只有调用的时候才会求值
+  - 默认值可以引用解构赋值的其他变量,但该变量必须已经声明
+
+### 对象的解构赋值
