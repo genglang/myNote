@@ -38,3 +38,7 @@
     let x = x;
     // ReferenceError: x is not defined
     ```
+  - let不允许重复声明
+  - let有块级作用域
+    - let实际上为JS新增了块级作用域
+    - ES6允许块级作用域的任意嵌套
