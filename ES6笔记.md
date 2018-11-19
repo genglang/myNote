@@ -225,3 +225,18 @@
   let {length : len} = 'hello';
   len // 5
   ```
+  
+### 数值和布尔值的解构赋值
+  - 解构赋值时,如果等号右边是布尔值,会被先转为对象
+  ```
+  let {toString: s} = 123;
+  s === Number.prototype.toString // true
+  
+  let {toString: s} = true;
+  s === Boolean.prototype.toString // true
+  ```
+  - 解构赋值的规则是,只要右边的值不是对象或数组,就先转为对象,因此null和undefined无法进行解构赋值
+  ```
+  let { prop: x } = undefined; // TypeError
+  let { prop: y } = null; // TypeError
+  ```
