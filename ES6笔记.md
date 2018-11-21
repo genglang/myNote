@@ -240,3 +240,103 @@
   let { prop: x } = undefined; // TypeError
   let { prop: y } = null; // TypeError
   ```
+  
+ ### 函数参数解构
+  - 当参数为对象时,设置默认值可能会有所不同
+  ```
+  function move({x = 0, y = 0} = {}) {
+    return [x, y];
+  }
+  
+  move({x: 3, y: 8}); // [3, 8]
+  move({x: 3}); // [3, 0]
+  move({}); // [0, 0]
+  move(); // [0, 0]
+  ```
+  - 结果取决于给什么设置默认值
+  ```
+  function move({x, y} = { x: 0, y: 0 }) {
+    return [x, y];
+  }
+  
+  move({x: 3, y: 8}); // [3, 8]
+  move({x: 3}); // [3, undefined]
+  move({}); // [undefined, undefined]
+  move(); // [0, 0]
+  ```
+  
+### 圆括号问题
+  - ES6规定,只要可能导致解构歧义,就不能使用圆括号
+  1. 变量声明语句
+  ```
+  // 全部报错
+  let [(a)] = [1];
+  
+  let {x: (c)} = {};
+  let ({x: c}) = {};
+  let {(x: c)} = {};
+  let {(x): c} = {};
+  
+  let { o: ({ p: p }) } = { o: { p: 2 } };
+  ```
+  2. 函数参数
+  ```
+  // 报错
+  function f([(z)]) { return z; }
+  // 报错
+  function f([z,(x)]) { return x; }
+  ```
+  3. 赋值语句模式
+  ```
+  // 全部报错
+  ({ p: a }) = { p: 42 };
+  ([a]) = [5];
+  [({ p: a }), { x: c }] = [{}, {}];
+  ```
+  - 可以使用的情况
+    - 只有赋值语句的非模式部分可以使用圆括号
+    ```
+    [(b)] = [3]; // 正确
+    ({ p: (d) } = {}); // 正确
+    [(parseInt.prop)] = [3]; // 正确
+    ```
+### 用途
+  1. 交换变量
+  ```
+  let x = 1;
+  let y = 2;
+  
+  [x, y] = [y, x];
+  ```
+  2. 方便地从函数返回多个值提取参数
+  3. 函数参数的定义
+  4. 方便提取JSON数据
+  5. 函数参数默认值
+  6. 遍历Map结构
+      ```
+      const map = new Map();
+      map.set('first', 'hello');
+      map.set('second', 'world');
+      for (let [key, value] of map) {
+        console.log(key + " is " + value);
+      }
+      // first is hello
+      // second is world
+      ```
+      - 如果只想获取键名，或者只想获取键值，可以写成下面这样
+      ```
+      // 获取键名
+      for (let [key] of map) {
+        // ...
+      }
+      
+      // 获取键值
+      for (let [,value] of map) {
+        // ...
+      }
+      ```
+    
+  7. 输入模块的指定方法
+  ```
+  const { SourceMapConsumer, SourceNode } = require("source-map");
+  ```
