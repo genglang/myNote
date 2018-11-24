@@ -6,14 +6,16 @@
 </head>
 <body>
 <script>
-	function move({x = 0, y = 0} = {}) {
-		console.log([x, y])
+	function test(a, b, c, d) {
+		console.log(a)
+		console.log(b)
+		console.log(c)
+		console.log(d)
 	}
 
-	move({x: 3, y: 8}) // [3, 8]
-	move({x: 3}) // [3, 0]
-	move({}) // [0, 0]
-	move() // [0, 0]
+	let o = 0
+	let q = 2
+	test`Hello ${o + q} ni ${o - q}`
 </script>
 </body>
 </html>

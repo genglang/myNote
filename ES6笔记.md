@@ -466,7 +466,7 @@
   - NaN等同于0
   - 字符串会被转为数字
   
-### padStart()，padEnd()
+### padStart(),padEnd()
   - ES2017引入的字符串补全长度功能,如果字符串不够某一长度,会在头部或尾部补全
     1. padStart
        - 在头部补全
@@ -479,4 +479,111 @@
   ```
   '12'.padStart(10, 'YYYY-MM-DD') // "YYYY-MM-12"
   '09-12'.padStart(10, 'YYYY-MM-DD') // "YYYY-09-12"
+  ```
+  
+### 模版字符串
+  - 模版字符串可以嵌套
+  - 可以用eval或者Function构造函数引用模版字符串本身
+  ```
+  // 写法一
+  let str = 'return ' + '`Hello ${name}!`';
+  let func = new Function('name', str);
+  func('Jack') // "Hello Jack!"
+  
+  // 写法二
+  let str = '(name) => `Hello ${name}!`';
+  let func = eval.call(null, str);
+  func('Jack') // "Hello Jack!"
+  ```
+  
+### 模版编译
+  ```
+  let template = `
+  <ul>
+    <% for(let i=0; i < data.supplies.length; i++) { %>
+      <li><%= data.supplies[i] %></li>
+    <% } %>
+  </ul>
+  `;
+  ```
+  此模版使用<%...%>放置JS代码用<%=...%>放置表达式
+  - 两种编译模版字符串思路
+    1. 转换为JS表达式字符串
+    ```
+    echo('<ul>');
+    for(let i=0; i < data.supplies.length; i++) {
+      echo('<li>');
+      echo(data.supplies[i]);
+      echo('</li>');
+    };
+    echo('</ul>');
+
+    ```
+      - 用正则表达式转换
+    ```
+    let evalExpr = /<%=(.+?)%>/g;
+    let expr = /<%([\s\S]+?)%>/g;
+    
+    template = template
+      .replace(evalExpr, '`); \n  echo( $1 ); \n  echo(`')
+      .replace(expr, '`); \n $1 \n  echo(`');
+    
+    template = 'echo(`' + template + '`);';
+    ```
+    - 然后把template封装到一个函数内返回
+    - 封装成一个模版编译函数
+    ```
+    function compile(template){
+      const evalExpr = /<%=(.+?)%>/g;
+      const expr = /<%([\s\S]+?)%>/g;
+    
+      template = template
+        .replace(evalExpr, '`); \n  echo( $1 ); \n  echo(`')
+        .replace(expr, '`); \n $1 \n  echo(`');
+    
+      template = 'echo(`' + template + '`);';
+    
+      let script =
+      `(function parse(data){
+        let output = "";
+    
+        function echo(html){
+          output += html;
+        }
+    
+        ${ template }
+    
+        return output;
+      })`;
+    
+      return script;
+    }
+    // 调用
+    let parse = eval(compile(template));
+    div.innerHTML = parse({ supplies: [ "broom", "mop", "cleaner" ] });
+    ```
+
+### 模版标签
+  - 模版字符串还能紧跟在一个函数后面,该函数被调用用于处理这个模版字符串
+  ```
+  alert`123`
+  // 等同于
+  alert(123)
+  ```
+  - 标签模板其实不是模板,而是函数调用的一种特殊形式
+  - 标签指的就是函数,紧跟在后面的模板字符串就是它的参数
+  - 如果模版字符串内有变量,会将模版字符串预先处理成多个参数,再调用函数
+  ```
+  let a = 5;
+  let b = 10;
+  
+  tag`Hello ${ a + b } world ${ a * b }`;
+  // 等同于
+  tag(['Hello ', ' world ', ''], 15, 50);
+  
+  // function tag(stringArr, ...values){}
+  ```
+  - 可以把字符串全部重新拼回去
+  ```
+  
   ```
