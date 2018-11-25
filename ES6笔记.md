@@ -585,5 +585,54 @@
   ```
   - 可以把字符串全部重新拼回去
   ```
+  function passthru(literals, ...values) {
+    let output = "";
+    let index;
+    for (index = 0; index < values.length; index++) {
+      output += literals[index] + values[index];
+    }
   
+    output += literals[index]
+    return output;
+  }
+  ```
+  - 模版标签的重要作用
+    1. 过滤HTML字符串,防止用户输入恶意内容
+       - 用模版标签转义所有用户输入的特殊字符
+    2. 多语言转化
+    3. 嵌入其他语言
+  - 模版处理函数的第一个参数(模版字符串数组)还有一个raw属性
+  - raw属性保存转义后的原字符串
+  ```
+  tag`First line\nSecond line`
+  
+  function tag(strings) {
+    console.log(strings.raw[0]);
+    // strings.raw[0] 为 "First line\\nSecond line"
+    // 打印输出 "First line\nSecond line"
+  }
+  ```
+  
+### String.raw()
+  - ES6为原生String方法提供了一个raw方法,多用于充当模版字符串的处理函数,返回一个斜杠都被转义(斜杠前再加一个斜杠)的字符串
+  - raw方法既可以作为处理模版字符串的基本方法,也可以作为正常函数使用,此时第一个参数必须是一个具有raw属性的对象,并且值为数组
+  ```
+  String.raw({ raw: 'test' }, 0, 1, 2);
+  // 't0e1s2t'
+  
+  // 等同于
+  String.raw({ raw: ['t','e','s','t'] }, 0, 1, 2);
+  ```
+  - raw的实现如下
+  ```
+  String.raw = function (strings, ...values) {
+    let output = '';
+    let index;
+    for (index = 0; index < values.length; index++) {
+      output += strings.raw[index] + values[index];
+    }
+  
+    output += strings.raw[index]
+    return output;
+  }
   ```
