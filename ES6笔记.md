@@ -663,3 +663,76 @@
   2. replace
   3. search
   4. split
+  - ES6将这4个方法,在语言内部全部调用RegExp的实例方法,从而做到所有与正则相关的方法,全都定义在RegExp对象上
+
+### u修饰符
+  - ES6对正则表达式添加了u修饰符,含义为Unicode模式
+  - 用于正确处理大于\uFFFF的Unicode字符(正确处理UTF-16编码)
+  ```
+  /^\uD83D/u.test('\uD83D\uDC2A') // false
+  /^\uD83D/.test('\uD83D\uDC2A') // true
+  ```
+  - u修饰符会修改以下行为
+    1. 点字符
+       - .字符在正则表达式中,含义是除了换行之外的任意单个字符,但是对于大于\uFFFF的字符无法识别必须加上u修饰符
+    2. Unicode字符表示法
+       - ES6新增了使用大括号表示Unicode字符,这种表示法必须加上u修饰符才能识别大括号
+    3. 量词
+       - 添加u修饰符之后,所有量词都会正确识别大于\uFFFF的字符
+    4. 预定义模式
+    5. i修饰符
+    
+ ### RegExp.prototype.unicode
+  - 表示是否设置了u修饰符
+  
+### y修饰符
+  - 除了u修饰符,ES6还为正则表达式添加了y修饰符,叫做'粘连'(sticky)修饰符
+  - 与g修饰符类似,都是全局匹配,后一次匹配从前一次成功未知开始
+  - 不同在于g修饰符只要剩余位置中存在匹配就行,y修饰符确保匹配必须从剩余的第一个位置开始
+  ```
+  var s = 'aaa_aa_a';
+  var r1 = /a+/g;
+  var r2 = /a+/y;
+  
+  r1.exec(s) // ["aaa"]
+  r2.exec(s) // ["aaa"]
+  
+  r1.exec(s) // ["aa"]
+  r2.exec(s) // null 因为剩余字符串第一个字符是_
+  ```
+  - y修饰符号隐含了头部匹配的标志^,y修饰符的设计本意,就是让头部匹配的标志^在全局匹配中都有效
+  - 单单一个y修饰符对match方法,只能返回第一个匹配,必须与g修饰符联用,才能返回所有匹配
+  ```
+  'a1a2a3'.match(/a\d/y) // ["a1"]
+  'a1a2a3'.match(/a\d/gy) // ["a1", "a2", "a3"]
+  ```
+  - y修饰符的一个应用,是从字符串提取token(词元)y修饰符确保了匹配之间不会有漏掉的字符
+  ```
+  const TOKEN_Y = /\s*(\+|[0-9]+)\s*/y;
+  const TOKEN_G  = /\s*(\+|[0-9]+)\s*/g;
+  
+  tokenize(TOKEN_Y, '3 + 4')
+  // [ '3', '+', '4' ]
+  tokenize(TOKEN_G, '3 + 4')
+  // [ '3', '+', '4' ]
+  
+  function tokenize(TOKEN_REGEX, str) {
+    let result = [];
+    let match;
+    while (match = TOKEN_REGEX.exec(str)) {
+      result.push(match[1]);
+    }
+    return result;
+  }
+  
+  tokenize(TOKEN_Y, '3x + 4')
+  // [ '3' ] 
+  tokenize(TOKEN_G, '3x + 4')
+  // [ '3', '+', '4' ] g会忽略非法字符
+  ```
+  
+### RegExp.prototype.sticky
+  - 正则表达式是否包含y修饰符
+  
+### RegExp.prototype.sticky
+  - 返回正则表达式修饰符
