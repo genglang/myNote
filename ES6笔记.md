@@ -800,3 +800,36 @@
   const regexArrows = /^\p{Block=Arrows}+$/u;
   regexArrows.test('←↑→↓↔↕↖↗↘↙⇏⇐⇑⇒⇓⇔⇕⇖⇗⇘⇙⇧⇩') // true
   ```
+  
+### 具名组匹配
+  - ES2018引入了具名组匹配,允许给匹配组取名
+  ```
+  const RE_DATE = /(\d{4})-(\d{2})-(\d{2})/;
+  // 不易读
+  const matchObj = RE_DATE.exec('1999-12-31');
+  const year = matchObj[1]; // 1999
+  const month = matchObj[2]; // 12
+  const day = matchObj[3]; // 31
+  
+  const RE_DATE = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+  // 易读
+  ```
+  
+### 解构赋值和替换
+  - 有了具名组匹配以后,可以使用解构赋值直接从匹配结果上为变量赋值
+  - 字符串替换时,使用$<组名>引用具名组
+  ```
+  let re = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u;
+  
+  '2015-01-02'.replace(re, '$<day>/$<month>/$<year>')
+  // '02/01/2015'
+  ```
+  - 可以通过`\k<组名>`调用具名组匹配
+  ```
+  const RE_TWICE = /^(?<word>[a-z]+)!\k<word>$/;
+  RE_TWICE.test('abc!abc') // true
+  RE_TWICE.test('abc!ab') // false
+  ```
+### String.prototype.matchAll
+  - 还在提按阶段
+  - 一次性返回所有匹配,但是返回一个Iterator,因此可以用for-of取出
