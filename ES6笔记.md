@@ -761,3 +761,42 @@
   - 后行断言正好与先行断言相反,x只有在y后面才匹配,必须写成`/(?<=y)x/`
   - 后行否定断言,`/(?<!y)x/`
   - 括号内部分也不计入返回结果
+  - 后行断言从后开始匹配
+  
+### Unicode属性类
+  - ES6引入了新的类写法`\p{}`和`\P{}`,允许正则匹配符合Unicode某种属性的所有字符
+  ```
+  const regexGreekSymbol = /\p{Script=Greek}/u;
+  regexGreekSymbol.test('π') // true
+  ```
+  - 上面代码中,`\p{Script=Greek}`指定匹配一个希腊文字母,所以匹配π成功
+  - Unicode属性类要指定属性名和属性值
+  ```
+  \p{UnicodePropertyName=UnicodePropertyValue}
+  ```
+  - `\P{}`是`\p{}`的反向匹配
+  - 只对Unicode有效
+  ```
+  const regex = /^\p{Decimal_Number}+$/u;
+  regex.test('𝟏𝟐𝟑𝟜𝟝𝟞𝟩𝟪𝟫𝟬𝟭𝟮𝟯𝟺𝟻𝟼') // true
+  // 属性类指定匹配所有十进制字符,可以看到各种字型的十进制字符都会匹配成功。
+  ```
+  - `\p{Number}`甚至能匹配罗马数字
+  - 其他一些例子
+  ```
+  // 匹配所有空格
+  \p{White_Space}
+  
+  // 匹配各种文字的所有字母，等同于 Unicode 版的 \w
+  [\p{Alphabetic}\p{Mark}\p{Decimal_Number}\p{Connector_Punctuation}\p{Join_Control}]
+  
+  // 匹配各种文字的所有非字母的字符，等同于 Unicode 版的 \W
+  [^\p{Alphabetic}\p{Mark}\p{Decimal_Number}\p{Connector_Punctuation}\p{Join_Control}]
+  
+  // 匹配 Emoji
+  /\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu
+  
+  // 匹配所有的箭头字符
+  const regexArrows = /^\p{Block=Arrows}+$/u;
+  regexArrows.test('←↑→↓↔↕↖↗↘↙⇏⇐⇑⇒⇓⇔⇕⇖⇗⇘⇙⇧⇩') // true
+  ```
