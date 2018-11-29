@@ -6,15 +6,10 @@
 </head>
 <body>
 <script>
-    var s = 'aaa_aa_a'
-    var r1 = /a+/g
-    var r2 = /a+/y
-
-    console.log(r1.exec(s)) // ["aaa"]
-    console.log(r2.exec(s)) // ["aaa"]
-
-    console.log(r1.exec(s)) // ["aa"]
-    console.log(r2.exec(s)) // null
+    function foo(y=x,x) {
+	    console.log(y,x)
+    }
+    foo(undefined,1)
 </script>
 </body>
 </html>

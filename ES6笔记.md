@@ -935,3 +935,115 @@
   - 数运算符可以与等号结合,形成一个新的赋值运算符(**=)
   - V8引擎的指数运算符与Math.pow的实现不相同,对于特别大的运算结果,两者会有细微的差异
   
+## 函数的拓展
+
+### 函数参数的默认值
+  - ES6之前不能为函数参数设置默认值,只能在函数内部检查
+  ```
+  function log(x, y) {
+    y = y || 'World'; // 无法判定false参数
+    console.log(x, y);
+  }
+  function log(x,y){ // 可以判定false
+    if (typeof y === 'undefined') {
+      y = 'World';
+    }
+  }
+  ```
+  - ES6允许设置默认值
+  ```
+  function log(x, y = 'World') {
+    console.log(x, y);
+  }
+  ```
+  - 提高可读性,让人一目了然哪些参数可以被忽略
+  - 参数变量是默认声明,不能被let和const再次声明
+  - 不能有同名参数
+  - 参数默认值不是传值,每次都要重新计算默认值,也就是惰性求值
+  
+#### 与解构赋值默认值结合使用
+  ```
+  function foo({x, y = 5}) {
+    console.log(x, y);
+  }
+  ```
+  - 可以为对象参数设置默认值但是不能省略参数
+  ```
+  function fetch(url, { body = '', method = 'GET', headers = {} }) {
+    console.log(method);
+  }
+  
+  fetch('http://example.com', {})
+  // "GET"
+  
+  fetch('http://example.com')
+  // 报错
+  ```
+  - 可以用双重默认值解决这个问题
+  ```
+  function fetch(url, { body = '', method = 'GET', headers = {} } = {}) {
+    console.log(method);
+  }
+  
+  fetch('http://example.com')
+  // "GET"
+  ```
+  
+#### 参数默认值的位置
+  - 如果不把默认参数放在尾部,是无法省略的
+  - 但是可以传入undefined,跳过这个参数
+  - 传入null无效
+  
+### 函数的length属性
+  - 函数的length属性返回没有默认值的参数个数,也就是说设置了默认值之后length属性失真
+  - length属性的含义是该函数预期传入的参数个数
+  
+### 作用域
+  - 一旦设置了默认值,函数就会形成一个单独的作用域,等初始化结束,就会消失,这种语法行为在没有默认参数的时候是不存在的
+  ```
+  var x = 1;
+  
+  function f(x, y = x) {
+    console.log(y);
+  }
+  
+  f(2) // 2
+  ```
+  - 因为设置了默认参数,所以参数形成一个独有作用域,所以内部的y选择了前面定义的参数x作为参数
+  - 同时如果此时作用域没有x,就会报错
+  - 给x赋值x也会报错
+  ```
+  var x = 1
+  function foo(x = x) {
+    // ...
+  }
+  foo() // ReferenceError: x is not defined
+  ```
+  - 参数`x = x`形成一个单独作用域,实际执行的是`let x = x`,由于暂时性死区的原因,这行代码会报错"x 未定义"
+  - 如果参数默认值是一个函数,也遵循这个规则
+  ```
+  let foo = 'outer';
+  function bar(func = () => foo) {
+    let foo = 'inner';
+    console.log(func());
+  }
+  bar(); // outer
+  ```
+  - 函数bar的参数func的默认值是一个匿名函数,返回值为变量foo，函数参数形成的单独作用域里面,并没有定义变量foo,所以foo指向外层的全局变量foo,因此输出outer
+  - 利用参数默认值,可以指定某一个参数不得省略,如果省略就抛出一个错误。
+  ```
+  function throwIfMissing() {
+    throw new Error('Missing parameter');
+  }
+  
+  function foo(mustBeProvided = throwIfMissing()) {
+    return mustBeProvided;
+  }
+  
+  foo()
+  // Error: Missing parameter
+  // 没有参数就会调用默认值throwIfMissing函数,从而抛出一个错误
+  ```
+  - 另外,可以将参数默认值设为undefined,表明这个参数是可以省略的
+  
+## reset参数
