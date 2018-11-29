@@ -833,3 +833,29 @@
 ### String.prototype.matchAll
   - 还在提按阶段
   - 一次性返回所有匹配,但是返回一个Iterator,因此可以用for-of取出
+  
+## 数值的拓展
+
+### 二进制和八进制表示法
+  - ES6提供了二进制和八进制数值的新的写法,分别用前缀0b(或0B)和0o(或0O)表示
+  ```
+  0b111110111 === 503 // true
+  0o767 === 503 // true
+  ```
+  - 从ES5开始,在严格模式之中,八进制就不再允许使用前缀0表示,ES6进一步明确,要使用前缀0o表示
+  - 如果要将0b和0o前缀的字符串数值转为十进制,要使用Number方法
+    
+### Number.isFinite(),Number.isNaN()
+  - Number.isFinite()用来检测一个数值是否是有限的
+  - Number.isNaN()用来检测一个数值是否是NaN
+  
+### Number.parseInt(),Number.parseFloat()
+  - 从全局方法移到了Number对象上
+
+### Number.isInteger()
+  - Number.isInteger()判断一个数字是否是整数
+  - JS中整数和浮点数用的是相同的存储方式,25和25.0是同样的值
+  - 由于JavaScript采用IEEE754标准,数值存储为64位双精度格式,数值精度最多可以达到53个二进制位(1个隐藏位与52个有效位)
+  - 如果数值的精度超过这个限度,第54位及后面的位就会被丢弃,这种情况下,Number.isInteger可能会误判
+  - 如果小于5E-324(JS最小值)可能也会被误判
+    
