@@ -1095,3 +1095,146 @@
   2. 需要使用动态this的时候也不要使用箭头函数
      - 事件绑定调用动态作用域的方法的时候
      
+### 双冒号运算符
+  - 提案阶段:双冒号函数绑定运算符取代call、apply、bind
+  ```
+  foo::bar;
+  // 等同于
+  bar.bind(foo);
+  
+  foo::bar(...arguments);
+  // 等同于
+  bar.apply(foo, arguments);
+  
+  const hasOwnProperty = Object.prototype.hasOwnProperty;
+  function hasOwn(obj, key) {
+    return obj::hasOwnProperty(key);
+  }
+  ```
+  - 如果双冒号左边为空,右边是一个对象的方法,则等于将该方法绑定在该对象上面
+  ```
+  var method = obj::obj.foo;
+  // 等同于
+  var method = ::obj.foo;
+  
+  let log = ::console.log;
+  // 等同于
+  var log = console.log.bind(console);
+  ```
+  
+### 尾调用优化
+  - 尾调用是函数最后一步调用另一个函数
+  - 尾调用调用后不能有赋值等后续操作
+  - 函数调用会在内存形成一个调用记录的帧,直到函数运行结束才会消失
+  - 尾调是因为函数最后一步操作,不需要保留外层的调用帧,因为调用位置,内部信息等信息都不会再用到了,只要直接使用内存的调用帧
+  ```
+  function f() {
+    let m = 1
+    let n = 2
+    return g(m + n)
+  }
+  f()
+  // 等同于
+  function f() {
+    return g(3)
+  }
+  f()
+  // 等同于
+  g(3)
+  ```
+  - 只有不再用到外层函数的内部变量,内层函数的调用帧才会取代外层函数
+  
+#### 尾递归
+  - 函数调用自身,称为递归,如果尾调用自身称为尾递归
+  - 递归非常耗费内存,因为同时保存了成百上千个调用帧,很容易发生栈溢出
+  ```
+  function factorial(n) {
+    if (n === 1) return 1;
+    return n * factorial(n - 1);
+  }
+  
+  factorial(5) // 120 复杂度O(n)
+
+  // 优化后
+  function factorial(n, total) {
+    if (n === 1) return total;
+    return factorial(n - 1, n * total);
+  }
+  
+  factorial(5, 1) // 120 复杂度O(1)
+  ```
+  - 非尾递归的Fibonacci数列
+  ```
+  function Fibonacci (n) {
+    if ( n <= 1 ) {return 1};
+  
+    return Fibonacci(n - 1) + Fibonacci(n - 2);
+  }
+  
+  Fibonacci(10) // 89
+  Fibonacci(100) // 堆栈溢出
+  Fibonacci(500) // 堆栈溢出
+  ```
+  - 尾递归的Fibonacci数列
+  ```
+  function Fibonacci2 (n , ac1 = 1 , ac2 = 1) {
+    if( n <= 1 ) {return ac2};
+  
+    return Fibonacci2 (n - 1, ac2, ac1 + ac2);
+  }
+  
+  Fibonacci2(100) // 573147844013817200000
+  Fibonacci2(1000) // 7.0330367711422765e+208
+  Fibonacci2(10000) // Infinity
+  ```
+  - ES6第一次规定,所有ES的实现必须部署尾调用优化,用于节省内存
+  - ES6的尾调优化只在严格模式开启,因为正常模式,函数内部有两个变量,可以跟踪函数的调用栈
+    1. func.arguments 返回函数参数的个数
+    2. func.caller  返回调用当前函数的那个函数
+  - 尾调优化发生时,函数的调用栈会被改写,上面两个参数会失真
+  - 非严格模式用循环替代递归
+  ```
+  // 蹦床函数
+  function trampoline(f) {
+    while (f && f instanceof Function) {
+      f = f() // 接收到返回的函数执行
+    }
+    return f
+  }
+  ```
+  - 具体实现
+  ```
+  function tco(f) {
+    var value;
+    var active = false;
+    var accumulated = [];
+  
+    return function accumulator() {
+      accumulated.push(arguments);
+      if (!active) {
+        active = true;
+        while (accumulated.length) {
+          value = f.apply(this, accumulated.shift());
+        }
+        active = false;
+        return value;
+      }
+    };
+  }
+  
+  var sum = tco(function(x, y) {
+    if (y > 0) {
+      return sum(x + 1, y - 1)
+    }
+    else {
+      return x
+    }
+  });
+  
+  sum(1, 100000)
+  // 100001
+  ```
+
+### 函数参数的尾逗号
+  - ES2017允许函数最后一个参数有尾逗号
+  
