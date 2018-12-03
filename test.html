@@ -6,10 +6,12 @@
 </head>
 <body>
 <script>
-    function foo(y=x,x) {
-	    console.log(y,x)
-    }
-    foo(undefined,1)
+    let arr1 = [{a:1}]
+	let arr2 = [...arr1]
+	console.log(arr2[0])
+    arr2[0].a = 2
+	console.log(arr1[0])
+	console.log(arr2[0])
 </script>
 </body>
 </html>
