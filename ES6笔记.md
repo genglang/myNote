@@ -1279,4 +1279,39 @@
   6. Map和Set结构,Generator函数
      - 拓展运算符内部调用的是数据结构的Iterator,因此只要具有Iterator接口的对象,都可以使用拓展运算符,比如说Map结构
      - Generator函数运行后,返回一个遍历器对象,也可以使用拓展运算符
-     
+
+### Array.from()
+  - 用于将两类对象转换为数组
+    1. 类数组对象
+    2. 具有Iterator可遍历的对象
+  ```
+  // ES5的写法
+  var arr1 = [].slice.call(arrayLike); // ['a', 'b', 'c']
+  // ES6的写法
+  let arr2 = Array.from(arrayLike); // ['a', 'b', 'c']
+  ```
+  - 如果是一个数组,Array.from()会返回一个一样的数组
+  - 类数组对象的本质特征只有一点,具有length属性的对象,任何具有length属性的对象都可以被Array.from()遍历
+  ```
+  Array.from({ length: 3 });
+  // [ undefined, undefined, undefined ]
+  ```
+  - 对于还没有部署该方法的浏览器,可以用Array.prototype.slice方法替代
+  - Array.from还可以接受第二个参数,作用类似于数组的map方法,用来对每个元素进行处理,将处理后的值放入返回的数组
+  ```
+  Array.from(arrayLike, x => x * x);
+  // 等同于
+  Array.from(arrayLike).map(x => x * x);
+  
+  Array.from([1, 2, 3], (x) => x * x)
+  // [1, 4, 9]
+  ```
+  - 使用Array.from()创建任意有内容的数组
+  ```ecmascript 6
+  Array.from({ length: 2 }, () => 'jack')
+  // ['jack', 'jack']
+  ```
+    
+
+
+  
