@@ -1307,11 +1307,25 @@
   // [1, 4, 9]
   ```
   - 使用Array.from()创建任意有内容的数组
-  ```ecmascript 6
+  ```
   Array.from({ length: 2 }, () => 'jack')
   // ['jack', 'jack']
   ```
-    
-
-
+  - Array.from()可以准确地把字符串转换为数组,能正确处理Unicode字符
   
+### Array.of() 
+  - 用于将一组值转换为数组,用于替代重载不统一的Array构造方法
+  - Array()根据参数不同,返回的结果也有所不同
+    1. 无参数
+       - 返回空数组
+    2. 一个参数
+       - 返回参数长度的内容为空的数组
+    3. 大于两个参数
+       - 参数组成的新数组
+  - Array.of()固定返回参数组成的数组,如果没有参数就返回空数组
+  - Array.of()可以用下面代码模拟
+  ```
+  function ArrayOf(){
+    return [].slice.call(arguments);
+  }
+  ```
