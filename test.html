@@ -6,8 +6,12 @@
 </head>
 <body>
 <script>
-    let arr  = new Array(30).fill(3)
-	console.log(arr)
+    const obj = {
+        get foo() {},
+        set foo(x) {}
+    };
+    // console.log(obj.foo.name)
+    console.log(obj.foo.name.get)
 </script>
 </body>
 </html>

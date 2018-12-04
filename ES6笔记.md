@@ -1386,3 +1386,80 @@
     - copyWithin()会连空位一起拷贝
     - fill()会将空位视为正常的数组位置
     - for...of循环也会遍历空位
+    
+## 对象
+
+### 属性的简介表示法
+  - 同名属性和参数可以简写
+  ```
+  const foo = 'bar';
+  const baz = {foo};
+  baz // {foo: "bar"}
+  // 等同于
+  const baz = {foo: foo};
+  ```
+  - 方法也可以简写
+  ```
+  const o = {
+    method() {
+      return "Hello!";
+    }
+  };
+  // 等同于
+  const o = {
+    method: function() {
+      return "Hello!";
+    }
+  };
+  ```
+  - getter和setter也是采用这种写法
+  ```
+  const cart = {
+    _wheels: 4,
+    get wheels () {
+      return this._wheels;
+    },
+    set wheels (value) {
+      if (value < this._wheels) {
+        throw new Error('数值太小了！');
+      }
+      this._wheels = value;
+    }
+  }
+  ```
+  - 简介写法的属性名总是字符串,所以不受关键字影响
+
+### 属性名表达式
+  - JS定义对象属性有两种方法
+    1. obj.a 
+    2. obj[a] 
+  - ES5如果用字面量定义对象,无法使用方法2
+  - ES6允许字面量定义对象时,使用方法2
+  ```
+  let propKey = 'foo';
+  let obj = {
+    [propKey]: true,
+    ['a' + 'bc']: 123
+  };
+  ```
+  - 属性名如果是对象,会被转成字符串[object Object]
+  
+### 方法的name属性
+  - 函数和方法一样,name属性返回函数名
+  - 如果使用了getter和setter,那么无法直接通过函数获取name,name挂载在get和set上,返回值是方法名前加get和set
+  ```
+  const obj = {
+    get foo() {},
+    set foo(x) {}
+  };
+  obj.foo.name
+  // TypeError: Cannot read property 'name' of undefined
+  
+  const descriptor = Object.getOwnPropertyDescriptor(obj, 'foo');
+  descriptor.get.name // "get foo"
+  descriptor.set.name // "set foo"
+  ```
+  - bind方法创造的函数,name属性返回bound加上原函数的名字
+  - Function构造函数创造的函数,name属性返回anonymous
+  - 如果对象的方法是一个Symbol值,那么name属性返回的是这个Symbol值的描述
+  
