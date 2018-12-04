@@ -6,12 +6,15 @@
 </head>
 <body>
 <script>
-    let arr1 = [{a:1}]
-	let arr2 = [...arr1]
-	console.log(arr2[0])
-    arr2[0].a = 2
-	console.log(arr1[0])
-	console.log(arr2[0])
+    let arr = [
+        [1, 2, 3],
+        99, 88,
+            [4, 5, [
+            7, 8
+        ]]
+    ]
+    arr = arr.flat()
+    console.log(arr)
 </script>
 </body>
 </html>
