@@ -1374,3 +1374,15 @@
   - flat会跳过数组空位
   - flatMap对原数组每个成员执行一个函数,然后对返回的数组执行flat方法,返回一个新的数组,第二个参数可以传入this
   
+### 数组的空位
+  - 数组的空位指数组某个位置没有任何值
+  - 空位不是undefined,空位没有任何值,无法被in,forEach等方法遍历
+  - ES5对空位的处理 
+    - map会跳过空位,但是会保留这个值
+    - join和toString视空位为undefined,undefined和null会被当作字符串处理
+  - ES6明确空位转为undefined
+    - Array.from方法会将数组的空位,转为undefined
+    - 扩展运算符(...)也会将空位转为undefined
+    - copyWithin()会连空位一起拷贝
+    - fill()会将空位视为正常的数组位置
+    - for...of循环也会遍历空位
