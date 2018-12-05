@@ -1507,3 +1507,24 @@
   - 无法解构undefined和null
   - 解构赋值必须是最后一个参数,不然会报错
   - 解构赋值是浅拷贝
+  - 解构赋值不能复制继承自原型对象的属性
+  ```
+  const o = Object.create({ x: 1, y: 2 });
+  o.z = 3;
+  console.log(o) // {z:3}
+  let { x, ...newObj } = o;
+  let { y, z } = newObj;
+  console.log(x) // 1
+  console.log(y) // undefined
+  console.log(z) // 3
+  console.log(newObj)
+  ```
+  - 变量x是单纯的解构赋值,所以可以读取对象o继承的属性
+  - 变量y和z是扩展运算符的解构赋值,只能读取对象o自身的属性,所以变量z可以赋值成功,变量y取不到值
+  - ES6 规定,变量声明语句之中,如果使用解构赋值,扩展运算符后面必须是一个变量名,而不能是一个解构赋值表达式,所以上面代码引入了中间变量newObj
+  - 如果写成下面这样会报错
+  ```
+  let { x, ...{ y, z } } = o;
+  // SyntaxError: ... must be followed by an identifier in declaration contexts
+  ```
+  - 拓展运算符还能拓展某个函数的参数,接收剩余值
