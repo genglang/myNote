@@ -6,12 +6,19 @@
 </head>
 <body>
 <script>
-    const obj = {
-        get foo() {},
-        set foo(x) {}
+    const proto = {
+        foo: 'hello'
     };
-    // console.log(obj.foo.name)
-    console.log(obj.foo.name.get)
+
+    const obj = {
+        foo: 'world',
+        find() {
+            return super.foo;
+        }
+    };
+
+    Object.setPrototypeOf(obj, proto);
+    console.log(obj.find()) // "hello"
 </script>
 </body>
 </html>
