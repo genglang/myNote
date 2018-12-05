@@ -1462,4 +1462,29 @@
   - bind方法创造的函数,name属性返回bound加上原函数的名字
   - Function构造函数创造的函数,name属性返回anonymous
   - 如果对象的方法是一个Symbol值,那么name属性返回的是这个Symbol值的描述
+
+### 属性的可枚举性和遍历
+  - 对象的每个属性都有一个描述对象(属性修饰符)用来控制该属性的行为,可以用Object.getOwnPropertyDescriptor获取
+  - 如果属性的enumerable为false,会被以下操作忽略
+    1. for-in
+    2. Object.keys()
+    3. JSON.stringify
+    4. Object.assign()
+  - ES6规定class的圆形方法都是不可枚举的
   
+#### 属性的遍历
+  - ES6总共有5种方法可以遍历对象的属性
+    1. for-in
+       - 循环遍历自身和继承的可枚举属性(不含Symbol)
+    2. Object.keys(obj)
+       - 自身的所有可枚举属性(不含Symbol)
+    3. Object.getOwnPropertyNames(obj)
+       - 自身所有属性的键名(不含Symbol)
+    4. Object.getOwnPropertySymbols(obj)
+       - 自身所有Symbol属性的键名
+    5. Reflect.ownKeys(obj)
+       - 遍历自身所有属性
+  - 这些方法都遵循同样的遍历次序规则
+    - 首先遍历所有数值,数值升序排列  
+    - 然后遍历所有字符串,按照加入时间升序
+    - 最后遍历Symbol,按照加入时间升序
