@@ -1528,3 +1528,40 @@
   // SyntaxError: ... must be followed by an identifier in declaration contexts
   ```
   - 拓展运算符还能拓展某个函数的参数,接收剩余值
+  
+### 拓展运算符
+  - 可以用拓展运算符,取出参数对象的所有可遍历属性,拷贝到当前对象之中
+  ```
+  let z = { a: 3, b: 4 };
+  let n = { ...z };
+  n // { a: 3, b: 4 }
+  ```
+  - 数组是特殊对象,因此对象的拓展运算符也可以用在数组上
+  ```
+  let foo = { ...['a', 'b', 'c'] };
+  foo
+  // {0: "a", 1: "b", 2: "c"}
+  ```
+  - 对象的拓展运算符等同于使用Object.assign()
+  - 如果想要完整克隆一个对象,可以采用以下写法
+  ```
+  // 写法一 会有浏览器兼容问题
+  const clone1 = {
+    __proto__: Object.getPrototypeOf(obj),
+    ...obj
+  }
+  // 写法二
+  const clone2 = Object.assign(
+    Object.create(Object.getPrototypeOf(obj)),
+    obj
+  )
+  // 写法三
+  const clone3 = Object.create(
+    Object.getPrototypeOf(obj),
+    Object.getOwnPropertyDescriptors(obj)
+  )
+  ```
+  - 拓展运算符也可以合并两个对象
+  - 拓展运算符后面是{}或null或undefined不会报错但也不会有任何作用
+  - 拓展运算符遇到get会执行函数
+  
