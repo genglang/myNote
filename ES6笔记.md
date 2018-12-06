@@ -1640,4 +1640,104 @@
   ```
   - 由于存在浅拷贝的问题,所以指向引用类型很可能会不起作用
   
+### Object.getOwnPropertyDescriptors()
+  - ES5的Object.getOwnPropertyDescriptor()会返回某个对象属性的描述对象(属性修饰符)
+  - ES2017引入ES5的Object.getOwnPropertyDescriptors()返回指定对象的所有属性的描述对象
+  ```
+  const obj = {
+    foo: 123,
+    get bar() { return 'abc' }
+  };
+  
+  Object.getOwnPropertyDescriptors(obj)
+  // { foo:
+  //    { value: 123,
+  //      writable: true,
+  //      enumerable: true,
+  //      configurable: true },
+  //   bar:
+  //    { get: [Function: get bar],
+  //      set: undefined,
+  //      enumerable: true,
+  //      configurable: true } }
+  ```
+  - 返回一个对象,所有原对象的属性名都是该对象的属性名,对应的属性值就是该属性的描述对象
+  - 该方法的引入主要是为了解决Object.assign无法获取get属性和set属性的问题
+  - Object.getOwnPropertyDescriptors()方法配合Object.defineProperties()方法可以实现正确的拷贝
+  ```
+  const source = {
+    set foo(value) {
+      console.log(value);
+    }
+  };
+  
+  const target2 = {};
+  Object.defineProperties(target2, Object.getOwnPropertyDescriptors(source));
+  Object.getOwnPropertyDescriptor(target2, 'foo')
+  // { get: undefined,
+  //   set: [Function: set foo],
+  //   enumerable: true,
+  //   configurable: true }
+  ```
+  - Object.getOwnPropertyDescriptors()方法的另一个用处,是配合Object.create()方法将属性克隆到一个新对象(浅拷贝)
+  ```
+  const clone = Object.create(Object.getPrototypeOf(obj),
+    Object.getOwnPropertyDescriptors(obj));
+  
+  // 或者
+  
+  const shallowClone = (obj) => Object.create(
+    Object.getPrototypeOf(obj),
+    Object.getOwnPropertyDescriptors(obj)
+  );
+  ```
+  - 还可以实现一个对象继承另一个对象
+  ```
+  // 以前
+  const obj = {
+    __proto__: prot,
+    foo: 123,
+  };
+  
+  // ES6规定__proto__只有浏览器要部署,其他环境不用部署
+  // 去掉__proto__
+  const obj = Object.create(prot);
+  obj.foo = 123;
+  
+  // 或者
+  const obj = Object.assign(
+    Object.create(prot),
+    {
+      foo: 123,
+    }
+  );
+  ```
+  - Object.getOwnPropertyDescriptors()写法
+  ```
+  const obj = Object.create(
+    prot,
+    Object.getOwnPropertyDescriptors({
+      foo: 123,
+    })
+  ```
+  - Object.getOwnPropertyDescriptors()也可以用来实现 Mixin(混入)模式
+  ```
+  let mix = (object) => ({
+    with: (...mixins) => mixins.reduce(
+      (c, mixin) => Object.create(
+        c, Object.getOwnPropertyDescriptors(mixin)
+      ), object)
+  });
+  
+  // multiple mixins example
+  let a = {a: 'a'};
+  let b = {b: 'b'};
+  let c = {c: 'c'};
+  let d = mix(c).with(a, b);
+  
+  d.c // "c"
+  d.b // "b"
+  d.a // "a"
+  ```
+  - 处于完整性的考虑Object.getOwnPropertyDescriptors()进入标准以后,以后还会新增Reflect.getOwnPropertyDescriptors()方法
   
