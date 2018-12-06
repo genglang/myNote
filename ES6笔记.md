@@ -1575,6 +1575,69 @@
   - 如果只有一个参数,则会返回参数,否则会复制一个合并后的目标对象并返回
   - 无法把null和undefined设置为目标参数,但是可以出现在后面的参数中,会被跳过
   - 其他类型放在非第一个参数也不会报错,但是只有字符串会被拆分成数组拷贝入对象
+  - 不拷贝继承属性,不拷贝不可枚举属性,但是拷贝Symbol
+  1. 浅拷贝
+  2. 同名属性的替换
+  3. Object.assign能够处理数组,但是会根据下标进行同名替换
+  4. 取值函数的处理
+     - Object.assign只能进行值的复制,如果复制的是取值函数(getter),会执行取值后复制
   
+### Object.assign()主要用途
+  1. 为对象添加属性
+  ```
+  class Point {
+    constructor(x, y) {
+      Object.assign(this, {x, y});
+    }
+  }
+  ```
+  2. 为对象添加方法
+  ```
+  Object.assign(SomeClass.prototype, {
+    someMethod(arg1, arg2) {
+      ···
+    },
+    anotherMethod() {
+      ···
+    }
+  });
+  
+  // 等同于下面的写法
+  SomeClass.prototype.someMethod = function (arg1, arg2) {
+    ···
+  };
+  SomeClass.prototype.anotherMethod = function () {
+    ···
+  };
+  ```
+  3. 克隆对象
+  ```
+  function clone(origin) {
+    return Object.assign({}, origin);
+  }
+  ```
+  - 只能克隆值,不能克隆继承来的值
+  - 如果要保持继承链,采用以下代码
+  ```
+  function clone(origin) {
+    let originProto = Object.getPrototypeOf(origin);
+    return Object.assign(Object.create(originProto), origin);
+  }
+  ```
+  4. 合并多个对象
+  5. 为属性指定默认值
+  ```
+  const DEFAULTS = {
+    logLevel: 0,
+    outputFormat: 'html'
+  };
+  
+  function processContent(options) {
+    options = Object.assign({}, DEFAULTS, options);
+    console.log(options);
+    // ...
+  }
+  ```
+  - 由于存在浅拷贝的问题,所以指向引用类型很可能会不起作用
   
   

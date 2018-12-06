@@ -10,3 +10,18 @@ props传入事件每次都会进行一次事件绑定
 
 react-native-vector-icons/Ionicons找不到
 删除./node_modules/react-native/local-cli/core/__fixtures__/files/package.json
+
+
+
+## react navigation
+
+监听didFocus,willBlur,来监听路由的变化
+
+安卓IOS去掉header下边框
+headerStyle: {borderBottomWidth: 0, shadowColor: 'transparent',elevation: 0},
+
+
+安卓标题居中
+headerTitleStyle:{flex:1, textAlign: 'center'},
+headerTitle:'编辑资料',
+headerRight:<View/>,
