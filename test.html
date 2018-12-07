@@ -6,15 +6,7 @@
 </head>
 <body>
 <script>
-    const o = Object.create({ x: 1, y: 2 });
-    o.z = 3;
-	console.log(o) // {z:3}
-    let { x, ...newObj } = o;
-    let { y, z } = newObj;
-    console.log(x) // 1
-    console.log(y) // undefined
-    console.log(z) // 3
-	console.log(newObj)
+    console.log(Object.setPrototypeOf('a', {b: 1}).b)
 </script>
 </body>
 </html>

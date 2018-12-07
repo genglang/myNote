@@ -1787,3 +1787,63 @@
     return Object(value) === value;
   }
   ```
+### Object.setPrototypeOf()
+  - 与__proto__相同,用于设置一个对象的prototype对象,是ES6正式推荐的设置原型对象的方法
+  ```
+  // 格式
+  Object.setPrototypeOf(object, prototype)
+  
+  // 用法
+  const o = Object.setPrototypeOf({}, null);
+  
+  // 等同于
+  function setPrototypeOf(obj, proto) {
+    obj.__proto__ = proto;
+    return obj;
+  }
+  ```
+  - 第一个参数不能为null或者undefined
+
+### Object.getPrototypeOf()
+  - 读取一个对象的原型对象
+  - 不能获取null或者undefined
+  
+### Object.keys(),Object.values(),Object.entries()
+
+#### Object.keys()
+  - ES5引入了Object.keys()方法
+  - ES2017引入了配套的Object.values(),Object.entries()方法
+
+#### Object.values()
+  - 只返回对象自身的可遍历属性
+  - 会过滤属性名为Symbol的值
+  - 如果参数是字符串,会返回字符串数组
+  
+#### Object.entries()
+  - 返回键值对数组
+  - 除了返回值不一样,其他跟Object.values()都一样
+  - Object.entries方法的另一个用处是,将对象转为真正的Map结构
+  - 自己实现
+  ```
+  // Generator函数的版本
+  function* entries(obj) {
+    for (let key of Object.keys(obj)) {
+      yield [key, obj[key]];
+    }
+  }
+  
+  // 非Generator函数的版本
+  function entries(obj) {
+    let arr = [];
+    for (let key of Object.keys(obj)) {
+      arr.push([key, obj[key]]);
+    }
+    return arr;
+  }
+  ```
+
+### Object.fromEntries()
+  - Object.entries()的逆操作,把键值对转换为对象
+  - 适合将Map结构转为对象
+  - 配合URLSearchParams对象,将查询字符串转为对象
+  
