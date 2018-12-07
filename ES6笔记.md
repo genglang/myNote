@@ -1741,3 +1741,49 @@
   ```
   - 处于完整性的考虑Object.getOwnPropertyDescriptors()进入标准以后,以后还会新增Reflect.getOwnPropertyDescriptors()方法
   
+### __proto__属性,Object.setPrototypeOf(),Object.getPrototypeOf()
+
+### `__proto__`
+  - 用于读取当前对象的prototype对象,IE11以上浏览器都支持了这个属性
+  ```
+  // es5 的写法
+  const obj = {
+    method: function() { ... }
+  };
+  obj.__proto__ = someOtherObj;
+  
+  // es6 的写法
+  var obj = Object.create(someOtherObj);
+  obj.method = function() { ... };
+  ```
+  - 该属性没有引入ES6正文,而是写进了附录,原因是因为双下划线说明本质上是一个内部属性,不是一个正式API,因为浏览器广泛支持,才写进了标准
+  - 只有浏览器必须部署这个属性,其他运行环境不一定需要部署
+  - 使用Object.setPrototypeOf()(写操作)、Object.getPrototypeOf()(读操作)、Object.create()(生成操作)代替直接访问
+  - __proto__其实是调用的`Object.prototype.__proto__`,实现如下
+  ```
+  Object.defineProperty(Object.prototype, '__proto__', {
+    get() {
+      let _thisObj = Object(this);
+      return Object.getPrototypeOf(_thisObj);
+    },
+    set(proto) {
+      if (this === undefined || this === null) {
+        throw new TypeError();
+      }
+      if (!isObject(this)) {
+        return undefined;
+      }
+      if (!isObject(proto)) {
+        return undefined;
+      }
+      let status = Reflect.setPrototypeOf(this, proto);
+      if (!status) {
+        throw new TypeError();
+      }
+    },
+  });
+  
+  function isObject(value) {
+    return Object(value) === value;
+  }
+  ```
