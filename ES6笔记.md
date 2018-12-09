@@ -1851,3 +1851,56 @@
   - ES5的对象属性名都是字符串,这容易造成属性名的冲突
   - Symbol值通过Symbol函数生成
   - Symbol函数前不能用new命令,否则会报错,这是因为生成的Symbol是一个原始类型的值,不是对象
+  - 接受一个字符串作为参数,作为Symbol实例的描述,方便区分
+  - 相同参数的Symbol值不相等
+  - Symbol不能与其他值进行运算,会报错
+  - 可以显示转换成字符串,或布尔值
+  ```
+  let sym = Symbol('My symbol');
+  
+  String(sym) // 'Symbol(My symbol)'
+  sym.toString() // 'Symbol(My symbol)'
+  Boolean(sym) // true
+  !sym  // false
+  ```
+  
+### 作为属性名的Symbol
+  - 因为每个Symbol值都是不相等的,因此Symbol可以作为标示符,用于对象的属性名,可以保证不会出现同名属性
+  ```
+  let mySymbol = Symbol();
+  
+  // 第一种写法
+  let a = {};
+  a[mySymbol] = 'Hello!';
+  
+  // 第二种写法
+  let a = {
+    [mySymbol]: 'Hello!'
+  };
+  
+  // 第三种写法
+  let a = {};
+  Object.defineProperty(a, mySymbol, { value: 'Hello!' });
+  
+  // 以上写法都得到同样结果
+  a[mySymbol] // "Hello!"
+  ```
+  - Symbol类型还可以用于定义一组常量,保证这组常量的值都是不相等的。
+  - 可以保证switch正确运行
+  ```
+  const COLOR_RED    = Symbol();
+  const COLOR_GREEN  = Symbol();
+  
+  function getComplement(color) {
+    switch (color) {
+      case COLOR_RED:
+        return COLOR_GREEN;
+      case COLOR_GREEN:
+        return COLOR_RED;
+      default:
+        throw new Error('Undefined color');
+      }
+  }
+  ```
+  - Symbol作为属性名的时候是公开属性而不是私有属性
+    

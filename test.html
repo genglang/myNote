@@ -6,7 +6,20 @@
 </head>
 <body>
 <script>
-    console.log(Object.setPrototypeOf('a', {b: 1}).b)
+    const COLOR_RED    = Symbol('red');
+    const COLOR_GREEN  = Symbol('green');
+
+    function getComplement(color) {
+        switch (color) {
+            case COLOR_RED:
+                return COLOR_GREEN;
+            case COLOR_GREEN:
+                return COLOR_RED;
+            default:
+                throw new Error('Undefined color');
+        }
+    }
+	getComplement(COLOR_RED)
 </script>
 </body>
 </html>
