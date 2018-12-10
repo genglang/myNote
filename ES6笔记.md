@@ -1910,4 +1910,22 @@
   - Reflect.ownKeys方法可以返回所有类型的键名,包括常规键名和Symbol键名
   - Symbol可以定义一些非私有,但是只希望用于内部的方法
   
+### Symbol.for(),Symbol.keyFor()
+  - Symbol.for()可以检测让多个变量使用同一个Symbol值,检测是否存在与参数同名Symbol值,有就返回这个值,否则就创建一个参数名的Symbol值
+  ```
+  let s1 = Symbol.for('foo');
+  let s2 = Symbol.for('foo');
+  
+  s1 === s2 // true
+  ```
+  - Symbol调用多次返回不同的Symbol,Symbol.for()返回同一个
+  - Symbol.keyFor方法返回一个已登记的Symbol类型值的key
+  ```
+  let s1 = Symbol.for("foo");
+  Symbol.keyFor(s1) // "foo"
+  
+  let s2 = Symbol("foo");
+  Symbol.keyFor(s2) // undefined
+  ```
+  - Symbol.for()登记在全局环境,可以在不同iframe和service worker
   
