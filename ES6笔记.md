@@ -1903,4 +1903,11 @@
   }
   ```
   - Symbol作为属性名的时候是公开属性而不是私有属性
-    
+
+### 属性名的遍历
+  - Symbol作为属性名不会被for-in、for-of、Object.key、Object.getOwnPropertyNames、JSON.stringify返回
+  - 但是Symbol不是私有属性,用Object.getOwnPropertySymbols可以遍历,返回当前对象所有有作用的属性名Symbol
+  - Reflect.ownKeys方法可以返回所有类型的键名,包括常规键名和Symbol键名
+  - Symbol可以定义一些非私有,但是只希望用于内部的方法
+  
+  
