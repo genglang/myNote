@@ -1929,3 +1929,22 @@
   ```
   - Symbol.for()登记在全局环境,可以在不同iframe和service worker
   
+### 实例:模块的Singleton模式
+  - Singleton模式指的是调用一个类,任何时候返回的都是同一个实例
+  - Node的模块文件可以看作一个类,怎么保证每次执行模块文件返回的都是同一个实例?
+  - 可以把实例放到顶层对象global
+  ```
+  // mod.js
+  function A() {
+    this.foo = 'hello'
+  }
+  if (!global._foo) {
+    global._foo = new A()
+  }
+  module.exports = global._foo
+  
+  const a = require('./mod.js')
+  console.log(a.foo)
+  ```
+  - 但是任何文件都可以修改globel对象,因此容易使代码失真
+  
