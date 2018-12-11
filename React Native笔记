@@ -25,3 +25,7 @@ headerStyle: {borderBottomWidth: 0, shadowColor: 'transparent',elevation: 0},
 headerTitleStyle:{flex:1, textAlign: 'center'},
 headerTitle:'编辑资料',
 headerRight:<View/>,
+
+
+PureComponent中重新绑定函数会触发render,甚至特殊情况下bind也会触发
+需要constructor中this.onPress=this.onPress.bind(this)绑定

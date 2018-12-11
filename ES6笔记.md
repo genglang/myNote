@@ -1947,4 +1947,38 @@
   console.log(a.foo)
   ```
   - 但是任何文件都可以修改globel对象,因此容易使代码失真
+  - 使用Symbol实现单例模式
+  ```
+  // mod.js
+  const FOO_KEY = Symbol.for('foo')
+  
+  function A() {
+    this.foo = 'hello'
+  }
+  
+  if (!global[FOO_KEY]) {
+    global[FOO_KEY] = new A()
+  }
+  
+  module.exports = global[FOO_KEY];
+  
+  global[Symbol.for('foo')] = { foo: 'world' }
+  const a = require('./mod.js')
+  // 保证 global[FOO_KEY] 不会被无意间覆盖,但是还是可以被改写
+  ```
+  - 键名使用Symbol方法生成,无法被改写,但也导致其他脚本都无法引用FOO_KEY
+  ```
+  // mod.js
+  const FOO_KEY = Symbol('foo')
+  ... ...
+  ```
+  
+### 内置的Symbol值
+  - ES6提供了11个内置的Symbol值,指向语言内部使用的方法
+  
+#### Symbol.hasInstance
+  - 对象的Symbol.hasInstance属性,指向一个内部方法
+  - 当其他对象使用instanceof运算符,判断是否为该对象的实例时,会调用这个方法
+  - instaceof在语言内部调用`Foo[Symbol.hasInstance](foo)`
+  
   
