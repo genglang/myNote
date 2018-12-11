@@ -2006,4 +2006,63 @@
 
 #### Symbol.species
   - 指向一个构造函数,创建衍生对象时,会使用该属性
-    
+  ```
+  class MyArray extends Array {
+  }
+  
+  const a = new MyArray(1, 2, 3);
+  const b = a.map(x => x);
+  const c = a.filter(x => x > 1);
+  
+  b instanceof MyArray // true
+  c instanceof MyArray // true
+  ```
+  - 子类MyArray继承了父类Array,a是MyArray的实例,b和c是a的衍生对象
+  - b和c虽然是数组方法产生的,但也是MyArray的实例
+  - 可以为MyArray设置Symbol.species属性,用于指定被new时的构造函数
+  ```
+  class MyArray extends Array {
+    static get [Symbol.species]() { return Array; }
+  }
+  
+  const a = new MyArray();
+  const b = a.map(x => x);
+  
+  b instanceof MyArray // false
+  b instanceof Array // true
+  ```
+
+#### Symbol.match
+  - 对象的Symbol.match属性,指向一个函数
+  - 当执行str.match(myObject)时,如果该属性存在,会调用它,返回该方法的返回值
+  ```
+  String.prototype.match(regexp)
+  // 等同于
+  regexp[Symbol.match](this)
+  
+  class MyMatcher {
+    [Symbol.match](string) {
+      return 'hello world'.indexOf(string);
+    }
+  }
+  
+  'e'.match(new MyMatcher()) // 1
+  ```
+  
+#### Symbol.replace
+  - 对象的Symbol.replace属性,指向一个方法
+  - 当该对象被String.prototype.replace方法调用时,会返回该方法的返回值
+  ```
+  String.prototype.replace(searchValue, replaceValue)
+  // 等同于
+  searchValue[Symbol.replace](this, replaceValue)
+  ```
+  - Symbol.replace方法会收到两个参数
+    1. replace方法正在作用的对象
+    2. 替换后的值
+  ```
+  const x = {};
+  x[Symbol.replace] = (...s) => console.log(s);
+  
+  'Hello'.replace(x, 'World') // ["Hello", "World"]
+  ```
