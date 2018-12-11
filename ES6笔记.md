@@ -1981,4 +1981,29 @@
   - 当其他对象使用instanceof运算符,判断是否为该对象的实例时,会调用这个方法
   - instaceof在语言内部调用`Foo[Symbol.hasInstance](foo)`
   
+#### Symbol.isConcatSpreadable
+  - 对象的Symbol.isConcatSpreadable属性等于一个布尔值
+  - 表示该对象用于Array.prototype.concat()时,是否可以展开
+  ```
+  let arr1 = ['c', 'd'];
+  ['a', 'b'].concat(arr1, 'e') // ['a', 'b', 'c', 'd', 'e']
+  arr1[Symbol.isConcatSpreadable] // undefined
   
+  let arr2 = ['c', 'd'];
+  arr2[Symbol.isConcatSpreadable] = false;
+  ['a', 'b'].concat(arr2, 'e') // ['a', 'b', ['c','d'], 'e']
+  ```
+  - Symbol.isConcatSpreadable对于数组,等于true或者undefined时可以展开
+  - 但是对于类数组对象正好相反,只有属性为true才能展开
+  ```
+  let obj = {length: 2, 0: 'c', 1: 'd'};
+  ['a', 'b'].concat(obj, 'e') // ['a', 'b', obj, 'e']
+  
+  obj[Symbol.isConcatSpreadable] = true;
+  ['a', 'b'].concat(obj, 'e') // ['a', 'b', 'c', 'd', 'e']
+  ```
+  - 可以定义在类里
+
+#### Symbol.species
+  - 指向一个构造函数,创建衍生对象时,会使用该属性
+    

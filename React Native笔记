@@ -29,3 +29,33 @@ headerRight:<View/>,
 
 PureComponent中重新绑定函数会触发render,甚至特殊情况下bind也会触发
 需要constructor中this.onPress=this.onPress.bind(this)绑定
+
+
+A problem occurred configuring project ':react-native-image-picker'
+android目录下build.gradle最下面添加
+subprojects {
+    if (project.name.contains('react-native-image-picker')) {
+        buildscript {
+            repositories {
+                jcenter()
+                google()
+                maven { url "https://dl.bintray.com/android/android-tools/"  }
+            }
+        }
+    }
+}
+
+
+A problem occurred configuring project ':react-native-vector-icons'.
+node_modules目录下react-native-vector-icons/android/build.gradle
+修改为
+buildscript {
+  repositories {
+    jcenter()
+    google()
+  }
+
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.2.1'
+  }
+}
