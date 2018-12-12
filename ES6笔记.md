@@ -2095,3 +2095,88 @@
   separator[Symbol.split](this, limit)
   ```
   
+#### Symbol.iterator
+  - 对象的Symbol.iterator指向对象默认遍历器方法
+  - 对对象的for-of循环会调用Symbol.iterator方法,返回对象默认的遍历器
+  
+#### Symbol.toPrimitive
+  - Symbol.toPrimitive指向一个方法,当对象被转化成原始类型时调用这个方法
+  - 被调用时会接受一个字符串参数表示当前运算模式
+    1. Number 转化成数值
+    2. String 转化成字符串
+    3. Default 既可以转化为数值也可以转化为字符串
+  ```
+  let obj = {
+    [Symbol.toPrimitive](hint) {
+      switch (hint) {
+        case 'number':
+          return 123;
+        case 'string':
+          return 'str';
+        case 'default':
+          return 'default';
+        default:
+          throw new Error();
+       }
+     }
+  };
+  
+  2 * obj // 246
+  3 + obj // '3default'
+  obj == 'default' // true
+  String(obj) // 'str'
+  ```
+
+#### Symbol.toStringTag
+  - 指向一个方法,在该对象上调用toString方法时,如果这个属性存在,它的返回值会出现在toString方法返回的字符串中,表示对象类型
+  - 这个属性可以用于定制`[object object]`后面的字符串
+  - ES6中新增的toStringTag属性值
+    - `JSON[Symbol.toStringTag]`：'JSON'
+    - `Math[Symbol.toStringTag]`：'Math'
+    - `Module 对象M[Symbol.toStringTag]`：'Module'
+    - `ArrayBuffer.prototype[Symbol.toStringTag]`：'ArrayBuffer'
+    - `DataView.prototype[Symbol.toStringTag]`：'DataView'
+    - `Map.prototype[Symbol.toStringTag]`：'Map'
+    - `Promise.prototype[Symbol.toStringTag]`：'Promise'
+    - `Set.prototype[Symbol.toStringTag]`：'Set'
+    - `%TypedArray%.prototype[Symbol.toStringTag]`：'Uint8Array'等
+    - `WeakMap.prototype[Symbol.toStringTag]`：'WeakMap'
+    - `WeakSet.prototype[Symbol.toStringTag]`：'WeakSet'
+    - `%MapIteratorPrototype%[Symbol.toStringTag]`：'Map Iterator'
+    - `%SetIteratorPrototype%[Symbol.toStringTag]`：'Set Iterator'
+    - `%StringIteratorPrototype%[Symbol.toStringTag]`：'String Iterator'
+    - `Symbol.prototype[Symbol.toStringTag]`：'Symbol'
+    - `Generator.prototype[Symbol.toStringTag]`：'Generator'
+    - `GeneratorFunction.prototype[Symbol.toStringTag]`：'GeneratorFunction'
+
+#### Symbol.unscopables
+  - Symbol.unscopables属性,指向一个对象
+  - 该对象指定了使用with关键字时,哪些属性会被with环境排除
+  - 可以通过指定Symbol.unscopables属性,让with语法块不会在当前作用域寻找foo属性
+  ```
+  // 没有 unscopables 时
+  class MyClass {
+    foo() { return 1; }
+  }
+  
+  var foo = function () { return 2; };
+  
+  with (MyClass.prototype) {
+    foo(); // 1
+  }
+  
+  // 有 unscopables 时
+  class MyClass {
+    foo() { return 1; }
+    get [Symbol.unscopables]() {
+      return { foo: true };
+    }
+  }
+  
+  var foo = function () { return 2; };
+  
+  with (MyClass.prototype) {
+    foo(); // 2
+  }
+  ```
+  
