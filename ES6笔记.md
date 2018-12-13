@@ -2252,3 +2252,28 @@
   set = new Set(Array.from(set, val => val * 2));
   // set的值是2, 4, 6
   ```
+
+### WeakSet
+  - WeakSet结构与Set类似,也是不重复的值的集合
+  - WeakSet成员只能是对象
+  - WeakSet中的对象都是弱引用,垃圾回收机制不会考虑WeakSet对于对象的引用,对象资源被回收之后WeakSet内部的引用会自动消失
+  - WeakSet不可遍历
+  - WeakSet是一个构造函数,可以使用new命令,创建WeakSet数据结构
+  - 参数是数组时,是数组成员变成WeakSet成员而不是数组本身
+  ```
+  const a = [[1, 2], [3, 4]];
+  const ws = new WeakSet(a);
+  // WeakSet {[1, 2], [3, 4]}
+  
+  const b = [3, 4];
+  const ws = new WeakSet(b); // b成员不是对象
+  // Uncaught TypeError: Invalid value used in weak set(…)
+  ```
+  - WeakSet结构有以下三个方法。
+    1. WeakSet.prototype.add(value):向WeakSet实例添加一个新成员
+    2. WeakSet.prototype.delete(value):清除 WeakSet 实例的指定成员
+    3. WeakSet.prototype.has(value):返回一个布尔值,表示某个值是否在WeakSet实例之中
+  - WeakSet没有size属性,没有办法遍历其成员
+  
+  
+  
