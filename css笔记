@@ -1,0 +1,87 @@
+1.宽度与高度
+  字体默认行高倍速 由字体决定
+  &nbsp no break space 不换行的回车
+  不要用&nbsp多行对齐
+  text-align:justify; 外加:after一个空元素 然后overflow:hidden; 进行多行对齐
+  用:after content:'';display:block;clear:both; 扩开浮动父元素
+  word-break:break-all; 单词内的换行
+  word-wrap:wrap; 单词前就换行
+  文字溢出: {
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  多行文本省略号:{
+    display:-webkit-box;
+    -webkit-line-clamp:2,
+    -webkit-box-orient:vertical;
+  }
+  border占据空间 outline不占据空间
+  不用使用line-height进行垂直居中 尽量使用padding 同时父元素的高尽量不要写死
+  子元素margin可以超出父元素(用outline时 用border/padding不会)
+  div的高度由div内部的文档流元素的高度和决定
+  relative相对定位怎么位移 都占着原来的位置
+  内联元素的margin和padding影响宽度不影响高度
+  padding-top:100%;可以实现自适应一比一块级元素
+2.堆叠上下文
+  text-indent段落第一行缩进
+  没有定位的负zindex<=background<=border<=有定位的负zindex<=div(块级元素)<=浮动元素<=文字<=relative定位<=正zindex
+  z-index的默认相当于0
+3.icon
+  image默认保持等比例
+  sprites用网上工具生成
+  iconfont 在html中&#xe61(x)起 css伪类\#xe61(x)
+  svg支持各种css 但是性能较低 但是推荐使用
+  用css写icon
+4.移动端页面
+  媒体查询
+  一般认为超过450px的就是非手机端
+  !important强制提升优先级
+  没有人做响应式网站
+  pc端网站用980px做标准
+  手机端没有hover
+  手机端有touch事件
+  手机端没有resize
+  手机端没有滚动条
+5.flex布局
+  横向叫主轴
+  纵向叫测轴
+6.布局套路
+  浮动布局float:left; 父元素:after{content:'';display:block;clear:both;} // 兼容ie5
+  ie6给父元素添加zoom:1;
+  flex布局
+  响应式布局就是干掉宽度
+  图片保持宽高用background
+7.BFC
+  块级格式化上下文
+  是BFC的元素会把所有子元素包起来
+  子元素中被其他BFC元素包裹的不受到管理
+  BFC兄弟元素界限分明
+  display:flow-root;让当前元素变成BFC元素
+  不要用BFC清除浮动
+  例子:
+    overflow:hidden;清除浮动
+    浮动元素和块级元素兄弟之间不用BFC不清不楚
+    div父元素为0 子元素设置margin-top
+8.动态REM
+  px像素
+  pt物理像素(不用)
+  em当前字体大小为单位(M为单位)
+  ex相对于字符x的高度 通常为正常字体高度的一半(不用)
+  ch相对于0的宽度
+  rem相对根元素的font-size为单位(html)
+  vh视口高度
+  vw视口宽度
+  chrome最小像素为12像素(可设置)
+  用JS设置html标签的font-size与页面宽度绑定(特别小的元素用px)
+  用html{height:100%;} body{min-height:100%;}撑开页面
+  border不设置颜色的话 默认是当前元素的color
+  display:none; 不能加动画
+9.IFC
+  字体大小设置的是字体印刷的模具高度
+  内联元素默认用baseline对齐
+  同一行相同行高字体不同可能会导致错开对齐导致与实际高度不服
+  vertical-align:top;是根据文字的实际占地面积排列
+  vertical-align:middle;没用 根据父元素baseline加上父元素x的height一半对齐
+  两个不同字体inline-block元素不可能对齐
+  image因为要和父元素的基线对齐 所以会有一个空隙 可以用vertical-align解决

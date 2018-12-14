@@ -2275,5 +2275,19 @@
     3. WeakSet.prototype.has(value):返回一个布尔值,表示某个值是否在WeakSet实例之中
   - WeakSet没有size属性,没有办法遍历其成员
   
+### Map
+  - JS对象本质上是键值对集合,但是传统上的对象只能用字符串当键
+  - 如果键不是字符串,会被自动转化为字符串,会变成不希望变成的样子
+  - ES6提供了Map数据结构,类似与对象,也是键值对的集合,但是键的范围不限于字符串,所有类型都能成为键
+  ```
+  const m = new Map();
+  const o = {p: 'Hello World'};
   
+  m.set(o, 'content')
+  m.get(o) // "content"
+  
+  m.has(o) // true
+  m.delete(o) // true
+  m.has(o) // false
+  ```
   
