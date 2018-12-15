@@ -6,14 +6,12 @@
 </head>
 <body>
 <script>
-    let s = new Set([NaN,NaN])
+    let s = new Set([[1,2],[1,2],[2,3]])
 	console.log(s)
-	console.log(s.add(1))
-	console.log(s.has(NaN))
-	console.log(s.keys())
-	console.log(s.values())
-	console.log(s.entries())
-	console.log(s.forEach(item=>{console.log(item)}))
+	console.log('Set',s)
+	console.log('Set',...s)
+	let m = new Map(s)
+	console.log(m)
 </script>
 </body>
 </html>
