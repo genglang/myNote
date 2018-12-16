@@ -6,12 +6,13 @@
 </head>
 <body>
 <script>
-    let s = new Set([[1,2],[1,2],[2,3]])
-	console.log(s)
-	console.log('Set',s)
-	console.log('Set',...s)
-	let m = new Map(s)
-	console.log(m)
+    let s = new Set([[1, 2], [1, 2], [2, 3]])
+    let a = {b: 1}
+    s.add(a)
+    console.log(s.has(a))
+    console.log(s)
+    a = null
+    console.log(s.has(a))
 </script>
 </body>
 </html>
