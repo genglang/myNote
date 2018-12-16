@@ -2345,3 +2345,31 @@
   - WeakMap与Map主要区别在两个方面
     1. 没有遍历操作与size属性
     2. 无法清空,无法使用clear方法
+    
+## Proxy
+  - 用于修改某些操作的默认行为,等同于在语言层面进行修改,因此属于一种(元编程:对编程语言本身进行编程)
+  - 相当于在目标对象之前假设一层拦截,外界访问对象前都必须先通过这层拦截
+  - 因此提供了一种机制,可以对外界的访问进行过滤和改写
+  - Proxy这个词的原意是代理,用在这里表示由它来"代理"某些操作,可以译为"代理器"
+  - Proxy实际上重载(overload)了点运算符,即用自己的定义覆盖了语言的原始定义
+  
+### Proxy语法
+  - ES6原生提供Proxy构造函数,用来生成Proxy实例
+  - new Proxy()表示生成一个Proxy实例,target参数表示所要拦截的目标对象,handler参数也是一个对象,用来定制拦截行为
+  ```
+  var proxy = new Proxy(target, handler)
+  ```
+  - 要使得Proxy起作用,必须针对Proxy实例(上例是proxy对象)进行操作,而不是针对目标对象(上例是空对象)进行操作
+  - 如果Handler没有进行任何拦截,那就等同于直接通向原对象
+  - 可以将Proxy实例设置到对象上或者对象的原型对象上,从而在对象中调用
+  ```
+  var proxy = new Proxy({}, {
+    get: function(target, property) {
+      return 35;
+    }
+  })
+  let obj = Object.create(proxy)
+  obj.time // 
+  ```
+  
+  
