@@ -2371,5 +2371,59 @@
   let obj = Object.create(proxy)
   obj.time // 
   ```
-  
-  
+  - 同一个拦截器函数,可以设置拦截多个操作
+  ```
+  let handler = {
+      get: function (target, name) {
+          if (name === 'prototype') {
+              return Object.prototype
+          }
+          return 'Hello' + name
+      },
+      apply: function (target, thisBinding, args) {
+          return args[0]
+      },
+      construct: function (target, args) {
+          return {value: args[1]}
+      }
+  }
+  let fproxy = new Proxy(function (x, y) {
+      return x + y
+  }, handler)
+  console.log(fproxy(1, 2)) // 1new fproxy(1, 2) // {value: 2}
+  console.log(new fproxy(1, 2)) // {value: 2}
+  console.log(fproxy.prototype === Object.prototype)// true
+  console.log(fproxy.foo === 'Hello, foo')// true
+  ```
+#### Proxy支持的13种拦截方式
+  1. get(target,propKey,receiver)
+  2. set(target,propKey,value,receiver)
+  3. has(target,propKey) 
+     - 拦截`propKey in proxy`操作
+  4. deleteProperty(target, propKey)
+     - 拦截`delete proxy[propKey]`
+  5. ownKeys(target)
+     - 拦截`Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in`
+     - 返回一个数组
+  6. getOwnPropertyDescriptor(target, propKey)
+     - 拦截`Object.getOwnPropertyDescriptor(proxy, propKey)`
+     - 返回属性的描述对象
+  7. defineProperty(target, propKey, propDesc)
+     - 拦截`Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)`
+     - 返回一个布尔值
+  8. preventExtensions(target)
+     - 拦截`Object.preventExtensions(proxy)`
+     - 返回一个布尔值
+  9. getPrototypeOf(target)
+     - 拦截`Object.getPrototypeOf(proxy)`
+     - 返回一个对象
+  10. isExtensible(target)
+     - 拦截`Object.isExtensible(proxy)`
+     - 返回一个布尔值
+  11. setPrototypeOf(target, proto)
+     - 拦截`Object.setPrototypeOf(proxy, proto)`
+     - 返回一个布尔值,如果目标对象是函数,还有两种操作可以
+  12. apply
+     - 拦截Proxy实例作为函数调用的操作,比如`proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)`
+  13. construct(target, args)
+     - 拦截Proxy实例的构造函数调用的操作,比如new proxy(...args)
