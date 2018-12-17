@@ -2427,3 +2427,57 @@
      - 拦截Proxy实例作为函数调用的操作,比如`proxy(...args)、proxy.call(object, ...args)、proxy.apply(...)`
   13. construct(target, args)
      - 拦截Proxy实例的构造函数调用的操作,比如new proxy(...args)
+
+### Proxy 实例的方法
+
+#### get
+  - 用于拦截某个属性的读取操作,接收三个参数
+    1. 目标对象
+    2. 属性名
+    3. proxy实例本身(操作行为针对的对象,可选)
+  ```
+  var person = {
+    name: "张三"
+  };
+  
+  var proxy = new Proxy(person, {
+    get: function(target, property) {
+      if (property in target) {
+        return target[property];
+      } else { // 如果访问对象不存在的属性,抛出一个错误
+        throw new ReferenceError("Property \"" + property + "\" does not exist.");
+      }
+    }
+  });
+  
+  proxy.name // "张三"
+  proxy.age // 抛出一个错误
+  ```
+  - get方法可以继承
+  - 利用get可以把读取属性的操作转变为执行某个函数,从而实现属性的链式操作
+  ```
+  var pipe = (function () {
+    return function (value) {
+      var funcStack = [];
+      var oproxy = new Proxy({} , {
+        get : function (pipeObject, fnName) {
+          if (fnName === 'get') {
+            return funcStack.reduce(function (val, fn) {
+              return fn(val);
+            },value);
+          }
+          funcStack.push(window[fnName]);
+          return oproxy;
+        }
+      });
+  
+      return oproxy;
+    }
+  }());
+  
+  var double = n => n * 2;
+  var pow    = n => n * n;
+  var reverseInt = n => n.toString().split("").reverse().join("") | 0;
+  
+  pipe(3).double.pow.reverseInt.get; // 63
+  ```
