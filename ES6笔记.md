@@ -2456,28 +2456,59 @@
   - get方法可以继承
   - 利用get可以把读取属性的操作转变为执行某个函数,从而实现属性的链式操作
   ```
-  var pipe = (function () {
-    return function (value) {
-      var funcStack = []
-      var oproxy = new Proxy({} , {
-        get : function (pipeObject, fnName) {
-          if (fnName === 'get') {
-            return funcStack.reduce(function (val, fn) {
-              return fn(val)
-            },value)
+  let pipe = (function () {
+      return function (value) {
+          let funcStack = []
+          let oproxy = new Proxy({}, {
+              get: function (pipeObject, fnName) {
+                  if (fnName === 'get') {
+                      return funcStack.reduce(function (val, fn) {
+                          return fn(val)
+                      }, value)
+                  }
+                  funcStack.push(window[fnName])
+                  return oproxy
+              }
           }
-          funcStack.push(window[fnName])
           return oproxy
-        }
-      })
-  
-      return oproxy
-    }
+      }
   }())
-  
+  // 必须要用var才能赋值到window对象上
   var double = n => n * 2
-  var pow    = n => n * n
-  var reverseInt = n => n.toString().split("").reverse().join("") | 0
+  var pow = n => n * n
+  var reverseInt = n => n.toString().split('').reverse().join('')
+  console.log(pipe(3).double.pow.reverseInt.get)// 63
+  ```
+  - 可以用get拦截,实现一个生成各种DOM节点的通用函数dom
+  ```
+  const dom = new Proxy({}, {
+    get(target, property) {
+      return function(attrs = {}, ...children) {
+        const el = document.createElement(property);
+        for (let prop of Object.keys(attrs)) {
+          el.setAttribute(prop, attrs[prop]);
+        }
+        for (let child of children) {
+          if (typeof child === 'string') {
+            child = document.createTextNode(child);
+          }
+          el.appendChild(child);
+        }
+        return el;
+      }
+    }
+  });
   
-  pipe(3).double.pow.reverseInt.get // 63
+  const el = dom.div({},
+    'Hello, my name is ',
+    dom.a({href: '//example.com'}, 'Mark'),
+    '. I like:',
+    dom.ul({},
+      dom.li({}, 'The web'),
+      dom.li({}, 'Food'),
+      dom.li({}, '…actually that\'s it')
+    )
+  );
+  
+  document.body.appendChild(el);
   ```

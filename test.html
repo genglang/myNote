@@ -6,27 +6,30 @@
 </head>
 <body>
 <script>
-    let handler = {
-        get: function (target, name) {
-            if (name === 'prototype') {
-                return Object.prototype
-            }
-            return 'Hello' + name
-        },
-        apply: function (target, thisBinding, args) {
-            return args[0]
-        },
-        construct: function (target, args) {
-            return {value: args[1]}
+    let pipe = (function () {
+        return function (value) {
+            let funcStack = []
+            let oproxy = new Proxy({}, {
+                get: function (pipeObject, fnName) {
+                    if (fnName === 'get') {
+                        return funcStack.reduce(function (val, fn) {
+                            return fn(val)
+                        }, value)
+                    }
+                    funcStack.push(window[fnName])
+                    return oproxy
+                }
+            })
+
+            return oproxy
         }
-    }
-    let fproxy = new Proxy(function (x, y) {
-        return x + y
-    }, handler)
-    console.log(fproxy(1, 2)) // 1new fproxy(1, 2) // {value: 2}
-    console.log(new fproxy(1, 2)) // {value: 2}
-    console.log(fproxy.prototype === Object.prototype)// true
-    console.log(fproxy.foo === 'Hello, foo')// true
+    }())
+    // 必须要用var才能赋值到window对象上
+    var double = n => n * 2
+    var pow = n => n * n
+    var reverseInt = n => n.toString().split('').reverse().join('') | 0
+
+    console.log(pipe(3).double.pow.reverseInt.get)// 63
 </script>
 </body>
 </html>
