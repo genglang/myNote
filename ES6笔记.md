@@ -2509,3 +2509,38 @@
 
   document.body.appendChild(el)
   ```
+  - 如果一个属性不可配置(configurable)且不可写(writable),proxy就不能修改该属性
+
+#### set
+  - 用于拦截某个属性的赋值操作,可以接受四个参数
+    1. 目标对象
+    2. 属性名
+    3. 属性值
+    4. proxy实例本身
+  ```
+  let validator = {
+    set: function(obj, prop, value) {
+      if (prop === 'age') {
+        if (!Number.isInteger(value)) {
+          throw new TypeError('The age is not an integer')
+        }
+        if (value > 200) {
+          throw new RangeError('The age seems invalid')
+        }
+      }
+  
+      // 对于满足条件的 age 属性以及其他属性，直接保存
+      obj[prop] = value
+    }
+  }
+  
+  let person = new Proxy({}, validator)
+  
+  person.age = 100
+  
+  person.age // 100
+  person.age = 'young' // 报错
+  person.age = 300 // 报错
+  ```
+  - 设置了存值函数set,任何不符合要求的age属性赋值,都会抛出一个错误,这是数据验证的一种实现方法
+  - 利用set方法,还可以数据绑定,即每当对象发生变化时,会自动更新 DOM
