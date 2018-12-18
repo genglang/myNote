@@ -2544,3 +2544,33 @@
   ```
   - 设置了存值函数set,任何不符合要求的age属性赋值,都会抛出一个错误,这是数据验证的一种实现方法
   - 利用set方法,还可以数据绑定,即每当对象发生变化时,会自动更新 DOM
+  - 可以通过get和set方法控制数据的访问,比如说禁止访问下划线开头的私有变量
+  ```
+  const handler = {
+    get (target, key) {
+      invariant(key, 'get');
+      return target[key];
+    },
+    set (target, key, value) {
+      invariant(key, 'set');
+      target[key] = value;
+      return true;
+    }
+  };
+  function invariant (key, action) {
+    if (key[0] === '_') {
+      throw new Error(`Invalid attempt to ${action} private "${key}" property`);
+    }
+  }
+  const target = {};
+  const proxy = new Proxy(target, handler);
+  proxy._prop
+  // Error: Invalid attempt to get private "_prop" property
+  proxy._prop = 'c'
+  // Error: Invalid attempt to set private "_prop" property
+  ```
+  - 第四个参数receiver指的是原始行为所操纵的对象,一般情况是proxy对象本身(原型链上除外)
+  - 如果目标对象自身某个属性,不可写不可配置,set方法就不起作用
+  - 严格模式下set方法不返回true就报错
+  
+  
