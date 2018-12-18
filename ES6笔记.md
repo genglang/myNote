@@ -2608,5 +2608,39 @@
   ```
   - 直接调用Reflect.apply方法,也会被拦截
 
+#### has
+  - has用于拦截HasProperty操作,即判断对象是否具有某个属性时,会被拦截,接收两个参数
+    1. 目标对象
+    2. 需要查询的属性名
+  - 可以使用has隐藏某些属性,不被in运算符发现
+  ```
+  var handler = {
+    has (target, key) {
+      if (key[0] === '_') {
+        return false;
+      }
+      return key in target;
+    }
+  };
+  var target = { _prop: 'foo', prop: 'foo' }
+  var proxy = new Proxy(target, handler)
+  console.log('_prop' in proxy) // false
+  ```
+  - 如果对象被设置了不可配置或者禁止拓展(Object.preventExtensions),使用has拦截会报错
+  ```
+  var obj = { a: 10 };
+  Object.preventExtensions(obj)
   
+  var p = new Proxy(obj, {
+    has: function(target, prop) {
+      return false;
+    }
+  })
+  'a' in p // TypeError is thrown
+  ```
+  - 如果对象属性被配置了不可拓展,has方法就不得隐藏该属性
+  - has方法拦截HasProperty操作,而不是HasOwnProperty操作,即has方法不判断一个属性是对象自身的属性,还是继承的属性
+  - has拦截对for-in不生效
+
+
   
