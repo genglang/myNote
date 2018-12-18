@@ -2572,5 +2572,41 @@
   - 第四个参数receiver指的是原始行为所操纵的对象,一般情况是proxy对象本身(原型链上除外)
   - 如果目标对象自身某个属性,不可写不可配置,set方法就不起作用
   - 严格模式下set方法不返回true就报错
+#### apply
+  - apply方法拦截函数的调用,call,apply操作,接收三个参数
+    1. 目标对象
+    2. 目标对象的上下文(this)
+    3. 目标对象的参数数组
+  - 函数调用会被拦截
+  ```
+  var target = function () { return 'I am the target'; };
+  var handler = {
+    apply: function () {
+      return 'I am the proxy';
+    }
+  };
+  
+  var p = new Proxy(target, handler);
+  
+  p()
+  // "I am the proxy"
+  ```
+  - 无论是直接调用还是call,apply调用都会被拦截
+  ```
+  var twice = {
+    apply (target, ctx, args) {
+      return Reflect.apply(...arguments) * 2;
+    }
+  };
+  function sum (left, right) {
+    return left + right;
+  };
+  var proxy = new Proxy(sum, twice);
+  proxy(1, 2) // 6
+  proxy.call(null, 5, 6) // 22
+  proxy.apply(null, [7, 8]) // 30
+  ```
+  - 直接调用Reflect.apply方法,也会被拦截
+
   
   
