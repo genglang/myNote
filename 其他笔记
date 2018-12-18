@@ -53,3 +53,6 @@ jest报babel版本错误
 npm install --save-dev babel-jest babel-core@^7.0.0-bridge.0 @babel/core regenerator-runtime
 
 new.target指向new调用的构造函数,不是new出来的对象返回undefined
+
+
+Object.defineProperty定义的属性无法被delete删除

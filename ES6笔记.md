@@ -2642,5 +2642,30 @@
   - has方法拦截HasProperty操作,而不是HasOwnProperty操作,即has方法不判断一个属性是对象自身的属性,还是继承的属性
   - has拦截对for-in不生效
 
+#### construct
+  - 用于拦截new命令,接收两个参数
+    1. target:目标对象
+    2. args:构造函数参数对象
+  - 必须返回一个对象否则会报错
 
+#### deleteProperty
+  - 用于拦截delete操作,如果这个方法抛出错误或者返回false,当前属性就无法被删除,接收两个参数
+    1. 目标对象
+    2. 删除的属性名
+  - 如果对象自身具有不可配置的属性,不能被deleteProperty方法删除,否则报错
   
+#### defineProperty
+  - defineProperty拦截了Object.defineProperty操作
+  - 如果默认返回false,那么定义的新属性总是无效
+  ```
+  var handler = {
+    defineProperty (target, key, descriptor) {
+      return false;
+    }
+  };
+  var target = {};
+  var proxy = new Proxy(target, handler);
+  proxy.foo = 'bar' // 不会生效
+  ```
+  - 如果对象是不可拓展的,则defineProperty不能添加对象上不存在的属性,否则报错
+  - 如果目标对象的某个属性不可写或者不可配置,defineProperty方法不得改变这两个设置
