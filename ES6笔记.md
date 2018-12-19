@@ -2669,3 +2669,74 @@
   ```
   - 如果对象是不可拓展的,则defineProperty不能添加对象上不存在的属性,否则报错
   - 如果目标对象的某个属性不可写或者不可配置,defineProperty方法不得改变这两个设置
+  
+#### getOwnPropertyDescriptor
+  - 该方法拦截Object.getOwnPropertyDescriptor(),返回一个属性描述对象或者undefined
+  ```
+  var handler = {
+    getOwnPropertyDescriptor (target, key) {
+      if (key[0] === '_') {
+        return;
+      }
+      return Object.getOwnPropertyDescriptor(target, key);
+    }
+  };
+  var target = { _foo: 'bar', baz: 'tar' };
+  var proxy = new Proxy(target, handler);
+  Object.getOwnPropertyDescriptor(proxy, 'wat')
+  // undefined
+  Object.getOwnPropertyDescriptor(proxy, '_foo')
+  // undefined
+  Object.getOwnPropertyDescriptor(proxy, 'baz')
+  // { value: 'tar', writable: true, enumerable: true, configurable: true }
+  ```
+#### getPrototypeOf
+  - getPrototypeOf方法主要用来拦截获取对象原型,拦截下面这些操作
+    - `Object.prototype.__proto__`
+    - `Object.prototype.isPrototypeOf()`
+    - `Object.getPrototypeOf()`
+    - `Reflect.getPrototypeOf()`
+    - `instanceof`
+  - 返回值必须是对象或者null,否则报错
+  - 如果目标对象被设置了不可拓展,必须返回目标对象的原型对象
+  ```
+  var proto = {};
+  var p = new Proxy({}, {
+    getPrototypeOf(target) {
+      return proto;
+    }
+  });
+  Object.getPrototypeOf(p) === proto // true
+  ```
+  
+#### isExtensible
+  - 拦截Object.isExtensible操作
+  ```
+  var p = new Proxy({}, {
+    isExtensible: function(target) {
+      console.log("called");
+      return true;
+    }
+  });
+  
+  Object.isExtensible(p)
+  // "called"
+  // true
+  ```
+  - 只能返回布尔值,否则会被强转为布尔值
+  - 返回值必须与目标对象的isExtensible属性保持一致,否则会抛出错误
+  
+#### ownKeys
+  - 用于拦截自身对象属性的读取操作
+    - Object.getOwnPropertyNames()
+    - Object.getOwnPropertySymbols()
+    - Object.keys()
+    - for...in
+  - 使用Object.keys()时,会忽略以下属性
+    1. 不可遍历属性
+    2. Symbol
+    3. 对象上不存在的属性(对象上没有proxy拦截的返回值)
+  - ownKeys方法返回的数组成员只能是字符串或者Symbol,其他类型或者返回的不是数组,会报错
+  - 如果目标对象自身包含不可配置的属性,则该属性必须被ownKeys方法返回,否则报错
+  - 如果目标对象是不可拓展的,返回的数组必须包含原对象的所有属性,不能包含多余属性,否则报错
+    
