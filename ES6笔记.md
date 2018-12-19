@@ -2764,5 +2764,41 @@
   - 取消Proxy实例后再访问实例会报错
   - 使用场景:目标对象不允许直接访问,必须通过代理访问,访问结束就收回代理权,不允许访问
 
-
+### this问题
+  - Proxy虽然可以代理针对目标对象的访问,但它不是目标对象的透明代理,即不做任何拦截的情况下,也无法保证与目标对象行为一致
+  - Proxy代理的情况下,目标对象内部的this会指向Proxy代理
+  ```
+  const target = {
+    m: function () {
+      console.log(this === proxy)
+    }
+  }
+  const handler = {};
+  const proxy = new Proxy(target, handler)
+  target.m() // false
+  proxy.m()  // true
+  ```
+  - 有些原生对象内部属性需要正确的this才能获取到,因此需要在获取时bind(this)
+  
+### 实例：Web 服务的客户端
+  - Proxy对象可以拦截目标对象的任意属性,这使得它很合适用来写Web服务的客户端
+  ```
+  const service = createWebService('http://example.com/data')
+  service.employees().then(json => {
+    const employees = JSON.parse(json)
+    // ···
+  })
+  ```
+  - 上面代码新建了一个Web服务的接口,这个接口返回各种数据
+  - Proxy可以拦截这个对象的任意属性,所以不用为每一种数据写一个适配方法,只要写一个Proxy拦截就可以了
+  ```
+  function createWebService(baseUrl) {
+    return new Proxy({}, {
+      get(target, propKey, receiver) {
+        return () => httpGet(baseUrl+'/' + propKey)
+      }
+    })
+  }
+  ```
+  - 同理,Proxy也可以用来实现数据库的ORM层
   
