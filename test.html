@@ -6,16 +6,16 @@
 </head>
 <body>
 <script>
-    let obj = {
-        a:1
-    }
-    Object.defineProperty(obj, 'b', {
-        value: 2,
-        configurable: false
-    })
-    console.log(obj)
-    delete obj.b
-    console.log(obj)
+    let target = {}
+    let handler = {}
+
+    let {proxy, revoke} = Proxy.revocable(target, handler)
+	console.log()
+    proxy.foo = 123
+    console.log(proxy.foo)// 123
+
+    revoke()
+    console.log(proxy.foo)// TypeError: Revoked
 </script>
 </body>
 </html>

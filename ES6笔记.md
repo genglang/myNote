@@ -2739,4 +2739,30 @@
   - ownKeys方法返回的数组成员只能是字符串或者Symbol,其他类型或者返回的不是数组,会报错
   - 如果目标对象自身包含不可配置的属性,则该属性必须被ownKeys方法返回,否则报错
   - 如果目标对象是不可拓展的,返回的数组必须包含原对象的所有属性,不能包含多余属性,否则报错
-    
+
+#### preventExtensions
+  - 拦截Object.preventExtensions()
+  - 必须返回一个布尔值,否则转换为布尔值
+  - 只有目标对象不可拓展的时候才能返回true,否则就报错
+  
+#### setPrototypeOf
+  - 拦截Object.setPrototypeOf()方法
+  - 只能返回布尔值,否则强转为布尔值
+  - 如果目标对象不可拓展,不能改变目标原型对象
+
+### Proxy.revocable()
+  - 返回一个可取消的Proxy实例,返回的对象的proxy属性是Proxy实例,revoke是一个函数可以取消Proxy实例
+  ```
+  let target = {};
+  let handler = {};
+  let {proxy, revoke} = Proxy.revocable(target, handler);
+  proxy.foo = 123;
+  proxy.foo // 123
+  revoke();
+  proxy.foo // TypeError: Revoked
+  ```
+  - 取消Proxy实例后再访问实例会报错
+  - 使用场景:目标对象不允许直接访问,必须通过代理访问,访问结束就收回代理权,不允许访问
+
+
+  
