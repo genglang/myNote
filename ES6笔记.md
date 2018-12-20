@@ -2802,3 +2802,40 @@
   ```
   - 同理,Proxy也可以用来实现数据库的ORM层
   
+## Reflect
+  - Reflect对象与Proxy对象一样,也是ES6提供的操作对象的API
+  - 设计目的有几个
+  1. 将Object对象的一些明显属于语言内部的方法(比如说Object.defineProperty)抽离到Reflect对象上
+     - 旧方法同时部署在Object和Reflect
+     - 新方法只部署在Reflect
+  2. 某些修改Object方法的返回结果,让结果变得更加合理
+     - 例如
+       - Object.defineProperty(obj, name, desc)在无法定义属性时,会抛出一个错误
+       - Reflect.defineProperty(obj, name, desc)则会返回false
+  ```
+  // 老写法
+  try {
+    Object.defineProperty(target, property, attributes);
+    // success
+  } catch (e) {
+    // failure
+  }
+  // 新写法
+  if (Reflect.defineProperty(target, property, attributes)) {
+    // success
+  } else {
+    // failure
+  }
+
+  ```
+  3. 让Object操作都变成函数行为,某些Object操作是命令式
+     - 比如说`name in obj`和`delete obj[name]`
+     - 而`Reflect.has(obj, name)`和`Reflect.deleteProperty(obj, name)`让它们变成了函数行为
+  ```
+  // 老写法
+  'assign' in Object // true
+  
+  // 新写法
+  Reflect.has(Object, 'assign') // true
+
+  ```
