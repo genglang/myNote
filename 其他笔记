@@ -56,3 +56,8 @@ new.target指向new调用的构造函数,不是new出来的对象返回undefined
 
 
 Object.defineProperty定义的属性无法被delete删除
+
+
+构造函数不需要显示的返回值
+使用new来创建对象(调用构造函数)时,如果return的是非对象(数字、字符串、布尔类型等)会忽而略返回值
+如果return的是对象,则返回该对象(注:若return null也会忽略返回值)
