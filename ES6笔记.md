@@ -2851,4 +2851,45 @@
       return success;
     }
   })
+  
+  var loggedObj = new Proxy(obj, {
+    get(target, name) {
+      console.log('get', target, name);
+      return Reflect.get(target, name);
+    },
+    deleteProperty(target, name) {
+      console.log('delete' + name);
+      return Reflect.deleteProperty(target, name);
+    },
+    has(target, name) {
+      console.log('has' + name);
+      return Reflect.has(target, name);
+    }
+  });
   ```
+### 静态方法
+  - Reflect一共有13个静态方法,与Proxy一一对应,大部分与Object同名方法作用相同
+    1. Reflect.apply(target, thisArg, args)
+    2. Reflect.construct(target, args)
+    3. Reflect.get(target, name, receiver)
+    4. Reflect.set(target, name, value, receiver)
+    5. Reflect.defineProperty(target, name, desc)
+    6. Reflect.deleteProperty(target, name)
+    7. Reflect.has(target, name)
+    8. Reflect.ownKeys(target)
+    9. Reflect.isExtensible(target)
+    10. Reflect.preventExtensions(target)
+    11. Reflect.getOwnPropertyDescriptor(target, name)
+    12. Reflect.getPrototypeOf(target)
+    13. Reflect.setPrototypeOf(target, prototype)
+  1. Reflect.get(target, name, receiver)
+     - 查找返回target对象的name属性
+     - 如果name属性设置了getter则读取函数this绑定的receiver
+     - 如果第一个参数不是对象就报错
+  2. Reflect.set(target, name, value, receiver)
+     - Reflect.set方法设置target对象的name属性等于value
+     - 如果name属性设置了setter则读取函数this绑定的receiver
+     - 如果Proxy对象和Reflect对象联合使用,前者拦截赋值操作,后者完成赋值的默认行为,而且传入了receiver,那么Reflect.set会触发Proxy.defineProperty拦截。
+     - 如果第一个参数不是对象就报错
+  
+     
