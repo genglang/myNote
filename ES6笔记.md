@@ -2891,5 +2891,13 @@
      - 如果name属性设置了setter则读取函数this绑定的receiver
      - 如果Proxy对象和Reflect对象联合使用,前者拦截赋值操作,后者完成赋值的默认行为,而且传入了receiver,那么Reflect.set会触发Proxy.defineProperty拦截。
      - 如果第一个参数不是对象就报错
+  3. Reflect.has(obj,name)
+     - React.has方法对应`name in obj`里的in运算符
+     - 如果第一个参数不是对象,Reflect.has和in运算符都会报错
+  4. Reflect.deleteProperty(obj,name)
+     - Reflect.deleteProperty方法等同于`delete obj[name]`,用于删除对象的属性
+     - 该方法返回一个布尔值
+     - 如果删除成功,或者被删除的属性不存在,返回true
+     - 删除失败,被删除的属性依然存在,返回false
   
      
