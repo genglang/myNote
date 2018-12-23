@@ -112,7 +112,7 @@
   - 同一段代码为了能够在各种环境,都能取到顶层对象,现在一般是使用this变量,但是有局限性
     - 全局环境中,this会返回顶层对象,但是,Node模块和ES6模块中,this返回的是当前模块
     - 函数里面的this,如果函数不是作为对象的方法运行,而是单纯作为函数运行,this会指向顶层对象,但是,严格模式下,这时this会返回undefined
-    - 不管是严格模式,还是普通模式,new Function('return this')(),总是会返回全局对象,但是,如果浏览器用了 CSP（Content Security Policy,内容安全策略）,那么eval、new Function这些方法都可能无法使用
+    - 不管是严格模式,还是普通模式,new Function('return this')(),总是会返回全局对象,但是,如果浏览器用了 CSP(Content Security Policy,内容安全策略),那么eval、new Function这些方法都可能无法使用
   - 勉强能用的解决方案
   ```
   // 方法一
@@ -742,10 +742,10 @@
     1. 四个字节的UTF16字符,可以用u修饰符解决
     2. 行终止符
   - 行终止符指的是一行的终结
-    1. U+000A 换行符（\n）
-    2. U+000D 回车符（\r）
-    3. U+2028 行分隔符（line separator）
-    4. U+2029 段分隔符（paragraph separator）
+    1. U+000A 换行符(\n)
+    2. U+000D 回车符(\r)
+    3. U+2028 行分隔符(line separator)
+    4. U+2029 段分隔符(paragraph separator)
   - s修饰符可以让.匹配任意字符
   - 这被称作dotAll模式,因此还引入了一个dotAll属性,表示正则表达式是否有s修饰符
   - /s修饰符和多行修饰符/m不冲突,两者一起使用的情况下,.匹配所有字符,而^和$匹配每一行的行首和行尾
@@ -2409,7 +2409,7 @@
      - 拦截`Object.getOwnPropertyDescriptor(proxy, propKey)`
      - 返回属性的描述对象
   7. defineProperty(target, propKey, propDesc)
-     - 拦截`Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)`
+     - 拦截`Object.defineProperty(proxy, propKey, propDesc)、Object.defineProperties(proxy, propDescs)`
      - 返回一个布尔值
   8. preventExtensions(target)
      - 拦截`Object.preventExtensions(proxy)`
@@ -2944,5 +2944,45 @@
   13. Reflect.ownKeys(target)
      - Reflect.ownKeys方法用于返回对象的所有属性,基本等同于Object.getOwnPropertyNames与Object.getOwnPropertySymbols之和
      
-  
-       
+## Promise
+   - Promise是异步编程的一种解决方案,比传统的解决方案--回调函数和事件--更加强大和合理
+   - 最早由社区提出,ES6写进了语言标准,统一了写法,原生提供了Promise对象
+   - Promise简单来说就是个容器,里面保存着某个未来才会结束的事件(通常是一个异步操作)的结果
+   - 从语法上来说,Promise是一个对象,可以获取异步操作的消息
+   - Promise对象有两个特点
+     1. 对象的状态不受外界影响
+        - Promise对象代表一个异步操作,有三种状态
+          1. pending(进行中)
+          2. fulfilled(已成功)
+          3. rejected(已失败)。
+        - 只有异步操作的结果,可以决定当前是哪一种状态,任何其他操作都无法改变这个状态
+        - 这也是Promise这个名字的由来，它的英语意思就是“承诺”，表示其他手段无法改变
+     2. 一旦状态改变,就不会再改变,任何时候都可以得到这个结果
+        - Promise对象的状态改变,只有两种可能
+          1. 从pending变为fulfilled
+          2. 从pending变为rejected。
+        - 只要这两种情况发生,状态就凝固了,不会再改变，会一直保持这个结果,这时就称为resolved(已定型)
+        - 如果改变已经发生了,你再对Promise对象添加回调函数,也会立即得到这个结果
+        - 这与事件(Event)完全不同,事件的特点是,如果你错过了它,再去监听,是得不到结果的
+### 基本用法
+   - ES6规定Promise对象是一个构造函数,用来生成Promise实例
+   ```
+   const promise = new Promise(function(resolve, reject) {
+     // ... some code
+   
+     if (/* 异步操作成功 */){
+       resolve(value);
+     } else {
+       reject(error);
+     }
+   });
+   ```
+   - Promise构造函数接受一个函数作为参数,该函数的两个参数分别是resolve和reject,它们是两个函数,由JavaScript引擎提供,不用自己部署
+   - resolve函数的作用是,将Promise对象的状态从"未完成"变为"成功"(即从pending变为resolved)在异步操作成功时调用,并将异步操作的结果,作为参数传递出去
+   - reject函数的作用是,将Promise对象的状态从"未完成"变为"失败"(即从pending变为rejected)在异步操作失败时调用,并将异步操作报出的错误,作为参数传递出去
+   - Promise实例生成以后,可以用then方法分别指定resolved状态和rejected状态的回调函数
+   - then方法可以接受两个回调函数作为参数,第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用
+   - 其中,第二个函数是可选的,不一定要提供,这两个函数都接受Promise对象传出的值作为参数
+     
+
+   

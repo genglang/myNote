@@ -6,17 +6,16 @@
 </head>
 <body>
 <script>
-	let target = {}
-    let p = new Proxy(target, {
-        set: function(target, name, value, receiver) {
-            var success = Reflect.set(target,name, value, receiver);
-            if (success) {
-                console.log('property ' + name + ' on ' + target + ' set to ' + value);
-            }
-            return success;
-        }
-    })
-	console.log(p.name = 1)
+	let p = new Promise((resolve, reject)=>{
+	    console.log(1)
+		resolve(2)
+		console.log(3)
+	})
+	console.log(4)
+	p.then(res=>{
+	    console.log(res)
+	})
+	console.log(5)
 </script>
 </body>
 </html>
