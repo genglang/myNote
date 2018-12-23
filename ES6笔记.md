@@ -2899,5 +2899,50 @@
      - 该方法返回一个布尔值
      - 如果删除成功,或者被删除的属性不存在,返回true
      - 删除失败,被删除的属性依然存在,返回false
-  
+  5. Reflect.construct(target, args)
+     - Reflect.construct等同于new target(...args)
+     - 一种不使用new来调用构造函数的方法
+     ```
+     function Greeting(name) {
+       this.name = name;
+     }
      
+     // new 的写法
+     const instance = new Greeting('张三');
+     
+     // Reflect.construct 的写法
+     const instance = Reflect.construct(Greeting, ['张三']);
+     ```
+  6. Reflect.getPrototypeOf(obj)
+     - Reflect.getPrototypeOf用于读取对象的__proto__属性,对应Object.getPrototypeOf
+     - 与Object.getPrototypeOf不同,如果参数不是对象会报错
+  7. Reflect.setPrototypeOf(obj, newProto)
+     - Reflect.setPrototypeOf方法用于设置目标对象的原型(prototype),对应Object.setPrototypeOf(obj, newProto)方法
+     - 它返回一个布尔值，表示是否设置成功。
+     - 如果无法设置目标对象的原型(禁止拓展)返回false
+     - 如果第一个参数不是对象会报错
+     - 如果第一个对象是undefined或者null会报错
+  8. Reflect.apply(func, thisArg, args)
+     - 等同于Function.prototype.apply.call(func, thisArg, args)
+     - 用于绑定this对象后执行给定函数
+  9. Reflect.defineProperty(target, propertyKey, attributes)
+     - 基本等同于Object.defineProperty,用来为对象定义属性
+     - 未来后者会被逐渐废除,请从现在开始就使用Reflect.defineProperty代替它
+     - 第一个参数不是对象会抛出错误
+  10. Reflect.getOwnPropertyDescriptor(target, propertyKey)
+     - 等同于Object.getOwnPropertyDescriptor,用于得到指定属性的描述对象
+     - 如果第一个参数不是对象会报错
+  11. Reflect.isExtensible(target)
+     - 对应Object.isExtensible,返回一个布尔值,表示当前对象是否可扩展
+     - 如果参数不是对象,Object.isExtensible会返回false,因为非对象本来就是不可扩展的
+     - Reflect.isExtensible会报错
+  12. Reflect.preventExtensions(target)
+     - Reflect.preventExtensions对应Object.preventExtensions方法,用于让一个对象变为不可扩展
+     - 它返回一个布尔值,表示是否操作成功
+     - 如果参数不是对象,Object.preventExtensions在ES5环境报错
+     - 在ES6环境返回传入的参数,而Reflect.preventExtensions会报错
+  13. Reflect.ownKeys(target)
+     - Reflect.ownKeys方法用于返回对象的所有属性,基本等同于Object.getOwnPropertyNames与Object.getOwnPropertySymbols之和
+     
+  
+       
