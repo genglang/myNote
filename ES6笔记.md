@@ -2945,96 +2945,121 @@
      - Reflect.ownKeys方法用于返回对象的所有属性,基本等同于Object.getOwnPropertyNames与Object.getOwnPropertySymbols之和
      
 ## Promise
-   - Promise是异步编程的一种解决方案,比传统的解决方案--回调函数和事件--更加强大和合理
-   - 最早由社区提出,ES6写进了语言标准,统一了写法,原生提供了Promise对象
-   - Promise简单来说就是个容器,里面保存着某个未来才会结束的事件(通常是一个异步操作)的结果
-   - 从语法上来说,Promise是一个对象,可以获取异步操作的消息
-   - Promise对象有两个特点
-     1. 对象的状态不受外界影响
-        - Promise对象代表一个异步操作,有三种状态
-          1. pending(进行中)
-          2. fulfilled(已成功)
-          3. rejected(已失败)。
-        - 只有异步操作的结果,可以决定当前是哪一种状态,任何其他操作都无法改变这个状态
-        - 这也是Promise这个名字的由来，它的英语意思就是“承诺”，表示其他手段无法改变
-     2. 一旦状态改变,就不会再改变,任何时候都可以得到这个结果
-        - Promise对象的状态改变,只有两种可能
-          1. 从pending变为fulfilled
-          2. 从pending变为rejected。
-        - 只要这两种情况发生,状态就凝固了,不会再改变，会一直保持这个结果,这时就称为resolved(已定型)
-        - 如果改变已经发生了,你再对Promise对象添加回调函数,也会立即得到这个结果
-        - 这与事件(Event)完全不同,事件的特点是,如果你错过了它,再去监听,是得不到结果的
+  - Promise是异步编程的一种解决方案,比传统的解决方案--回调函数和事件--更加强大和合理
+  - 最早由社区提出,ES6写进了语言标准,统一了写法,原生提供了Promise对象
+  - Promise简单来说就是个容器,里面保存着某个未来才会结束的事件(通常是一个异步操作)的结果
+  - 从语法上来说,Promise是一个对象,可以获取异步操作的消息
+  - Promise对象有两个特点
+    1. 对象的状态不受外界影响
+       - Promise对象代表一个异步操作,有三种状态
+         1. pending(进行中)
+         2. fulfilled(已成功)
+         3. rejected(已失败)。
+       - 只有异步操作的结果,可以决定当前是哪一种状态,任何其他操作都无法改变这个状态
+       - 这也是Promise这个名字的由来，它的英语意思就是“承诺”，表示其他手段无法改变
+    2. 一旦状态改变,就不会再改变,任何时候都可以得到这个结果
+       - Promise对象的状态改变,只有两种可能
+         1. 从pending变为fulfilled
+         2. 从pending变为rejected。
+       - 只要这两种情况发生,状态就凝固了,不会再改变，会一直保持这个结果,这时就称为resolved(已定型)
+       - 如果改变已经发生了,你再对Promise对象添加回调函数,也会立即得到这个结果
+       - 这与事件(Event)完全不同,事件的特点是,如果你错过了它,再去监听,是得不到结果的
 ### 基本用法
-   - ES6规定Promise对象是一个构造函数,用来生成Promise实例
-   ```
-   const promise = new Promise(function(resolve, reject) {
-     // ... some code
-   
-     if (/* 异步操作成功 */){
-       resolve(value);
-     } else {
-       reject(error);
-     }
-   });
-   ```
-   - Promise构造函数接受一个函数作为参数,该函数的两个参数分别是resolve和reject,它们是两个函数,由JavaScript引擎提供,不用自己部署
-   - resolve函数的作用是,将Promise对象的状态从"未完成"变为"成功"(即从pending变为resolved)在异步操作成功时调用,并将异步操作的结果,作为参数传递出去
-   - reject函数的作用是,将Promise对象的状态从"未完成"变为"失败"(即从pending变为rejected)在异步操作失败时调用,并将异步操作报出的错误,作为参数传递出去
-   - Promise实例生成以后,可以用then方法分别指定resolved状态和rejected状态的回调函数
-   - then方法可以接受两个回调函数作为参数,第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用
-   - 其中,第二个函数是可选的,不一定要提供,这两个函数都接受Promise对象传出的值作为参数
-   - Promise新建后会立即执行
-   - 封装异步加载图片
-   ```
-   function loadImageAsync(url) {
-     return new Promise(function(resolve, reject) {
-       const image = new Image()
-   
-       image.onload = function() {
-         resolve(image)
-       };
-   
-       image.onerror = function() {
-         reject(new Error('Could not load image at ' + url))
-       };
-   
-       image.src = url
-     });
-   }
-   ```
-   - 封装Ajax
-   ```
-   const getJSON = function(url) {
-     const promise = new Promise(function(resolve, reject){
-       const handler = function() {
-         if (this.readyState !== 4) {
-           return;
-         }
-         if (this.status === 200) {
-           resolve(this.response);
-         } else {
-           reject(new Error(this.statusText));
-         }
-       };
-       const client = new XMLHttpRequest();
-       client.open("GET", url);
-       client.onreadystatechange = handler;
-       client.responseType = "json";
-       client.setRequestHeader("Accept", "application/json");
-       client.send();
-   
-     });
-   
-     return promise;
-   };
-   
-   getJSON("/posts.json").then(function(json) {
-     console.log('Contents: ' + json);
-   }, function(error) {
-     console.error('出错了', error);
-   });
-   ```
-   
-     
+  - ES6规定Promise对象是一个构造函数,用来生成Promise实例
+  ```
+  const promise = new Promise(function(resolve, reject) {
+    // ... some code
+  
+    if (/* 异步操作成功 */){
+      resolve(value);
+    } else {
+      reject(error);
+    }
+  });
+  ```
+  - Promise构造函数接受一个函数作为参数,该函数的两个参数分别是resolve和reject,它们是两个函数,由JavaScript引擎提供,不用自己部署
+  - resolve函数的作用是,将Promise对象的状态从"未完成"变为"成功"(即从pending变为resolved)在异步操作成功时调用,并将异步操作的结果,作为参数传递出去
+  - reject函数的作用是,将Promise对象的状态从"未完成"变为"失败"(即从pending变为rejected)在异步操作失败时调用,并将异步操作报出的错误,作为参数传递出去
+  - Promise实例生成以后,可以用then方法分别指定resolved状态和rejected状态的回调函数
+  - then方法可以接受两个回调函数作为参数,第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用
+  - 其中,第二个函数是可选的,不一定要提供,这两个函数都接受Promise对象传出的值作为参数
+  - Promise新建后会立即执行
+  - 封装异步加载图片
+  ```
+  function loadImageAsync(url) {
+    return new Promise(function(resolve, reject) {
+      const image = new Image()
+  
+      image.onload = function() {
+        resolve(image)
+      };
+  
+      image.onerror = function() {
+        reject(new Error('Could not load image at ' + url))
+      };
+  
+      image.src = url
+    });
+  }
+  ```
+  - 封装Ajax
+  ```
+  const getJSON = function(url) {
+    const promise = new Promise(function(resolve, reject){
+      const handler = function() {
+        if (this.readyState !== 4) {
+          return;
+        }
+        if (this.status === 200) {
+          resolve(this.response);
+        } else {
+          reject(new Error(this.statusText));
+        }
+      };
+      const client = new XMLHttpRequest();
+      client.open("GET", url);
+      client.onreadystatechange = handler;
+      client.responseType = "json";
+      client.setRequestHeader("Accept", "application/json");
+      client.send();
+  
+    });
+  
+    return promise;
+  };
+  
+  getJSON("/posts.json").then(function(json) {
+    console.log('Contents: ' + json);
+  }, function(error) {
+    console.error('出错了', error);
+  });
+  ```
+  - Promise作为resolve的参数会是的resolve本身的Promise状态无效,作为参数的Promise决定其状态
+  - resolve和reject并不会终结Promise的参数函数执行
+  ```
+  const p1 = new Promise(function (resolve, reject) {
+    setTimeout(() => reject(new Error('fail')), 3000)
+  })
+  
+  const p2 = new Promise(function (resolve, reject) {
+    setTimeout(() => resolve(p1), 1000)
+  })
+  
+  p2
+    .then(result => console.log(result))
+    .catch(error => console.log(error))
+  // Error: fail
+  ```     
+  - resolve和reject会在本轮事件循环末尾执行,总是晚于本轮循环的同步任务
+  - return resolve()可以避免执行resolve后的代码
 
-   
+### Promise.prototype.then()
+  - then定义在原型上,作用是为Promise实例添加状态改变时的回调函数
+  - then的第一个参数是resolved,第二个参数(可选)是rejected状态的回调函数
+  - then方法返回的是一个新的Promise实例(注意不是原来那个Promise实例)因此可以采用链式写法,即then方法后面再调用另一个then方法
+  - 每一个then回调的参数来自前一个then的返回值,如果返回的是Promise对象,则会等状态变化之后才会调用then
+
+### Promise.prototype.catch()
+  
+  
+  
