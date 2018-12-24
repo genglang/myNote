@@ -3128,21 +3128,30 @@
   - finally总会返回原来的值
   ```
   // resolve 的值是 undefined
-  Promise.resolve(2).then(() => {}, () => {})
+  Promise.resolve(2).then(() => {}, () => {}).then(res=>console.log(res))
   
   // resolve 的值是 2
-  Promise.resolve(2).finally(() => {})
+  Promise.resolve(2).finally(() => {}).then(res=>console.log(res))
   
   // reject 的值是 undefined
-  Promise.reject(3).then(() => {}, () => {})
+  Promise.reject(3).then(() => {}, () => {}).then(res=>console.log(res))
   
   // reject 的值是 3
-  Promise.reject(3).finally(() => {})
+  Promise.reject(3).finally(() => {}).then(res=>console.log(res))
   ```
   
+### Promise.all()
+  - Promise.all用于把多个Promise实例包装成一个Promise实例
+  - 只有全部状态resolve之后才能执行Promise.all的then方法
+  ```
+  const p = Promise.all([p1, p2, p3])
+  ```
+  - 参数必须要用Promise实例,不然可以用Promise.resolve转换成Promise实例
+  - Promise.all方法的参数可以不是数组,但必须具有Iterator接口,且返回的每个成员都是Promise实例
+  - 如果作为参数的Promise实例绑定了catch方法,一旦被reject,不会触发Promise.all的catch方法
   
-  
-  
-  
+### Promise.race()
+  - Promise.race方法同样是将多个Promise实例,包装成一个新的Promise实例
+  - 只要有一个状态resolve之后就执行Promise.race的then方法
   
   

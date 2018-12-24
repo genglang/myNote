@@ -6,18 +6,27 @@
 </head>
 <body>
 <script>
-    const promise = new Promise(function (resolve, reject) {
-        resolve('ok')
+    let p1 = new Promise(resolve => {
+        setTimeout(() => {
+            console.log('p1 in')
+        }, 500)
+        resolve('p1')
     })
-    promise
-        .then(function (value) {
-            console.log(value)
-            throw new Error('test')
+        .then(() => {
+            console.log('p1 out')
         })
-        .catch(function (error) {
-            console.log(error)
+    let p2 = new Promise(resolve => {
+        setTimeout(() => {
+            console.log('p2 in')
+        }, 1000)
+        resolve('p2')
+    })
+        .then(() => {
+            console.log('p2 out')
         })
-    // ok
+    Promise.all([p1, p2]).then(res => {
+        console.log('all', res)
+    })
 </script>
 </body>
 </html>
