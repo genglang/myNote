@@ -3091,6 +3091,56 @@
   - Node有个unhandledRejection函数用于监听未捕获的reject错误(将要废除)
   - catch无法捕获后面then的错误
   
+### Promise.prototype.finally()
+  - ES2018引入finally,不管Promise对象最后状态如何,都会执行
+  - finally方法的回调函数不接受任何参数,这意味着没有办法知道,前面的Promise状态到底是fulfilled还是rejected
+  - 这表明,finally方法里面的操作,应该是与状态无关的,不依赖于Promise的执行结果
+  - finally本质上是then方法的特例
+  ```
+  promise
+  .finally(() => {
+    // 语句
+  });
+  
+  // 等同于
+  promise
+  .then(
+    result => {
+      // 语句
+      return result;
+    },
+    error => {
+      // 语句
+      throw error;
+    }
+  );
+  ```
+  - finally实现,不管前面结果如何都会执行回调函数callback
+  ```
+  Promise.prototype.finally = function (callback) {
+    let P = this.constructor;
+    return this.then(
+      value  => P.resolve(callback()).then(() => value),
+      reason => P.resolve(callback()).then(() => { throw reason })
+    );
+  };
+  ```
+  - finally总会返回原来的值
+  ```
+  // resolve 的值是 undefined
+  Promise.resolve(2).then(() => {}, () => {})
+  
+  // resolve 的值是 2
+  Promise.resolve(2).finally(() => {})
+  
+  // reject 的值是 undefined
+  Promise.reject(3).then(() => {}, () => {})
+  
+  // reject 的值是 3
+  Promise.reject(3).finally(() => {})
+  ```
+  
+  
   
   
   
