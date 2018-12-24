@@ -6,22 +6,18 @@
 </head>
 <body>
 <script>
-    const p1 = new Promise(function (resolve, reject) {
-        setTimeout(() => {
-            console.log(1)
-	        resolve(5)
-        }, 3000)
+    const promise = new Promise(function (resolve, reject) {
+        resolve('ok')
     })
-
-    const p2 = new Promise(function (resolve, reject) {
-        setTimeout(() => resolve(p1), 1000)
-    })
-
-    p2
-        .then((res) => {
-            console.log(2)
-            console.log(res)
+    promise
+        .then(function (value) {
+            console.log(value)
+            throw new Error('test')
         })
+        .catch(function (error) {
+            console.log(error)
+        })
+    // ok
 </script>
 </body>
 </html>

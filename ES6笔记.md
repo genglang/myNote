@@ -3060,6 +3060,39 @@
   - 每一个then回调的参数来自前一个then的返回值,如果返回的是Promise对象,则会等状态变化之后才会调用then
 
 ### Promise.prototype.catch()
+  - Promise.prototype.catch方法是.then(null,rejection)的别名,用于指定发生错误时的回调函数
+  - 直接抛出错误和reject是等价的,reject方法等同于抛出错误
+  ```
+  // 写法一
+  const promise = new Promise(function(resolve, reject) {
+    try {
+      throw new Error('test');
+    } catch(e) {
+      reject(e);
+    }
+  });
+  promise.catch(function(error) {
+    console.log(error);
+  });
+  
+  // 写法二
+  const promise = new Promise(function(resolve, reject) {
+    reject(new Error('test'));
+  });
+  promise.catch(function(error) {
+    console.log(error);
+  });
+  ```
+  - Promise 在resolve语句后面,再抛出错误,不会被捕获
+  - 一旦Promise状态改变就不会再改变了
+  - Promise的错误具有冒泡性质,会一直向后传递,直到被捕获为止,错误总会被下一个catch语句捕获
+  - 不要使用then的第二个参数,用catch替换,因为catch能捕获then的错误
+  - 与try-catch不同,如果没有catch,Promise遇到错误不会传递到外层代码,不会有任何反应
+  - Node有个unhandledRejection函数用于监听未捕获的reject错误(将要废除)
+  - catch无法捕获后面then的错误
+  
+  
+  
   
   
   
