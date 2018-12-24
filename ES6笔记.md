@@ -2983,6 +2983,58 @@
    - Promise实例生成以后,可以用then方法分别指定resolved状态和rejected状态的回调函数
    - then方法可以接受两个回调函数作为参数,第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用
    - 其中,第二个函数是可选的,不一定要提供,这两个函数都接受Promise对象传出的值作为参数
+   - Promise新建后会立即执行
+   - 封装异步加载图片
+   ```
+   function loadImageAsync(url) {
+     return new Promise(function(resolve, reject) {
+       const image = new Image()
+   
+       image.onload = function() {
+         resolve(image)
+       };
+   
+       image.onerror = function() {
+         reject(new Error('Could not load image at ' + url))
+       };
+   
+       image.src = url
+     });
+   }
+   ```
+   - 封装Ajax
+   ```
+   const getJSON = function(url) {
+     const promise = new Promise(function(resolve, reject){
+       const handler = function() {
+         if (this.readyState !== 4) {
+           return;
+         }
+         if (this.status === 200) {
+           resolve(this.response);
+         } else {
+           reject(new Error(this.statusText));
+         }
+       };
+       const client = new XMLHttpRequest();
+       client.open("GET", url);
+       client.onreadystatechange = handler;
+       client.responseType = "json";
+       client.setRequestHeader("Accept", "application/json");
+       client.send();
+   
+     });
+   
+     return promise;
+   };
+   
+   getJSON("/posts.json").then(function(json) {
+     console.log('Contents: ' + json);
+   }, function(error) {
+     console.error('出错了', error);
+   });
+   ```
+   
      
 
    
