@@ -3183,5 +3183,49 @@
 ### Promise.reject()
   - Promise.reject(reason)方法也会返回一个新的Promise实例,该实例的状态为rejected
   - Promise.reject()方法的参数,会原封不动地作为reject的理由,变成后续方法的参数,这一点与Promise.resolve方法不一致
+
+### 应用
+  - 图片加载
+  ```
+  const preloadImage = function (path) {
+    return new Promise(function (resolve, reject) {
+      const image = new Image();
+      image.onload  = resolve;
+      image.onerror = reject;
+      image.src = path;
+    });
+  };
+  ```
+  - Generator函数与Promise的结合
+    - 使用Generator函数管理流程,遇到异步操作的时候,通常返回一个Promise对象
+  ```
+  function getFoo () {
+    return new Promise(function (resolve, reject){
+      resolve('foo');
+    });
+  }
+  const g = function* () {
+    try {
+      const foo = yield getFoo();
+      console.log(foo);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  function run (generator) {
+    const it = generator();
   
+    function go(result) {
+      if (result.done) return result.value;
   
+      return result.value.then(function (value) {
+        return go(it.next(value));
+      }, function (error) {
+        return go(it.throw(error));
+      });
+    }
+  
+    go(it.next());
+  }
+  run(g);
+  ```
