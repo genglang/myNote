@@ -3154,4 +3154,34 @@
   - Promise.race方法同样是将多个Promise实例,包装成一个新的Promise实例
   - 只要有一个状态resolve之后就执行Promise.race的then方法
   
+### Promise.resolve()
+  - Promise.resolve用于把现有对象转换为Promise对象
+  - 参数分为四种情况
+    1. 参数是Promise实例
+       - 不做任何修改原封不动返回这个实例
+    2. 参数是一个thenable对象
+       - 具有then方法的对象
+       - Promise.resolve会把这个对象转换成Promise对象然后立即执行对象的then方法
+       ```
+       let thenable = {
+         then: function(resolve, reject) {
+           resolve(42);
+         }
+       };
+       
+       let p1 = Promise.resolve(thenable);
+       p1.then(function(value) {
+         console.log(value);  // 42
+       });
+       ```
+    3. 参数不是具有then方法的对象或者根本不是对象
+       - Promise.resolve方法返回一个新的Promise对象,状态为resolved,并把参数传给回调函数
+    4. 不带参数
+       - 直接返回一个resolved状态的Promise对象
+  - 立即resolve的Promise对象,是在本轮"事件循环"(event loop)的结束时,而不是在下一轮"事件循环"的开始时
+
+### Promise.reject()
+  - Promise.reject(reason)方法也会返回一个新的Promise实例,该实例的状态为rejected
+  - Promise.reject()方法的参数,会原封不动地作为reject的理由,变成后续方法的参数,这一点与Promise.resolve方法不一致
+  
   
