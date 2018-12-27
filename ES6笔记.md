@@ -3296,3 +3296,52 @@
   console.log(i.next()) // 5
   console.log(i.next()) 
   ```
+  - 由于Iterator只是把接口规格加到数据结构上,所以,遍历器和它所遍历的那个数据结构其实是分开的
+  - 完全可以写出没有对应数据结果的遍历起对象,获取用遍历器对象模拟出数据结果
+  - 用TypeScript写法的遍历器接口(Iterable)、指针对象(Iterator)、next方法返回值的规格可描述如下
+  ```
+  interface Iterable {
+    [Symbol.iterator]() : Iterator,
+  }
+  
+  interface Iterator {
+    next(value?: any) : IterationResult,
+  }
+  
+  interface IterationResult {
+    value: any,
+    done: boolean,
+  }
+  ```
+### 默认Iterator接口
+  - Iterator接口的目的,就是为所有数据结构,提供了一种统一的访问机制,即for-of循环
+  - 当使用for-of循环遍历某种数据结构时,该循环会自动去寻找Iterator接口
+  - 一种数据结构只要部署了Iterator接口,我们就称这种数据结构是"可遍历的"(iterable)
+  - ES6规定,默认的Iterator接口部署在数据结构的Symbol.iterator属性
+  - 一个属性只要有Symbol.iterator属性,就可以认为是可遍历对象
+  - Symbol.iterator属性本身是一个函数,就是当前数据结构默认的遍历器生成函数,执行这个函数,就会返回一个遍历器
+  - 属性名Symbol.iterator是一个表达式,返回Symbol对象的iterator属性,这是一个预定义好的、类型为Symbol的特殊值,所以要放在方括号内
+  - 凡是部署了Symbol.iterator属性的数据结构,就称为部署了遍历器接口,调用这个接口,就会返回一个遍历器对象
+  - 原生具备Iterator接口的数据结构如下
+    - Array
+    - Map
+    - Set
+    - String
+    - TypedArray
+    - 函数的 arguments对象
+    - NodeList对象
+  - 可以直接调用Symbol.iterator获取遍历器对象
+  ```
+  let arr = ['a', 'b', 'c'];
+  let iter = arr[Symbol.iterator]();
+  
+  iter.next() // { value: 'a', done: false }
+  iter.next() // { value: 'b', done: false }
+  iter.next() // { value: 'c', done: false }
+  iter.next() // { value: undefined, done: true }
+  ```
+  
+  
+  
+  
+  
