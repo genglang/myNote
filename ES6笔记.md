@@ -3197,7 +3197,7 @@
   };
   ```
   - Generator函数与Promise的结合
-    - 使用Generator函数管理流程,遇到异步操作的时候,通常返回一个Promise对象
+  - 使用Generator函数管理流程,遇到异步操作的时候,通常返回一个Promise对象
   ```
   function getFoo () {
     return new Promise(function (resolve, reject){
@@ -3229,3 +3229,33 @@
   }
   run(g);
   ```
+### Promise.try()
+  - 经常遇到一种情况,不知道或者不想区分,函数f是同步函数还是异步操作,但是想用Promise来处理它
+  - Promise.resolve().then(f)会把f放到本轮事件循环末尾执行
+  - 可以使用async解决这个问题
+  ```
+  (async () => f())()
+  .then(...)
+  .catch(...)
+  ```
+  - 也可以使用new Promise()
+  ```
+  const f = () => console.log('now');
+  (
+    () => new Promise(
+      resolve => resolve(f())
+    )
+  )();
+  console.log('next');
+  // now
+  // next
+  ```
+  - 现在有个提案提供Promise.try方法替代上面的写法
+  ```
+  const f = () => console.log('now');
+  Promise.try(f);
+  console.log('next');
+  // now
+  // next
+  ```
+  
