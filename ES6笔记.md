@@ -3378,3 +3378,6 @@
        console.log(i) // 1, 2, 3
    }
   ```
+  - 类数组对象本身就有迭代器接口,也可以替换成数组的Symbol.iterator
+  - 普通对象无法替换成数组的迭代器的Symbol.iterator
+### 调用Iterator接口的场合
