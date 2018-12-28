@@ -3340,8 +3340,41 @@
   iter.next() // { value: 'c', done: false }
   iter.next() // { value: undefined, done: true }
   ```
+  - 原生部署的Iterator接口不需要自己写遍历器生成函数
+  - 对象没有部署iterator接口是因为对象的遍历顺序不确定,需要手动指定
+  - 本质上遍历器是一种线性处理,对于非线性数据结构,部署遍历器接口就等于一种线性转换
+  - 一个对象如果要具备可被for-of循环调用的Iterator接口就必须在Symbol.iterator的属性上部署遍历器生成方法(原型链上的对象具有该方法也可) 
+  - 实现指针结构遍历
+  ```
+   function Obj(value) {
+       this.value = value
+       this.next = null
+   }
   
+   Obj.prototype[Symbol.iterator] = function () {
+       let iterator = {next: next}
   
+       let current = this
   
+       function next() {
+           if (current) {
+               let value = current.value
+               current = current.next
+               return {done: false, value: value}
+           } else {
+               return {done: true}
+           }
+       }
   
+       return iterator
+   }
   
+   let one = new Obj(1)
+   let two = new Obj(2)
+   let three = new Obj(3)
+   one.next = two
+   two.next = three
+   for (let i of one) {
+       console.log(i) // 1, 2, 3
+   }
+  ```

@@ -6,24 +6,37 @@
 </head>
 <body>
 <script>
-    function iterator(arr) {
-        let index = 0
-        return {
-            next() {
-                return index < arr.length ?
-                    {value: arr[index], done: false} :
-                    {value: undefined, done: true}
-            }
-        }
+    function Obj(value) {
+        this.value = value
+        this.next = null
     }
 
-    let i = iterator([1, 2, 3, 4, 5])
-    console.log(i.next()) // 1
-    console.log(i.next()) // 2
-    console.log(i.next()) // 3
-    console.log(i.next()) // 4
-    console.log(i.next()) // 5
-    console.log(i.next()) // 6
+    Obj.prototype[Symbol.iterator] = function () {
+        let iterator = {next: next}
+
+        let current = this
+
+        function next() {
+            if (current) {
+                let value = current.value
+                current = current.next
+                return {done: false, value: value}
+            } else {
+                return {done: true}
+            }
+        }
+
+        return iterator
+    }
+
+    let one = new Obj(1)
+    let two = new Obj(2)
+    let three = new Obj(3)
+    one.next = two
+    two.next = three
+    for (let i of one) {
+        console.log(i) // 1, 2, 3
+    }
 </script>
 </body>
 </html>
