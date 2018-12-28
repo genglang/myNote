@@ -112,7 +112,8 @@
   - 同一段代码为了能够在各种环境,都能取到顶层对象,现在一般是使用this变量,但是有局限性
     - 全局环境中,this会返回顶层对象,但是,Node模块和ES6模块中,this返回的是当前模块
     - 函数里面的this,如果函数不是作为对象的方法运行,而是单纯作为函数运行,this会指向顶层对象,但是,严格模式下,这时this会返回undefined
-    - 不管是严格模式,还是普通模式,new Function('return this')(),总是会返回全局对象,但是,如果浏览器用了 CSP(Content Security Policy,内容安全策略),那么eval、new Function这些方法都可能无法使用
+    - 不管是严格模式,还是普通模式,new Function('return this')(),总是会返回全局对象
+    - 如果浏览器用了 CSP(Content Security Policy,内容安全策略),那么eval、new Function这些方法都可能无法使用
   - 勉强能用的解决方案
   ```
   // 方法一
@@ -3381,3 +3382,45 @@
   - 类数组对象本身就有迭代器接口,也可以替换成数组的Symbol.iterator
   - 普通对象无法替换成数组的迭代器的Symbol.iterator
 ### 调用Iterator接口的场合
+  1. for-of
+  2. 解构赋值
+     - 对数组和Set进行解构赋值,默认会调用Symbol.iterator
+  ```
+  let set = new Set().add('a').add('b').add('c');
+  
+  let [x,y] = set;
+  // x='a'; y='b'
+  
+  let [first, ...rest] = set;
+  // first='a'; rest=['b','c'];
+  ```
+  3. 扩展运算符
+     - 扩展运算符(...)也会调用默认的Iterator接口
+     - 任何部署了Iterator接口的数据机构,都可以使用拓展运算符
+  4. yield*
+     - yield*后面跟的是一个可遍历的结构,它会调用该结构的遍历器接口
+  5. 其他场合
+     - 任何使用了数组作为参数的场合都调用了遍历器接口
+       - for...of
+       - Array.from()
+       - Map(),Set(),WeakMap(),WeakSet()(比如new Map([['a',1],['b',2]]))
+       - Promise.all()
+       - Promise.race()
+### 字符串的Iterator接口
+  - 字符串是个类数组对象,因此也有原生Iterator接口
+
+### Iterator接口与Generator函数
+  - Symbol.iterator方法的最简单实现,就是Generator
+  
+### 遍历器对象的return(),throw()
+  - 遍历器除了next方法,还可以具有return方法和throw方法
+  - 如果是自定义Iterator接口,next是必须部署的,return和throw则是可选
+  - return方法的使用场合
+    - 如果for-of循环提前退出(通常是因为出错,或者有break语句)就会调用return方法
+    - 如果一个对象在完成遍历前,需要清理或释放资源,就可以部署return方法
+  - throw方法的使用场合
+    - throw方法主要是配合Generator函数使用,一般的遍历器对象用不到这个方法
+### for-of循环
+  - ES6借鉴了C++、Java、C#、Python引入了for-of循环,作为遍历所有数据结构的统一方法
+  - 只要部署了Symbol.iterator属性就能被遍历
+  
