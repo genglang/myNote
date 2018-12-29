@@ -3442,3 +3442,66 @@
     - keys()返回一个遍历器对象,用来遍历所有的键名
     - values()返回一个遍历器对象,用来遍历所有的键值
 #### 类数组对象
+  - 类似数组的对象包括好几类,下面是for...of循环用于不同类型的例子
+    1. 字符串
+       - for-of能够正确识别32位的UTF16字符
+    ```
+    // 字符串
+    let str = "hello";
+    
+    for (let s of str) {
+      console.log(s); // h e l l o
+    }
+    ```
+    2. DOMNodeList对象
+    ```
+    let paras = document.querySelectorAll("p");
+    
+    for (let p of paras) {
+      p.classList.add("test");
+    }
+  
+    ```
+    3. arguments对象
+    ```
+    function printArgs() {
+      for (let x of arguments) {
+        console.log(x);
+      }
+    }
+    printArgs('a', 'b');
+    ```
+  - 并不是所有类似数组的对象都具有Iterator接口,使用Array.from方法将其转为数组
+    
+#### 对象
+  - 对于普通的对象,for-of不能直接使用,会报错,必须部署了Iterator接口后才能使用
+  - for-in无论如何都能遍历键名
+  - 可以用Objeck.keys生成数组然后遍历
+  - 也可以用Generator函数将对象重新包装
+  ```
+  function* entries(obj) {
+    for (let key of Object.keys(obj)) {
+      yield [key, obj[key]];
+    }
+  }
+  
+  for (let [key, value] of entries(obj)) {
+    console.log(key, '->', value);
+  }
+  // a -> 1
+  // b -> 2
+  ```
+
+### 与其他遍历语法比较
+  - for循环
+    - 麻烦
+  - forEach
+    - 中途无法跳出
+  - for-in
+    - 数组键名会被修改成字符串
+    - 不仅遍历数组键名,还会遍历手动添加的其他键,甚至包括原型链
+    - 某些情况会乱序遍历键名
+  - for-of
+    - 和for-in一样简洁,没有for-in缺点
+    - 可以中途跳出
+    - 提供了遍历所有数据结构的统一接口
