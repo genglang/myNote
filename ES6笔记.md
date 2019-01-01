@@ -3527,6 +3527,9 @@
     4. 如果该函数没有return语句,则返回的对象的value属性值为undefined
   - yield表达式后面的表达式,只有当调用next方法、内部指针指向该语句时才会执行,因此等于为JavaScript提供了手动的"惰性求值"(Lazy Evaluation)的语法功能
   - yield后面的表达式不会立刻求值,而是会等next方法调用后才求值
+  - 普通函数调用的时候就开始执行,而Generator函数只有.next调用的时候才执行
+  - yield不能出现在普通函数中,forEach回调函数中使用会报错
+  - yield表达式如果在另一个表达式中,必须放在圆括号内(在赋值表达式右边或者函数参数时除外)
 
 ### yield和return的异同
   - 同
@@ -3535,3 +3538,138 @@
     - 每次遇到yield会暂停,return不具有位置记忆的功能
     - return一次函数只能执行一次
     - yield能返回多次多个值
+
+### 与Iterator接口的关系
+  - Generator就是遍历器生成函数,因此可以把Generator赋值给对象的Symbol.iterator属性,从而使对象拥有Iterator属性
+  ```
+  let myIterable = {
+    a:4,
+    b:5,
+    c:6
+  };
+  myIterable[Symbol.iterator] = function* () {
+    let keys= Object.keys(this)
+    for (let key of keys){
+       yield this[key]
+    }
+  };
+  
+  console.log([...myIterable]) // [4, 5, 6]
+  ```
+
+### next方法的参数
+  - yield表达式本身没有返回值,总是返回undefined,next方法可以带一个参数,该参数会被当作上一个yield的返回值
+  - 用于在函数执行的不同阶段注入不同的值,从而调整函数行为
+  - 在第一次使用next方法时,参数是无效的,V8会直接忽略掉参数
+
+### for-of与Generator
+  - for-of循环可以自动遍历Generator函数生成的Iterator对象,且此时不再需要调用.next方法
+  - 一旦返回对象的done属性为true,for-of循环就会终止,且不包含返回对象
+  - 利用for-of循环,可以写出任意对象的遍历方法
+  ```
+  function* objectEntries() {
+    let propKeys = Object.keys(this);
+  
+    for (let propKey of propKeys) {
+      yield [propKey, this[propKey]];
+    }
+  }
+  
+  let jane = { first: 'Jane', last: 'Doe' };
+  
+  jane[Symbol.iterator] = objectEntries;
+  
+  for (let [key, value] of jane) {
+    console.log(`${key}: ${value}`);
+  }
+  // first: Jane
+  // last: Doe
+  ```
+### Generator.prototype.throw()
+  - Generator函数返回的遍历器对象,都有一个throw方法,可以在函数体外抛出错误,然后在Generator函数体内捕获
+  ```
+  var g = function* () {
+    try {
+      yield;
+    } catch (e) {
+      console.log('内部捕获', e);
+    }
+  };
+  
+  var i = g();
+  i.next();
+  
+  try {
+    i.throw('a');
+    i.throw('b');
+  } catch (e) {
+    console.log('外部捕获', e);
+  }
+  // 内部捕获 a
+  // 外部捕获 b
+
+  ```
+  - throw方法可以接收一个参数,该参数会被catch语句接收,建议跑出Error对象的实例
+  - 遍历器和全局throw方法并不相同,并且Generator.throw不会收外部throw影响
+  - throw方法会顺带执行一次next表达式
+  - 如果Generator执行过程中遇到了未处理的error,就会默认变成执行完成状态
+  
+### Generator.prototype.return()
+  - Generator函数返回的遍历器对象,还有一个return方法,可以返回给定的值,并且终结遍历Generator函数
+  - return的参数就是返回值的value
+  - 如果Generator内部具有try-finally,切正在执行try中的代码,会等到finally执行完再return
+
+### next()、throw()、return()的共同点
+  - 都是让Generator恢复执行,并且使用不同的语句替换yield表达式
+    - next是将yield替换成一个值
+    - throw()是将yield表达式替换成一个throw语句
+    - return()是将yield表达式替换成一个return语句
+    
+### yield*表达式
+  - 如果在Generator函数内部调用另一个Generator函数,默认是没用的
+  - 使用yield*表达式,用来在一个Generator函数里面执行另一个Generator函数
+  - 如果yield不加*执行Generator函数会返回一个遍历器对象,加上*返回遍历器对象的内部值
+  - 如果yield表达式后面跟的是一个遍历器对象,需要在yield表达式后面加上星号,表明它返回的是一个遍历器对象,这被称为yield*表达式
+  ```
+  let delegatedIterator = (function* () {
+    yield 'Hello!';
+    yield 'Bye!';
+  }());
+  
+  let delegatingIterator = (function* () {
+    yield 'Greetings!';
+    yield* delegatedIterator;
+    yield 'Ok, bye.';
+  }());
+  
+  for(let value of delegatingIterator) {
+    console.log(value);
+  }
+  // "Greetings!
+  // "Hello!"
+  // "Bye!"
+  // "Ok, bye."
+  ```
+  - yield*后面的Generator函数(没有return语句时)等同于在Generator函数内部,部署一个for-of循环
+  - 如果有return时,则需要用var value = yield* iterator的形式获取return语句的值
+  - yield*命令可以很方便地取出嵌套数组的所有成员
+
+### 作为对象属性的Generator函数
+  - 如果一个对象属性是Generator函数,可以简写为以下形式
+  ```
+  let obj = {
+    * myGeneratorMethod() {
+      ···
+    }
+  }
+  // 等于
+  let obj = {
+    myGeneratorMethod: function* () {
+      // ···
+    }
+  };
+  ```
+  
+### Generator函数的this
+  - Generator函数总是返回一个遍历器
+  - ES6规定这个遍历器是Generator函数的实例,也继承了Generator函数的prototype对象上的方法

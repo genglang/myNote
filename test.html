@@ -6,16 +6,24 @@
 </head>
 <body>
 <script>
-	function * generator() {
-		yield 'hello'
-		yield 'world'
-		return 'end'
+    let delegatedIterator = (function* () {
+        yield 'Hello!';
+        yield 'Bye!';
+    }());
+
+    let delegatingIterator = (function* () {
+        yield 'Greetings!';
+        yield* delegatedIterator;
+        yield 'Ok, bye.';
+    }());
+
+    for(let value of delegatingIterator) {
+        console.log(value);
     }
-    let g = generator()
-    console.log(g)
-    console.log(g.next())
-    console.log(g.next())
-    console.log(g.next())
+    // "Greetings!
+    // "Hello!"
+    // "Bye!"
+    // "Ok, bye."
 </script>
 </body>
 </html>
