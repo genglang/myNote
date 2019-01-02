@@ -6,24 +6,13 @@
 </head>
 <body>
 <script>
-    let delegatedIterator = (function* () {
-        yield 'Hello!';
-        yield 'Bye!';
-    }());
-
-    let delegatingIterator = (function* () {
-        yield 'Greetings!';
-        yield* delegatedIterator;
-        yield 'Ok, bye.';
-    }());
-
-    for(let value of delegatingIterator) {
-        console.log(value);
+    function* async() {
+	    yield setTimeout(()=>{
+	        console.log(1)
+	    },1000)
     }
-    // "Greetings!
-    // "Hello!"
-    // "Bye!"
-    // "Ok, bye."
+    let a = async()
+	a.next()
 </script>
 </body>
 </html>
