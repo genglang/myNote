@@ -3727,3 +3727,84 @@
   }
   ```
 #### 控制流管理
+  - 如果有一个多部操作非常耗时,为解决回调地狱,可以采用Promise或者Generator
+  ```
+  // 回调地狱
+  step1(function (value1) {
+    step2(value1, function(value2) {
+      step3(value2, function(value3) {
+        step4(value3, function(value4) {
+          // Do something with value4
+        })
+      })
+    })
+  })
+  
+  // Promise
+  Promise.resolve(step1)
+    .then(step2)
+    .then(step3)
+    .then(step4)
+    .then(function (value4) {
+      // Do something with value4
+    }, function (error) {
+      // Handle any error from step1 through step4
+    })
+    .done()
+    
+  // Generator
+  function* longRunningTask(value1) {
+    try {
+      var value2 = yield step1(value1);
+      var value3 = yield step2(value2);
+      var value4 = yield step3(value3);
+      var value5 = yield step4(value4);
+      // Do something with value4
+    } catch (e) {
+      // Handle any error from step1 through step4
+    }
+  }
+  ```
+  - 上面的做法只能用于都是同步操作的情况
+  
+#### 部署Iterator接口
+  - 利用Generator函数,可以在任意对象上部署Iterator接口
+  ```
+  function* iterEntries(obj) {
+    let keys = Object.keys(obj);
+    for (let i=0; i < keys.length; i++) {
+      let key = keys[i];
+      yield [key, obj[key]];
+    }
+  }
+  
+  let myObj = { foo: 3, bar: 7 };
+  
+  for (let [key, value] of iterEntries(myObj)) {
+    console.log(key, value);
+  }
+  
+  // foo 3
+  // bar 7
+  ```
+#### 作为数据结构
+  - Generator可以看作是数据结构,更确切地说,可以看作是一个数组结构
+  - 因为Generator函数可以返回一系列的值,这意味着它可以对任意表达式,提供类似数组的接口
+  ```
+  // 依次返回三个函数
+  function* doStuff() {
+    yield fs.readFile.bind(null, 'hello.txt');
+    yield fs.readFile.bind(null, 'world.txt');
+    yield fs.readFile.bind(null, 'and-such.txt');
+  }
+  ```
+  - 用ES5表达,完全可以用数组模拟Generator的这种用法
+  ```
+  function doStuff() {
+    return [
+      fs.readFile.bind(null, 'hello.txt'),
+      fs.readFile.bind(null, 'world.txt'),
+      fs.readFile.bind(null, 'and-such.txt')
+    ];
+  }
+  ```
