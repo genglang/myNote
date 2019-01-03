@@ -3850,3 +3850,77 @@
   
 ### Trunk函数
   - Thunk函数是自动执行Generator函数的一种方法
+  - 编程语言对于需要计算的参数传入的求值策略有争论
+    - 传值调用,先计算再传入
+    - 传名调用,直接把表达式传入,需要用到的时候再计算
+#### Trunk函数的含义
+  - 编译器的传名调用实现,往往是将参数放在一个临时函数之中,再将这个临时函数传入函数体中,这个临时函数叫Trunk函数
+#### JS中的Trunk函数
+  - JavaScript语言是传值调用,它的Thunk函数含义有所不同
+  - 在JavaScript语言中,Thunk函数替换的不是表达式,而是多参数函数,将其替换成一个只接受回调函数作为参数的单参数函数
+  ```
+  // 正常版本的readFile（多参数版本）
+  fs.readFile(fileName, callback)
+  
+  // Thunk版本的readFile（单参数版本）
+  var Thunk = function (fileName) {
+    return function (callback) {
+      return fs.readFile(fileName, callback)
+    }
+  }
+  
+  var readFileThunk = Thunk(fileName);
+  readFileThunk(callback);
+  ```
+  - 任何函数,只要参数有回调函数,就能协程Trunk函数形式
+  ```
+  // ES5版本
+  var Thunk = function(fn){
+    return function (){
+      var args = Array.prototype.slice.call(arguments);
+      return function (callback){
+        args.push(callback);
+        return fn.apply(this, args);
+      }
+    };
+  };
+  
+  // ES6版本
+  const Thunk = function(fn) {
+    return function (...args) {
+      return function (callback) {
+        return fn.call(this, ...args, callback);
+      }
+    };
+  };
+  ```
+  - Thunkify模块就是用类似的原理
+#### Generator函数流程管理
+  - Trunk现在用于Generator函数的自动流程管理
+  ```
+  var fs = require('fs');
+  var thunkify = require('thunkify');
+  var readFileThunk = thunkify(fs.readFile);
+  
+  var gen = function* (){
+    var r1 = yield readFileThunk('/etc/fstab');
+    console.log(r1.toString());
+    var r2 = yield readFileThunk('/etc/shells');
+    console.log(r2.toString());
+  };
+  
+  var g = gen();
+  
+  var r1 = g.next();
+  r1.value(function (err, data) {
+    if (err) throw err;
+    var r2 = g.next(data);
+    r2.value(function (err, data) {
+      if (err) throw err;
+      g.next(data);
+    });
+  });
+  ```
+#### 待学习
+  [Generator 函数的流程管理](http://es6.ruanyifeng.com/#docs/generator-async#Thunk-%E5%87%BD%E6%95%B0)
+## async函数
