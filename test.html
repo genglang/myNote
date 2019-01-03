@@ -6,12 +6,24 @@
 </head>
 <body>
 <script>
-    function* async() {
-	    yield setTimeout(()=>{
-	        console.log(1)
-	    },1000)
+    function timeout(ms) {
+        return new Promise((resolve) => {
+            setTimeout(()=>{
+                console.log('222')
+                resolve()
+            }, ms);
+        });
     }
-    z
+
+    async function asyncPrint(value, ms) {
+        await timeout(ms);
+        console.log(value);
+    }
+
+    asyncPrint('hello world', 50)
+	    .then(()=>{
+	        console.log(111)
+	    })
 </script>
 </body>
 </html>

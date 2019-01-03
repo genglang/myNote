@@ -3924,3 +3924,33 @@
 #### 待学习
   [Generator 函数的流程管理](http://es6.ruanyifeng.com/#docs/generator-async#Thunk-%E5%87%BD%E6%95%B0)
 ## async函数
+  - ES2017引入了async函数,实际上是Generator函数的语法糖
+  - async替代*,await替代yield
+  - async的改进在四点
+    1. 内置执行器
+       - 不再需要.next就能自动执行
+    2. 更好的语义
+    3. 更广的适用性
+       - co模块约定,yield命令后面只能是Thunk函数或Promise对象
+       - 而async函数的await命令后面,可以是Promise对象和原始类型的值(数值、字符串和布尔值,但这时会自动转成立即resolved的Promise对象)
+    4. 返回值是Promise
+       - async函数完全可以堪称多个异步操作,包装成一个Promise对象,而await命令就是内部then的语法糖
+  - async函数返回一个Promise对象,可以使用then方法添加回调函数
+  - 当函数执行的时候,一旦遇到await就会先返回,等异步操作完成,再接着完成函数题后面的内容
+
+### async语法
+  - async语法规则总体上简单,难点在错误处理上
+  - 返回Promise对象,async函数内部return的值会变成then方法回调的参数
+  - async函数内部抛出的错误,会导致返回的Promise对象变成reject状态,抛出的错误会被catch捕获
+### Promise对象的状态变化
+  - async函数返回的Promise对象,必须等到内部所有await命令后面的Promise对象执行完,才会发生改变
+  - 除非遇到return语句或者抛出错误
+  - 只有async内部异步操作执行完成,才会执行then方法指定的回调函数
+### await命令
+  - await命令后通常是个Promise对象,返回对象的结果
+  - 如果await后不是Promise对象,就返回对应的值
+  - 如果await后是thenable对象(定义了then方法的对象),await会将其视为Promise对象
+  - await命令后的Promise对对象如果变为reject,reject的参数会被catch捕获,并且async函数执行会被中断
+### 错误处理
+
+  
