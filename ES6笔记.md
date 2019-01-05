@@ -3998,8 +3998,55 @@
     });
   }
   ```
-### 与其他异步处理方法的比较
-  - 
-    
-  
-  
+### 异步遍历器    
+  - Iterator内部有个规定,next方法必须是同步的,只要调用必须立刻返回值
+  - 目前解决的方法是Generator函数内部异步操作返回一个Thunk函数或者Promise对象
+  - ES2018引入了异步遍历器,为异步操作提供原生的遍历器
+#### 异步遍历的接口
+  - 异步遍历器最大的特点就是调用遍历器的next方法返回的是一个Promise对象
+  - 异步遍历器接口部署在Symbol.asyncIterator上
+  - 异步遍历器会先返回Promise对象,等Promise对象resolve了再返回当前数据的成员信息
+  - 异步遍历器的.next是可以连续调用的,不必等到Promise对象resolve之后再调用,自动按照顺序调用下去
+#### for await...of
+  - for await...of用于遍历异步的Iterator接口
+  ```
+  async function f() {
+    for await (const x of createAsyncIterable(['a', 'b'])) {
+      console.log(x);
+    }
+  }
+  // a
+  // b
+  ```
+  - for-of遍历迭代器对象获得Promise对象,await用来处理这个对象,一旦resolve就会把得到的值传入for-of循环体
+  - 如果next方法返回的Promise对象被reject,for await...of就会报错,要用try-catch捕捉
+  - for await...of循环也可以用于同步遍历器
+  - Node v10支持异步遍历器,Stream就部署了这个接口
+#### 异步Generator函数
+  - 就像Generator函数返回一个同步遍历器一样,异步Generator返回一个异步遍历器对象
+  ```
+  async function* gen() {
+    yield 'hello';
+  }
+  // gen是一个异步Generator函数
+  const genObj = gen();
+  // 执行后返回一个异步Iterator对象
+  // 对该对象调用next方法,返回一个Promise对象
+  genObj.next().then(x => console.log(x));
+  // { value: 'hello', done: false }
+  ```
+  - 异步遍历器的设计目的之一,就是Generator函数处理同步操作和异步操作时,能够使用同一套接口
+  - 异步Generator中await后面的操作应该返回Promise对象,yield是next方法停下来的地方
+  - 异步Generator函数的返回值是一个异步Iterator,即每次调用它的next方法,会返回一个Promise对象
+  - 也就是说,跟在yield命令后面的,应该是一个Promise对象
+  - 如果yield命令后面是一个字符串,会被自动包装成一个Promise对象
+  - async函数和异步Generator函数是封装异步操作的两种方法,都用来达到同一种目的
+    - 普通的async函数返回的是一个Promise对象,自带执行器
+    - 而异步Generator函数返回的是一个异步Iterator对象,通过for await...of执行,或者自己编写执行器
+  - 异步Generator函数出现以后,JavaScript就有了四种函数形式
+    - 普通函数
+    - async函数
+    - Generator函数
+    - 异步Generator函数
+#### yield* 语句
+  - yield*语句也可以跟一个异步遍历器
