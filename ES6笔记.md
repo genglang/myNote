@@ -3952,5 +3952,54 @@
   - 如果await后是thenable对象(定义了then方法的对象),await会将其视为Promise对象
   - await命令后的Promise对对象如果变为reject,reject的参数会被catch捕获,并且async函数执行会被中断
 ### 错误处理
-
+  - 如果await后面的异步操作出错,那么等同于async函数Promise对象被reject
+  - 防止出错的方法就是将其放在try-catch代码块中,通过循环try-catch可以实现多次尝试
+  
+### 注意点
+  - 尽量把await放在try-catch代码块中
+  - 多个await后面的异步操作,如果不存在继发关系,最好让他们同时触发
+  - await只能使用在async函数中
+    - forEach回调函数即使参数改为async函数也可能会发生错误(数据获取)
+  - 通过Promise.all实现多个并发请求
+  - async函数可以保留运行堆栈
+### async函数的实现原理
+  - async函数的实现原理,就是将Generator函数和自动执行器包装在一个函数里
+  ```
+  async function fn(args) {
+    // ...
+  }
+  
+  // 等同于
+  function fn(args) {
+    return spawn(function* () {
+      // ...
+    })
+  }
+  function spawn(genF) {
+    return new Promise(function(resolve, reject) {
+      const gen = genF();
+      function step(nextF) {
+        let next;
+        try {
+          next = nextF();
+        } catch(e) {
+          return reject(e);
+        }
+        if(next.done) {
+          return resolve(next.value);
+        }
+        Promise.resolve(next.value).then(function(v) {
+          step(function() { return gen.next(v); });
+        }, function(e) {
+          step(function() { return gen.throw(e); });
+        });
+      }
+      step(function() { return gen.next(undefined); });
+    });
+  }
+  ```
+### 与其他异步处理方法的比较
+  - 
+    
+  
   
