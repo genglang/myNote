@@ -6,10 +6,16 @@
 </head>
 <body>
 <script>
-   class A{
-       static a = 1
-   }
-   console.log(new A())
+    class Foo {
+        static classMethod() {
+            return 'hello';
+        }
+    }
+
+    class Bar extends Foo {
+    }
+
+    Bar.classMethod() // 'hello'
 </script>
 </body>
 </html>

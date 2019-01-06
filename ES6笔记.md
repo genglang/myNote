@@ -4087,3 +4087,133 @@
     - 不建议在生产环境使用该属性,避免对环境产生依赖
     - 生产环境可以使用Object.getPrototypeOf方法来获取实例对象的原型,然后再来为原型添加方法/属性
     - 并且使用__proto__属性改写原型,会改变类的原始定义
+### getter和setter
+  - 与ES5一样,class可以使用get和set关键字,对某个属性设置存值函数和取值函数,拦截该属性的存取行为
+  ```
+  class MyClass {
+    constructor() {
+      // ...
+    }
+    get prop() {
+      return 'getter';
+    }
+    set prop(value) {
+      console.log('setter: '+value);
+    }
+  }
+  
+  let inst = new MyClass();
+  
+  inst.prop = 123;
+  // setter: 123
+  
+  inst.prop
+  // 'getter'
+  ```
+### 属性表达式
+  - 属性名可以使用属性表达式
+  ```
+  let methodName = 'getArea';
+  
+  class Square {
+    constructor(length) {
+      // ...
+    }
+  
+    [methodName]() {
+      // ...
+    }
+  }
+  ```
+### Class表达式
+  - 与函数一样,类也可以使用表达式的形式定义
+  ```
+  // 类名是MyClass Me只有在Class内部可用,指当前类
+  const MyClass = class Me {
+    getClassName() {
+      return Me.name;
+    }
+  };
+  ```
+  - 如果内部类没用到,也可以省略Me
+  ```
+  const MyClass = class { /* ... */ };
+  ```
+  - 用Class表达式可以实现立即执行Class
+  ```
+  let person = new class {
+    constructor(name) {
+      this.name = name;
+    }
+  
+    sayName() {
+      console.log(this.name);
+    }
+  }('张三');
+  
+  person.sayName(); // "张三"
+  ```
+### 注意点
+  1. 严格模式
+     - 类内部默认就是严格模式
+     - 考虑到未来所有的代码,其实都是运行在模块之中,所以ES6实际上把整个语言升级到了严格模式
+  2. 不存在变量提升
+     - 类不存在变量提升,因为要保证子类在父类后定义
+     ```
+     new Foo(); // ReferenceError
+     class Foo {}
+     ```
+  3. name属性
+     - 本质上ES6的类只是ES5的构造函数的一层包装,所以函数的许多特性都被Class继承,包括name属性
+     - name属性总是返回紧跟在class关键字后面的类名
+     ```
+     let B = class A{}
+     console.log(B.name) // A
+     ```
+  4. Generator方法
+     - 如果某个方法前面加了*,就表示该方法是个Generator函数
+  5. this指向
+     - 类的方法内部如果含有this,默认指向类的实例,单独使用该方法可能会报错
+     ```
+     class Logger {
+       printName(name = 'there') {
+         this.print(`Hello ${name}`);
+       }
+     
+       print(text) {
+         console.log(text);
+       }
+     }
+     
+     const logger = new Logger();
+     const { printName } = logger;
+     printName(); // TypeError: Cannot read property 'print' of undefined
+     ```
+     - 可以在构造方法内给方法绑定this
+     ```
+     class Logger {
+       constructor() {
+         this.printName = this.printName.bind(this);
+       }
+       // ...
+     }
+     ```
+     - 也可以使用箭头函数
+     ```
+     class Logger {
+       constructor() {
+         this.printName = (name = 'there') => {
+           this.print(`Hello ${name}`);
+         };
+       }
+       // ...
+     }
+     ```
+     - 还可以使用Proxy,获取方法的时候自动绑定this
+### 静态方法
+  - 类相当于实例的原型,所有在类中定义的方法,都会被实例继承
+  - 如果在一个方法前加上static关键字,该方法就不会被继承,而是直接通过类来调用
+  - 静态方法包含的this关键字指向类
+  - 父类的静态方法,可以被子类继承,子类可以直接调用,也可以从super上调用
+  
+  
