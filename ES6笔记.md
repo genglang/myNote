@@ -4215,5 +4215,48 @@
   - 如果在一个方法前加上static关键字,该方法就不会被继承,而是直接通过类来调用
   - 静态方法包含的this关键字指向类
   - 父类的静态方法,可以被子类继承,子类可以直接调用,也可以从super上调用
-  
-  
+### 实例属性
+  - 实例属性除了在constructor中定义,还可以直接写在最顶层(需要babel)
+  - 目前推荐在constructor中定义实例属性
+### 静态属性
+  - 静态属性指的是Class本身的属性,即Class.propName,而不是定义在实例对象(this)上的属性
+  - 目前推荐在Class外定义静态属性,ES6规定Class内部只有静态方法没有静态属性
+  - 有提案建议直接用static定义静态属性
+### 私有方法和私有属性
+  - ES6不提供私有方法,只能通过变通方法模拟
+    1. 命名上区别('_')
+    2. 将私有方法移出模块,因为模块内部的所有方法都是对外可见的
+    ```
+    class Widget {
+      foo (baz) {
+        bar.call(this, baz);
+      }
+    
+      // ...
+    }
+    
+    function bar(baz) {
+      return this.snaf = baz;
+    }
+    ```
+    3. 利用Symbol值的唯一性,将私有方法的名字命名为一个Symbol值
+    ```
+    const bar = Symbol('bar');
+    const snaf = Symbol('snaf');
+    
+    export default class myClass{
+    
+      // 公有方法
+      foo(baz) {
+        this[bar](baz);
+      }
+    
+      // 私有方法
+      [bar](baz) {
+        return this[snaf] = baz;
+      }
+    
+      // ...
+    };
+    ```
+  - 目前有个提案,在属性名前添加#表示私有属性

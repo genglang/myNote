@@ -6,16 +6,16 @@
 </head>
 <body>
 <script>
-    class Foo {
-        static classMethod() {
-            return 'hello';
+    class IncreasingCounter {
+        _count = 0;
+        get value() {
+            console.log('Getting the current value!');
+            return this._count;
+        }
+        increment() {
+            this._count++;
         }
     }
-
-    class Bar extends Foo {
-    }
-
-    Bar.classMethod() // 'hello'
 </script>
 </body>
 </html>
