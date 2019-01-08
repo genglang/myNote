@@ -4346,5 +4346,31 @@
        let b = new B();
        ```
   - 使用super的时候必须指定是作为函数还是对象使用否则会报错,直接访问super对象通过super.valueOf()访问
-       
+### 类的Prototype和__proto__属性
+  - 大部分浏览器都有一个__proto__属性指向对应构造函数的prototype属性
+  - Class同时存在两条继承链
+    1. 子类的__proto__属性,表示构造函数的继承,总是指向父类
+    2. 子类prototype属性的__proto__表示方法的继承,总是指向父类的prototype属性
+  - 类的继承实现
+  ```
+  class A {
+  }
   
+  class B {
+  }
+  
+  // B 的实例继承 A 的实例
+  Object.setPrototypeOf(B.prototype, A.prototype);
+  
+  // B 继承 A 的静态属性
+  Object.setPrototypeOf(B, A);
+  
+  const b = new B();
+  
+  
+  // Object.setPrototypeOf方法的实现
+  Object.setPrototypeOf = function (obj, proto) {
+    obj.__proto__ = proto;
+    return obj;
+  }
+  ```
