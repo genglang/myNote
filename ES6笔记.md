@@ -4282,3 +4282,69 @@
   - 子类如果没有定义constructor方法,super方法会被默认添加,任何子类都有constructor方法
   - 子类必须在super之后才能调用this关键字,否则会报错
   - 父类的静态方法也会被子类继承
+### Object.getPrototypeOf()
+  - Object.getPrototypeOf()可以用于在子类上获取父类
+  - 判断一个类是否继承了另一个类
+  ```
+  Object.getPrototypeOf(ColorPoint) === Point
+  ```
+### super关键字
+  - super关键字既可以当函数使用也可以当对象使用
+    1. 当函数使用时,代表父类的构造函数
+       - 继承必须通过super调用父类构造函数
+       - super虽然代表了父类A的构造函数,但是返回的是子类B的实例
+       - super内部的this指的是B,因此super()在这里相当于A.prototype.constructor.call(this)
+       - super只能出现在子类构造函数中,出现在其他地方就会报错
+    2. 在普通方法中,指向父类的原型对象,在静态方法中指向父类
+       - 默认指向子类.prototype
+       - 无法访问定义在父类实例上的属性和方法
+       ```
+       class A {
+         constructor() {
+           this.p = 2;
+         }
+       }
+       
+       class B extends A {
+         get m() {
+           return super.p;
+         }
+       }
+       
+       let b = new B();
+       b.m // undefined
+       ```
+       - 如果定义在原型对象上就可以获取
+       ```
+       class A {}
+       A.prototype.x = 2;
+       class B extends A {
+         constructor() {
+           super();
+           console.log(super.x) // 2
+         }
+       }
+       let b = new B();
+       ```
+       - ES6规定,子类普通方法super访问父类方法时this指向当前子类实例
+       - 通过super对某个属性赋值,这时super就是this,赋值的属性会变成子类实例的属性
+       ```
+       class A {
+         constructor() {
+           this.x = 1;
+         }
+       }
+       class B extends A {
+         constructor() {
+           super();
+           this.x = 2;
+           super.x = 3;
+           console.log(super.x); // undefined
+           console.log(this.x); // 3
+         }
+       }
+       let b = new B();
+       ```
+  - 使用super的时候必须指定是作为函数还是对象使用否则会报错,直接访问super对象通过super.valueOf()访问
+       
+  
