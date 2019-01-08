@@ -4387,4 +4387,60 @@
     ```
 ### 实例的__proto__属性
   - 子实例的__proto__属性的__proto__属性,指向父类实例的__proto__属性
-  - 子类的原型是父类的原型
+  - 子类的原型的原型是父类的原型
+### 原生构造函数的继承
+  - 原生构造函数是指语言内置的构造函数,用来生成数据结构
+  - ES原生构造函数大致有这些
+    - Boolean()
+    - Number()
+    - String()
+    - Array()
+    - Date()
+    - Function()
+    - RegExp()
+    - Error()
+    - Object()
+  - 以前原生构造函数是无法继承的,比如说不能自定义一个Array类
+  - 子类无法获取原生构造函数的内部属性,Array.apply()也不行,传入的this会被忽略
+  - ES5是先新建子类实例对象this,再将父类属性添加到子类上,由于父类内部属性无法获取,无法继承原生的构造函数
+  - ES6允许继承原生构造函数定义子类,因为ES6是先新建父类实例this,然后用子类构造函数修饰this,似父类所有行为都能被继承
+### Mixin模式实现
+  - Mixin指的是多个对象合成一个新的对象,新对象具有各个组成成员的接口
+  ```
+  const a = {
+    a: 'a'
+  };
+  const b = {
+    b: 'b'
+  };
+  const c = {...a, ...b}; // {a: 'a', b: 'b'}
+  ```
+  - 将多个类的接口混入另一个类
+  ```
+  function mix(...mixins) {
+    class Mix {}
+  
+    for (let mixin of mixins) {
+      copyProperties(Mix.prototype, mixin); // 拷贝实例属性
+      copyProperties(Mix.prototype, Reflect.getPrototypeOf(mixin)); // 拷贝原型属性
+    }
+  
+    return Mix;
+  }
+  
+  function copyProperties(target, source) {
+    for (let key of Reflect.ownKeys(source)) {
+      if ( key !== "constructor"
+        && key !== "prototype"
+        && key !== "name"
+      ) {
+        let desc = Object.getOwnPropertyDescriptor(source, key);
+        Object.defineProperty(target, key, desc);
+      }
+    }
+  }
+  // 使用
+  class DistributedEdit extends mix(Loggable, Serializable) {
+    // ...
+  }
+  ```
