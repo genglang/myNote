@@ -4374,3 +4374,17 @@
     return obj;
   }
   ```
+  - 只要是一个有prototype属性的函数,就能被继承(除了Function.prototype)
+  - 两种情况下子类继承的是Object类
+    1. 直接extends自Object类
+    2. 不存在任何继承
+    ```
+    class A {
+    }
+    
+    A.__proto__ === Function.prototype // true
+    A.prototype.__proto__ === Object.prototype // true
+    ```
+### 实例的__proto__属性
+  - 子实例的__proto__属性的__proto__属性,指向父类实例的__proto__属性
+  - 子类的原型是父类的原型
