@@ -6,16 +6,16 @@
 </head>
 <body>
 <script>
-    class IncreasingCounter {
-        _count = 0;
-        get value() {
-            console.log('Getting the current value!');
-            return this._count;
-        }
-        increment() {
-            this._count++;
-        }
+    @testable
+    class MyTestableClass {
+        // ...
     }
+
+    function testable(target) {
+        target.isTestable = true;
+    }
+
+    console.log(MyTestableClass.isTestable) // true
 </script>
 </body>
 </html>

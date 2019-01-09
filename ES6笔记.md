@@ -4444,3 +4444,50 @@
     // ...
   }
   ```
+  
+## 修饰器
+### 类的修饰
+  - 目前有个提案将修饰器引入ECMAScript
+  ```
+  @testable
+  class MyTestableClass {
+    // ...
+  }
+  
+  function testable(target) {
+    target.isTestable = true;
+  }
+  
+  MyTestableClass.isTestable // true
+  ```
+  - 修饰器是一个对类进行处理的函数,修饰器函数的第一个参数,就是所要修饰的目标类
+  ```
+  @decorator
+  class A {}
+  
+  // 等同于
+  
+  class A {}
+  A = decorator(A) || A;
+  ```
+  - 如果一个参数不够用,可以在装饰器外再封装一层函数
+  - 装饰器可以接收参数,等同于可以修改装饰器行为
+  ```
+  function testable(isTestable) {
+    return function(target) {
+      target.isTestable = isTestable;
+    }
+  }
+  
+  @testable(true)
+  class MyTestableClass {}
+  MyTestableClass.isTestable // true
+  
+  @testable(false)
+  class MyClass {}
+  MyClass.isTestable // false
+  ```
+  - 修饰器对类行为的改变发生在代码编译时,而不是运行时
+  - 修饰器可以在编译阶段运行代码,修饰器本质是编译时执行的函数
+  
+  
