@@ -4489,5 +4489,73 @@
   ```
   - 修饰器对类行为的改变发生在代码编译时,而不是运行时
   - 修饰器可以在编译阶段运行代码,修饰器本质是编译时执行的函数
+### 方法的修饰
+  - 修饰器不仅可以修饰类,还可以修饰类的属性
+  ```
+  class Person {
+    @readonly
+    name() { return `${this.first} ${this.last}` }
+  }
+  function readonly(target, name, descriptor){
+    // descriptor对象原来的值如下
+    // {
+    //   value: specifiedFunction,
+    //   enumerable: false,
+    //   configurable: true,
+    //   writable: true
+    // };
+    descriptor.writable = false;
+    return descriptor;
+  }
   
+  readonly(Person.prototype, 'name', descriptor);
+  // 类似于
+  Object.defineProperty(Person.prototype, 'name', descriptor);
+  ```
+  - 修饰器第一个参数是类的原型对象,因为此时类的实例还没生成,只能去修饰原型
+  - 修饰器第二个参数是所要修饰的属性名
+  - 修饰器第三个参数是该属性的描述了对象
+  - @log修饰器
+  ```
+  class Math {
+    @log
+    add(a, b) {
+      return a + b;
+    }
+  }
   
+  function log(target, name, descriptor) {
+    var oldValue = descriptor.value;
+  
+    descriptor.value = function() {
+      console.log(`Calling ${name} with`, arguments);
+      return oldValue.apply(this, arguments);
+    };
+  
+    return descriptor;
+  }
+  
+  const math = new Math();
+  
+  // passed parameters should get logged now
+  math.add(2, 4);
+  ```
+  - 修饰器可以当注释来使用
+  - 多个装饰器从外到内进入,从内到外执行
+  ```
+  function dec(id){
+    console.log('evaluated', id);
+    return (target, property, descriptor) => console.log('executed', id);
+  }
+  
+  class Example {
+      @dec(1)
+      @dec(2)
+      method(){}
+  }
+  // evaluated 1
+  // evaluated 2
+  // executed 2
+  // executed 1
+  ```
+  - 修饰器可以用来检查类型,从长期来看,这会是JS代码静态分析的重要工具
