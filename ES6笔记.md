@@ -4559,3 +4559,80 @@
   // executed 1
   ```
   - 修饰器可以用来检查类型,从长期来看,这会是JS代码静态分析的重要工具
+### 为什么修饰器无法用于函数
+  - 函数存在声明提前,因此实际执行会导致顺序错乱,达不到预期效果
+  - 如果一定要修饰函数,可以使用高阶函数形式直接执行
+### core-decorators.js
+  - core-decorators.js是一个第三方模块,提供了几个常见的修饰器
+  1. @autobind
+     - 使方法中的this自动绑定为原始对象
+  2. @readonly
+     - 使属性或者方法不可写
+  3. @override
+     - 检查子类方法是否正确覆盖了父类同名方法,如果不正确会报错
+  4. deprecate (别名@deprecated)
+     - 在控制台显示一条警告,表示方法将要废除
+  5. @suppressWarning
+     - suppressWarnings修饰器抑制deprecated修饰器导致的console.warn()调用
+     - 异步代码发出的调用除外
+### 使用修饰器实现自动发布事件
+### Mixin
+  - 用修饰器实现混入
+  ```
+  export function mixins(...list) {
+    return function (target) {
+      Object.assign(target.prototype, ...list);
+    };
+  }
+  
+  
+  import { mixins } from './mixins';
+  
+  const Foo = {
+    foo() { console.log('foo') }
+  };
+  
+  @mixins(Foo)
+  class MyClass {}
+  
+  let obj = new MyClass();
+  obj.foo() // "foo"
+  ```
+  - 上面的方法会改写MyClass类的prototype对象,如果不想要这样,可以使用继承实现Mixin
+  ```
+  let MyMixin = (superclass) => class extends superclass {
+    foo() {
+      console.log('foo from MyMixin');
+    }
+  };
+  
+  class MyClass extends MyMixin(MyBaseClass) {
+    /* ... */
+  }
+  
+  let c = new MyClass();
+  c.foo(); // "foo from MyMixin"
+  ```
+  - 这样写可以子类混入的时候通过super调用父类的同名方法,实现不覆盖父类
+### Trait
+  - Trait也是一种装饰器,提供了更多功能比如说防止同名方法的冲突,排除混入某些方法,为混入方法起别名等
+  
+### Babel
+  - 目标Babel已经支持Decorator
+  - 安装babel-core和babel-plugin-transform-decorators
+  - 后者包括在babel-preset-stage-0之中,所以改为安装babel-preset-stage-0亦可
+  ```
+  $ npm install babel-core babel-plugin-transform-decorators
+  ```
+  - 配置文件.babelrc
+  ```
+  {
+    "plugins": ["transform-decorators"]
+  }
+  ```
+  - 脚本中打开的命令如下
+  ```
+  babel.transform("code", {plugins: ["transform-decorators"]})
+  ```
+## Module语法
+  
