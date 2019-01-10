@@ -4635,4 +4635,59 @@
   babel.transform("code", {plugins: ["transform-decorators"]})
   ```
 ## Module语法
+  - ES6前,社区制定了一些模块加载的方案,最主要的是CommonJS和AMD两种
+    - CommonJS用于服务器
+    - AMD用于浏览器
+  - ES6在语言层面实现了模块功能,完全取代了两者,成为浏览器和服务器通用的模块标准
+  - ES6的模块化思想是尽量静态化,使编译时就能确定依赖关系,以及输入和输出的变量
+  - CommonJS和AMD模块,都只能在运行时确定这些东西
+  - CommonJS模块就是对象,输入时必须查找对象属性
+  - 先整体加载模块,生成一个对象,然后在读取内部属性
+  ```
+  // CommonJS模块
+  let { stat, exists, readFile } = require('fs');
+  
+  // 等同于
+  let _fs = require('fs');
+  let stat = _fs.stat;
+  let exists = _fs.exists;
+  let readfile = _fs.readfile;
+  ```
+  - ES6模块不是对象,而是通过export命令显式执行输出的代码,再通过import命令输入
+  ```
+  // ES6模块
+  import { stat, exists, readFile } from 'fs';
+  ```
+  - ES6模块是按需加载,被称为编译时加载或者静态加载
+  - 无法引用ES6模块本身,因为它不是对象
+  - ES6模块是编译时加载,因此静态分析成为了可能,因此能进一步拓宽JS语法,比如引入宏和类型检验
+  - ES6还有以下好处
+    - 不再需要UMD模块格式了,将来服务器和浏览器都会支持ES6模块格式
+    - 将来浏览器新API就能用模块功能提供,不必成为全局对象或者navigator对象的属性
+    - 不再需要用对象作为命名空间(Math对象),这些都可以由模块提供
+### 严格模式
+  - ES6的模块自动开启严格模式,主要有以下限制
+    - 变量必须声明后再使用
+    - 函数的参数不能有同名属性,否则报错
+    - 不能使用with语句
+    - 不能对只读属性赋值,否则报错
+    - 不能使用前缀 0 表示八进制数,否则报错
+    - 不能删除不可删除的属性,否则报错
+    - 不能删除变量delete prop,会报错,只能删除属性delete global[prop]
+    - eval不会在它的外层作用域引入变量
+    - eval和arguments不能被重新赋值
+    - arguments不会自动反映函数参数的变化
+    - 不能使用arguments.callee
+    - 不能使用arguments.caller
+    - 禁止this指向全局对象
+    - 不能使用fn.caller和fn.arguments获取函数调用的堆栈
+    - 增加了保留字（比如protected、static和interface）
+### export
+  - 模块功能主要是两个命令构成
+    - export
+      - 用于规定模块的对外接口
+    - import
+      - 用于输入其他模块提供的工程
+  - 一个模块就是一个独立的文件,该文件内部的所有变量外部都无法获取
+  - 必须使用export才能读取模块内部的文件
   
