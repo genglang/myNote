@@ -4690,4 +4690,81 @@
       - 用于输入其他模块提供的工程
   - 一个模块就是一个独立的文件,该文件内部的所有变量外部都无法获取
   - 必须使用export才能读取模块内部的文件
+  ```
+  // profile.js
+  export var firstName = 'Michael';
+  export var lastName = 'Jackson';
+  export var year = 1958;
   
+  // 推荐使用这种写法
+  // profile.js
+  var firstName = 'Michael';
+  var lastName = 'Jackson';
+  var year = 1958;
+  
+  export {firstName, lastName, year};
+  ```
+  - 通常来说export输出的变量是本来的名字,但是可以使用as重命名
+  ```
+  function v1() { ... }
+  function v2() { ... }
+  
+  export {
+    v1 as streamV1,
+    v2 as streamV2,
+    v2 as streamLatestVersion // 同一个函数重命名后可以输出多次
+  };
+  ```
+  - export无法直接导出数值或者单一变量,因为需要提供对外接口
+  ```
+  // 报错
+  export 1;
+  
+  // 报错
+  var m = 1;
+  export m;
+  
+  // 报错
+  function f() {}
+  export f;
+  ```
+  - export语句输出的接口,与其对应的值是动态绑定关系,即通过该接口,可以取到模块内部实时的值
+  ```
+  export var foo = 'bar';
+  setTimeout(() => foo = 'baz', 500);
+  // 开始是bar 500毫秒后变成baz
+  ```
+  - 与CommonJS规范完全不同,CommonJS模块输出的是值的缓存,不存在状态更新
+  - export可以出现在模块的任何位置,只要处于顶层作用域就行了,否则会报错
+### import命令
+  - import导入其他模块的变量名,必须与被导入模块的对外接口名相同
+  - 可以用as给被输入变量赋值
+  - import输入的变量都是只读,因为它本质上是输入接口,不允许在加载的模块改写接口
+  ```
+  import {a} from './xxx.js'
+  
+  a = {}; // Syntax Error : 'a' is read-only;
+  ```
+  - 如果导入变量是个引用类型,是可以修改的
+  - import后文件名.js可以被省略
+  - import具有变量提升效果,会提升到整个模块头部首先执行
+  - import是静态执行,所以不能使用表达式和变量,这些只有在运行时才能得到结果的语法结构
+  ```
+  // 报错
+  import { 'f' + 'oo' } from 'my_module';
+  
+  // 报错
+  let module = 'my_module';
+  import { foo } from module;
+  
+  // 报错
+  if (x === 1) {
+    import { foo } from 'module1';
+  } else {
+    import { foo } from 'module2';
+  }
+  ``` 
+  - import会执行加载的语句,但是多次执行同一句import语句只会执行一次
+  - import是Singleton模式
+  - 通过Babel转码,CommonJS模块的require命令和ES6模块的import命令,可以写在同一个模块里面
+  - 但最好不要这样做,因为import在静态解析阶段执行,所以它是一个模块之中最早执行的,下面的代码可能不会得到预期结果
