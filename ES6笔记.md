@@ -4768,3 +4768,40 @@
   - import是Singleton模式
   - 通过Babel转码,CommonJS模块的require命令和ES6模块的import命令,可以写在同一个模块里面
   - 但最好不要这样做,因为import在静态解析阶段执行,所以它是一个模块之中最早执行的,下面的代码可能不会得到预期结果
+### 模块的整体加载
+  - 除了指定加载某个输出值,还可以使用整体加载,及使用*指定一个对象,所有的输出值都加载在对象上
+  ```
+  // circle.js
+  
+  export function area(radius) {
+    return Math.PI * radius * radius;
+  }
+  
+  export function circumference(radius) {
+    return 2 * Math.PI * radius;
+  }
+  
+  import * as circle from './circle';
+  ```
+  - 模块整体加载的对象,应该是可以静态分析的,因此不可以运行时修改
+### export default
+  - export可以制定默认输出的模块,让用户可以给输入的模块设置自定义函数名
+  ```
+  // export-default.js
+  export default function () {
+    console.log('foo');
+  }
+  // import-default.js
+  import customName from './export-default';
+  customName(); // 'foo'
+  ```
+  - export default也可以用在非匿名函数前,但是函数名在模块外是无效的
+  - 一个模块只能有一个default
+  - export default本质上是输出一个叫default的变量方法,让你可以给它命名任意名字
+  - `export default a`的含义是将变量a的值赋给变量default,因此无法把变量声明export出去
+  - 如果想在一条import语句中,同时输入默认方法和其他接口，可以写成下面这样。
+  ```
+  import _, { each, forEach } from 'lodash';
+  ```
+    
+  
