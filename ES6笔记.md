@@ -4803,5 +4803,42 @@
   ```
   import _, { each, forEach } from 'lodash';
   ```
-    
+### export与import的复合写法
+  - 可以通过以下方法输入输出同一个模块
+  ```
+  export { foo, bar } from 'my_module';
   
+  // 可以简单理解为
+  import { foo, bar } from 'my_module';
+  export { foo, bar };
+  ```
+  - 使用这种方式仅仅只是转发了接口,本模块并不能直接使用接口
+  - 接口改名和整体输出可以采用这种写法
+  ```
+  // 接口改名
+  export { foo as myFoo } from 'my_module';
+  
+  // 整体输出
+  export * from 'my_module';
+  ```
+  - 默认接口的写法
+  ```
+  export { default } from 'foo';
+  ```
+  - 具名接口改为默认接口的写法如下
+  ```
+  export { es6 as default } from './someModule';
+  
+  // 等同于
+  import { es6 } from './someModule';
+  export default es6;
+  ```
+  - 默认接口也可以改名为具名接口
+### 模块的继承
+  - 通过import和export的复合写法可以实现模块的继承
+### import()
+  - 有一个提案,引入import函数,完成动态加载,类似require
+  - 适用于以下场合
+    1. 按需加载
+    2. 条件加载
+    3. 动态模块路径
