@@ -4842,3 +4842,180 @@
     1. 按需加载
     2. 条件加载
     3. 动态模块路径
+## Module的加载实现
+### 浏览器加载
+#### 传统方法
+  - 浏览器通过script标签加载JS脚本
+  - 由于浏览器脚本的默认语言是JavaScript,因此`type="application/javascript"`可以省略
+  - 默认情况下同步加载,渲染引擎会等script标签加载完再执行script标签之后的代码
+  - 如果是外部脚本,就需要等待资源下载
+  - 可以通过设置defer或async属性实现script标签的异步加载
+    - defer要等到整个页面在内存中正常渲染结束(DOM结构完全生成,以及其他脚本执行完成)才会执行
+    - async一旦下载完,渲染引擎就会中断渲染,执行这个脚本以后,再继续渲染,无法保证顺序加载
+#### 加载规则
+  - 浏览器加载ES6module也是通过script标签,但是需要添加`type="module"`
+  - 带有`type="module"`的script标签相当于添加了defer标签
+  - ES6 模块也允许内嵌在网页中,语法行为与加载外部脚本完全一致。
+  - 外部模块脚本需要注意的点
+    - 代码是在模块作用域之中运行,而不是在全局作用域运行,模块内部的顶层变量,外部不可见
+    - 模块脚本自动采用严格模式,不管有没有声明`use strict`
+    - 模块之中,可以使用import命令加载其他模块(.js后缀不可省略,需要提供绝对URL或相对URL),也可以使用export命令输出对外接
+    - 模块之中,顶层的this关键字返回undefined,而不是指向window,也就是说,在模块顶层使用this关键字,是无意义的
+    - 同一个模块如果加载多次,将只执行一次
+  - 用`this===undefined`判断是否在ES6模块中
+#### ES6模块与CommonJS模块的差异
+  - ES6模块与CommonJS模块完全不同
+    - CommonJS 模块输出的是一个值的拷贝,ES6模块输出的是值的引用
+    - CommonJS 模块是运行时加载,ES6模块是编译时输出接口
+  - CommonJS加载的是一个对象(即module.exports属性),该对象只有在脚本运行完才会生成
+  - 而ES6模块不是对象,它的对外接口只是一种静态定义,在代码静态解析阶段就会生成
+  - export通过接口,输出的是同一个值,不同的脚本加载这个接口,得到的都是同样的实例
+### Node加载
+  - Node对ES6模块的处理比较麻烦,因为它有自己的CommonJS模块格式,与ES6模块格式是不兼容的
+  - 目前的解决方案是,将两者分开,ES6模块和CommonJS采用各自的加载方案
+  - Node要求ES6模块使用.mjs作为后缀,require无法加载.mjs,只有ES6模块能加载(v8.5.0 或以上版本才支持,需要--experimental-modules参数)
+  - 为了与浏览器的import加载规则相同,Node的.mjs文件支持URL路径(脚本路径参数不同会导致多次加载)
+  - Node的import命令只支持加载本地模块(file:协议)不支持加载远程模块
+  - 如果模块名不含路径,那么import命令会去node_modules目录寻找这个模块
+  - 如果模块名包含路径,那么import命令会按照路径去寻找这个名字的脚本文件
+  - 如果脚本文件省略了后缀名,Node会依次尝试当前路径下四个后缀名:.mjs、.js、.json、.node的文件
+  - 如果这些脚本文件都不存在,Node就会去加载指定路径下的package.json的main字段指定的脚本
+  - 如果./foo/package.json不存在或者没有main字段,那么就会依次加载指定路径下.mjs、.js、.json、.node的文件
+  - 如果以上四个文件还是都不存在,就会抛出错误
+  - Node的import命令是异步加载,这一点与浏览器的处理方法相同
+#### 内部加载
+  - ES6模块应该是通用的,同一个模块不用修改,就可以用在浏览器环境和服务器环境
+  - 为了达到这个目标,Node规定ES6模块之中不能使用CommonJS模块的特有的一些内部变量
+    - this
+      - ES6模块之中,顶层的this指向undefined
+      - CommonJS模块的顶层this指向当前模块
+  - 不存在的变量
+    - arguments
+    - require
+    - module
+    - exports
+    - __filename
+    - __dirname
+  - 可以通过CommonJS输出变量给ES6模块导出这些变量,但是这样就无法在浏览器下使用
+#### ES6模块加载CommonJS模块
+  - CommonJS模块的输出都定义在module.exports这个属性上面
+  - Node的import命令加载CommonJS模块,Node会自动将module.exports属性,当作模块的默认输出,即等同于export default xxx
+  - 即import命令实际上输入的是这样一个对象`{ default: module.exports }`
+  - 所以,一共有三种写法,可以拿到CommonJS模块的module.exports
+  ```
+  // 写法一
+  import baz from './a';
+  // baz = {foo: 'hello', bar: 'world'};
+  
+  // 写法二
+  import {default as baz} from './a';
+  // baz = {foo: 'hello', bar: 'world'};
+  
+  // 写法三
+  import * as baz from './a';
+  ```
+#### CommonJS模块加载ES6模块
+  - CommonJS模块加载ES6模块,不能使用require命令,而要使用import()函数
+  - ES6模块的所有输出接口,会成为输入对象的属性
+### 循环加载
+  - 通常"循环加载"表示存在强耦合,如果处理不好,还可能导致递归加载,使得程序无法执行,因此应该避免出现
+#### CommonJS模块的加载原理
+  - CommonJS的一个模块,就是一个脚本文件
+  - require命令第一次加载该脚本,就会执行整个脚本,然后在内存生成一个对象
+  ```
+  {
+    id: '...',          // 模块名
+    exports: { ... },   // 模块输出的各个接口
+    loaded: true,       // 模块是否执行完成
+    ...
+  }
+  ```
+  - 以后需要用到这个模块的时候,就会到exports属性上面取值
+  - 即使再次执行require命令,也不会再次执行该模块,而是到缓存之中取值
+  - 也就是说,CommonJS模块无论加载多少次,都只会在第一次加载时运行一次,以后再加载,就返回第一次运行的结果,除非手动清除系统缓存
+#### CommonJS模块的循环加载
+  - 因为CommonJS是require的时候全部执行,因此一旦出现某个模块被"循环加载",就只输出已经执行的部分,还未执行的部分不会输出
+  - 由于CommonJS模块遇到循环加载时,返回的是当前已经执行的部分的值,而不是代码全部执行后的值,两者可能会有差异,所以,输入变量的时候,必须非常小心
+#### ES6模块的循环加载
+  - ES6模块是动态引用,如果使用import从一个模块加载变量,那些变量不会被缓存,而是成为一个指向被加载模块的引用,需要开发者自己保证,真正取值的时候能够取到值
+### ES6模块的转码
+  - 浏览器目前还不支持 ES6模块,为了现在就能使用,可以将转为ES5的写法,除了Babel可以用来转码之外,还有以下两个方法,也可以用来转码
+#### ES6 module transpiler
+  - ES6 module transpiler是square公司开源的一个转码器,可以将ES6模块转为CommonJS模块或AMD模块的写法,从而在浏览器中使用
+#### SystemJS
+  - 另一种解决方法是使用SystemJS,它是一个垫片库(polyfill),可以在浏览器内加载ES6模块、AMD模块和CommonJS模块,将其转为ES5格式,它在后台调用的是Google的Traceur转码器
+  ```
+  <script src="system.js"></script>
+  
+  <script>
+    System.import('./app.js');
+  </script>
+  ```
+  - System.import使用异步加载,返回一个Promise对象,可以针对这个对象编程
+## 编程风格
+### 块级作用域
+  1. let取代var
+  2. 全局常量和线程安全
+     - let和const优先使用const,尤其是在全局环境,不应该设置变量,只应设置常量
+       - const可以提醒阅读程序的人,这个变量不应该改变
+       - const比较符合函数式编程思想,运算不改变值,只是新建值,而且这样也有利于将来的分布式运算
+       - JavaScript编译器会对const进行优化,所以多使用const,有利于提高程序的运行效率
+### 字符串
+  - 静态字符串一律使用单引号或反引号,不使用双引号,动态字符串使用反引号
+### 解构赋值
+  - 使用数组成员对变量赋值时,优先使用解构赋值
+  - 函数的参数如果是对象的成员,优先使用解构赋值
+  - 如果函数返回多个值,优先使用对象的解构赋值,而不是数组的解构赋值,这样便于以后添加返回值,以及更改返回值的顺序
+### 对象
+  - 单行定义的对象,最后一个成员不以逗号结尾
+  - 多行定义的对象,最后一个成员以逗号结尾
+  - 对象尽量静态化,一旦定义,就不得随意添加新的属性,如果添加属性不可避免,要使用Object.assign方法
+  - 如果对象的属性名是动态的,可以在创造对象的时候,使用属性表达式定义
+  - 对象的属性和方法,尽量采用简洁表达法,这样易于描述和书写
+### 数组
+  - 使用扩展运算符(...)拷贝数组
+### 函数
+  - 立即执行函数可以写成箭头函数的形式
+  ```
+  (() => {
+    console.log('Welcome to the Internet.');
+  })()
+  ```
+  - 那些需要使用函数表达式的场合,尽量用箭头函数代替,因为这样更简洁,而且绑定了this
+  - 箭头函数取代Function.prototype.bind,不应再用self/_this/that绑定this
+  - 简单的、单行的、不会复用的函数,建议采用箭头函数
+  - 如果函数体较为复杂,行数较多,还是应该采用传统的函数写法
+  - 所有配置项都应该集中在一个对象,放在最后一个参数,布尔值不可以直接作为参数
+  - 不要在函数体内使用arguments变量,使用rest运算符(...)代替,因为rest运算符显式表明你想要获取参数,而且arguments是一个类似数组的对象,而rest运算符可以提供一个真正的数组
+  - 使用默认值语法设置函数参数的默认值
+### Map结构
+  - 注意区分Object和Map,只有模拟现实世界的实体对象时,才使用Object
+  - 如果只是需要key:value的数据结构,使用Map结构,因为Map有内建的遍历机制
+  
+### Class
+  - 总是使用Class,取代需要prototype的操作,因为Class的写法更简洁,更易于理解
+  - 使用extends实现继承,因为这样更简单,不会有破坏instanceof运算的危险
+### 模块
+  - Module语法是JavaScript模块的标准写法,坚持使用这种写法
+  - 使用import取代require,使用export取代module.exports
+  - 如果模块只有一个输出值,就使用export default,如果模块有多个输出值,就不使用export default,export default与普通的export不要同时使用
+  - 不要在模块输入中使用通配符,因为这样可以确保你的模块之中,有一个默认输出(export default)
+  - 如果模块默认输出一个函数,函数名的首字母应该小写
+  - 如果模块默认输出一个对象,对象名的首字母应该大写
+### ESLint的使用 
+  - ESLint是一个语法规则和代码风格的检查工具,可以用来保证写出语法正确、风格统一的代码
+  - 安装ESLint
+  ```
+  npm i -g eslint
+  ```
+  - 安装Airbnb语法规则,以及import、a11y、react插件
+  ```
+  npm i -g eslint-config-airbnb
+  npm i -g eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react
+  ```
+  - 在项目的根目录下新建一个.eslintrc文件,配置 ESLint
+  ```
+  {
+    "extends": "eslint-config-airbnb"
+  }
+  ```
