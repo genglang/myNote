@@ -6,18 +6,23 @@
 </head>
 <body>
 <script>
-    function Person() {
+	function Father() {
+		this.property = true
     }
-    Person.prototype.name = 'Van'
-    Person.prototype.age = 18
-    Person.prototype.job = 'actor'
-	Person.prototype.sayName = function () {
-		console.log(this.name)
+    Father.prototype.getFatherValue = function () {
+	    return this.property
     }
-    let p1 = new Person()
-	p1.sayName()
-    let p2 = new Person()
-    p2.sayName()
+    function Child() {
+	    this.childPrototype = false
+    }
+    Child.prototype = new Father()
+	Child.prototype.getChildValue = function () {
+		return this.childPrototype
+    }
+    let instance = new Child()
+	console.log(instance)
+	console.log(instance.getFatherValue())
+	console.log(instance.getChildValue())
 </script>
 </body>
 </html>
