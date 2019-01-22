@@ -5,13 +5,12 @@
 	<title>用于测试的HTML页面</title>
 </head>
 <body>
+<input type="text" id="name">
 <script>
-	window.onpageshow = function () {
-		console.log('show')
-    }
-    window.onpagehide = function () {
-        console.log('hide')
-    }
+	let name  = document.getElementById('name')
+    name.addEventListener('change',function () {
+	    console.log(1)
+    })
 </script>
 </body>
 </html>
