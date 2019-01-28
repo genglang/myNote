@@ -3,14 +3,40 @@
 <head>
 	<meta charset="UTF-8">
 	<title>用于测试的HTML页面</title>
+	<style>
+		#draw {
+			background-color: #DDDDDD;
+		}
+	</style>
 </head>
 <body>
-<input type="text" id="name">
+<canvas id="draw" width="300" height="300">
+	您的浏览器不支持canvas
+</canvas>
 <script>
-	let name  = document.getElementById('name')
-    name.addEventListener('change',function () {
-	    console.log(1)
-    })
+    let drawing = document.getElementById('draw')
+    let context = drawing.getContext('2d')
+    let width = drawing.width
+    let height = drawing.height
+    let radiusOutside = (width - 10) / 2
+    let radiusInside = (width - 20) / 2
+    let circleCenter = {
+        x: width / 2,
+        y: height / 2
+    }
+    context.beginPath()
+    context.arc(circleCenter.x, circleCenter.y, radiusOutside, 0, 2 * Math.PI, false)
+
+    context.moveTo(circleCenter.x + radiusInside, circleCenter.y)
+    context.arc(circleCenter.x, circleCenter.y, radiusInside, 0, 2 * Math.PI, false)
+
+    context.moveTo(circleCenter.x, circleCenter.y)
+    context.lineTo(circleCenter.x, 15)
+
+    context.moveTo(circleCenter.x, circleCenter.y)
+    context.lineTo(35, circleCenter.y)
+
+    context.stroke()
 </script>
 </body>
 </html>
