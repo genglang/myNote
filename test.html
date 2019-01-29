@@ -30,13 +30,23 @@
     context.moveTo(circleCenter.x + radiusInside, circleCenter.y)
     context.arc(circleCenter.x, circleCenter.y, radiusInside, 0, 2 * Math.PI, false)
 
-    context.moveTo(circleCenter.x, circleCenter.y)
-    context.lineTo(circleCenter.x, 15)
+    context.translate(circleCenter.x, circleCenter.y)
+    context.rotate(1)
 
-    context.moveTo(circleCenter.x, circleCenter.y)
-    context.lineTo(35, circleCenter.y)
+    context.moveTo(0, 0)
+    context.lineTo(0, -radiusInside+25)
+
+    context.moveTo(0, 0)
+    context.lineTo(-radiusInside+45, 0)
+
 
     context.stroke()
+
+    context.font = 'bold 14px Arial'
+    context.textAlign = 'center'
+    context.textBaseline = 'middle'
+    context.fillText('12', circleCenter.x, 20)
+
 </script>
 </body>
 </html>
