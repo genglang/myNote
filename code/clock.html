@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用于测试的HTML页面</title>
+	<style>
+		#draw {
+			background-color: #DDDDDD;
+		}
+	</style>
+</head>
+<body>
+<canvas id="draw" width="300" height="300">
+	您的浏览器不支持canvas
+</canvas>
+<script>
+    let drawing = document.getElementById('draw')
+    let context = drawing.getContext('2d')
+    let width = drawing.width
+    let height = drawing.height
+    let radiusOutside = (width - 10) / 2
+    let radiusInside = (width - 20) / 2
+    let circleCenter = {
+        x: width / 2,
+        y: height / 2
+    }
+    context.beginPath()
+    context.arc(circleCenter.x, circleCenter.y, radiusOutside, 0, 2 * Math.PI, false)
+
+    context.moveTo(circleCenter.x + radiusInside, circleCenter.y)
+    context.arc(circleCenter.x, circleCenter.y, radiusInside, 0, 2 * Math.PI, false)
+
+    context.translate(circleCenter.x, circleCenter.y)
+    context.rotate(1)
+
+    context.moveTo(0, 0)
+    context.lineTo(0, -radiusInside+25)
+
+    context.moveTo(0, 0)
+    context.lineTo(-radiusInside+45, 0)
+
+
+    context.stroke()
+
+    context.font = 'bold 14px Arial'
+    context.textAlign = 'center'
+    context.textBaseline = 'middle'
+    context.fillText('12', circleCenter.x, 20)
+
+</script>
+</body>
+</html>
